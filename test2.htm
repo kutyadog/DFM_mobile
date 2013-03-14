@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>iPad Scroll Test</title>
+	<style>
+		html body {
+			overflow: hidden; /* ensure no top-level scroll bars */
+			}
+
+		#first {
+			position: fixed;
+			top: 0;
+			height: 40px;
+			left: 0;
+			right: 0;
+			background-color: darkgray;
+			}
+
+		#second {
+			position: fixed;
+			top: 40px;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background-color: lightgray;
+			overflow: hidden; /* ensure no scroll bars for the div */
+			}
+
+		iframe {
+			width: 100%;
+			height: 100%;
+			border: none;
+			overflow: scroll; /* scroll bars only in the iframe */
+			}
+	</style>
+</head>
+<body>
+	<div id='first'>
+		<p>This is the top div</p>
+	</div>
+	<div id='second'>
+		<iframe src="test1.htm">
+		</iframe>
+	</div>
+</body>

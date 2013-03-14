@@ -1,0 +1,457 @@
+html, body {
+	padding:0px;margin:0;background-color:#000;color:white;-webkit-tap-highlight-color: rgba(255, 255, 255, 0);font: normal 18px/22px Helvetica, Sans-serif;
+}
+
+h1 {
+	padding:0px;margin:0;
+}
+
+.nowrap {
+	overflow:hidden;text-overflow: ellipsis;white-space: nowrap;
+}
+/* ----------------------------------------------------------------------------------------mobie / window management */
+#mobie {opacity:0.0;color:white;position:absolute;top:0px;left:0px;width:1px;height:1px;overflow:hidden;height:45px;}
+#mobie > div {position:relative;width:inherit;height:inherit;visibility:hidden;z-index:1;left:100%;top:0%;opacity:1.0;}/* ----off screen, not active/used yet */
+#mobie > div.active {position:absolute;left:0%;top:0%;visibility:visible;z-index:8;}	/* ----active, been shown but could be in background or in front */
+#mobie > div.animated {
+	/* ----the div will transition to any changes, otherwise changes happen immediately */
+	visibility:visible;
+	-moz-transition-property: left, top, opacity;
+		-moz-transition-duration: 0.45s;
+		-webkit-transition-property: left, top, opacity;
+		-webkit-transition-duration: 0.45s;
+		-o-transition-property: left, top, opacity;
+		-o-transition-duration: 0.45s;
+		-transition-property: left, top, opacity;
+		transition-duration: 0.45s;
+}
+
+#mobie > div.front {z-index:10;}
+#mobie > div.hidden {visibility:hidden;z-index:1;}
+#mobie > div.overlay {background-color:none;}
+#mobie > div.behindoverlay {visibility:visible;opacity:1.0;}	/* ----for a background window when an overlay is on top */
+#mobie > div.tester {background-color:green;}
+
+
+/* ---------------- window transtion types */
+#mobie > div.slide {left:100%;top:0%;}
+#mobie > div.slideRight {left:-100%;top:0%;}
+#mobie > div.slideUp {left:0%;top:100%;}
+#mobie > div.slideDown {left:0%;top:-100%;}
+#mobie > div.fade {left:0%;top:0%;opacity:0.0;}
+/* ---------------- window transtion types (end)*/
+
+#mobie > div.blockerdiv {position:absolute;left:0%;top:0%;background-color:none;z-index:8;visibility:visible;}
+/* ----------------------------------------------------------------------------------------mobie / window management (end) */
+
+.content {
+	position:absolute;top:0px;left:0px;right:0px;bottom:0px;
+	background-color:#333;z-index:5;
+}
+
+.content.belowtoolbar {
+	top:41px;
+}
+
+.content.backshadow {background:#000;opacity:0.8;z-index:1;}
+
+.content.pattern { background: #cbd2d8;color:#000; }
+.content.black { background: #000; }
+.content.overlay { 
+	-moz-box-shadow: 0px 0px 45px #000;
+	-webkit-box-shadow: 0px 0px 45px #000;
+	box-shadow: 0px 0px 45px #000;
+	}
+
+.content.alertwindow {
+	margin:20px;
+	background: #cbd2d8;border-radius: 15px;
+}
+
+
+
+
+
+
+/* ----------------------------------------------------------------------------------------toolbar */
+.toolbar {
+	position:absolute;top:0px;left:0px;height:40px;width:100%;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(126,0,24,1)), color-stop(44%,rgba(95,0,10,1)), color-stop(100%,rgba(57,6,2,1)));
+	background-image: -moz-linear-gradient(top, rgba(126,0,24,1) 0%, rgba(95,0,10,1) 44%, rgba(57,6,2,1) 100%); /* FF3.6+ */
+	border-style:none;
+	box-shadow: rgba(0, 0, 0, 0.4) 0 1px 6px;
+	border-bottom: 1px solid black;z-index:9;
+}
+
+.toolbar h1 {
+	overflow:hidden;text-overflow: ellipsis;white-space: nowrap;
+	font: bold 20px/40px Helvetica, Sans-serif;text-align: center;margin: 0px;width:100%
+	letter-spacing: -1px;text-shadow: -1px -1px 1px rgba(0,0,0,1);color: #fff;margin-left:10px;
+}
+
+
+
+/* ---------------------------------------------------toolbar color types */
+/* if you want to build custom toolbars, add them here */
+.toolbar.tbdark {
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(100%,rgba(0,0,0,1)), color-stop(0%,rgba(40,40,40,0.9)) );
+	background-image: -moz-linear-gradient(top, rgba(0,0,0,1) 44%, rgba(40,40,40,0.9) 100%); /* FF3.6+ */
+}
+.toolbar.native {
+	background-image: -webkit-gradient(linear, left top, left bottom, 
+		from(#b2bbca), color-stop(0.25, #a7b0c3), color-stop(0.5, #909cb3), color-stop(0.5, #8593ac), color-stop(0.75, #7c8ba5), to(#73839f));
+	background: -moz-linear-gradient(top, #b2bbca 0%, #a7b0c3 25%, #909cb3 50%, #8593ac 51%, #7c8ba5 75%, #73839f 100%); /* FF3.6+ */
+}
+.toolbar.native h1 {
+	overflow:hidden;text-overflow: ellipsis;white-space: nowrap;
+	font: bold 20px/40px Helvetica, Sans-serif;text-align: center;margin: 0px;width:100%
+	letter-spacing: -1px;text-shadow: -1px -1px 1px rgba(0,0,0,1);color: #fff;margin-left:10px;
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.5);
+}
+.toolbar.darkblue {
+	background-image: -webkit-gradient(linear, 50% 0, 50% 100%, from(#1E93E4), color-stop(0.03, #1676B9), to(#11598C));
+	background: -moz-linear-gradient(top, #1E93E4 0%, #1676B9 50%, #1676B9 51%, #11598C 100%); /* FF3.6+ */
+}
+.toolbar.black {
+	background: -moz-linear-gradient(top, rgba(125,126,125,1) 0%, rgba(14,14,14,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(125,126,125,1)), color-stop(100%,rgba(14,14,14,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); /* Opera 11.10+ */
+}
+.toolbar.purple {
+	background: -moz-linear-gradient(top, rgba(137,137,186,1) 0%, rgba(137,137,186,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(137,137,186,1)), color-stop(100%,rgba(137,137,186,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(137,137,186,1) 0%,rgba(137,137,186,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(137,137,186,1) 0%,rgba(137,137,186,1) 100%); /* Opera 11.10+ */
+}
+
+.toolbar_table {
+	display: table;padding:0px;margin:0px;border-collapse: collapse;border-spacing:0px;white-space: nowrap;width:100%;
+}
+.toolbar_table_td {
+	display: table-cell;vertical-align:top;
+}
+.toolbar_title {
+	width:100%;text-overflow: ellipsis;
+	  -o-text-overflow: ellipsis;
+	  -webkit-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	  white-space: nowrap;
+	  overflow: hidden;vertical-align:top;
+}
+/* ---------------------------------------------------toolbar color types (end)*/
+
+.gallery_toolbar_xBackButton {
+	margin:5px 0px 0px 4px;width:86px;height:25px;padding-top:6px;padding-left:8px;font-family: Arial, Helvetica, sans-serif;font-weight:bold; font-size: 16px;color: #FFF; 
+	text-shadow: 2px 2px 1px rgba(0,0,0,0.8);text-align:center;background-image:url(back2.png);background-repeat:no-repeat;float:left;
+}
+
+.gallery_toolbar_xBackButton2 {
+	margin:4px 0px 0px 4px;width:86px;height:25px;padding-top:6px;padding-left:8px;font-family: Arial, Helvetica, sans-serif;font-weight:bold; font-size: 16px;color: #FFF; 
+	text-shadow: 2px 2px 1px rgba(0,0,0,0.8);text-align:center;background-image:url(back2.png);background-repeat:no-repeat;float:right;
+}
+
+/* ----------------------------------------------------------------------------------------toolbar (end)*/
+
+
+/* ---------------------------------------------------------------------------------------- scroller */
+.wrapper {
+	position:relative;
+	width:100%;height:100%;
+	overflow:auto;
+}
+
+.scroller {
+	margin:15px 10px 15px 10px;padding-bottom:20px;
+}
+
+.scroller .Xul {
+	margin:0px;padding:0px;list-style: none;margin-bottom:20px;
+}
+.scroller .Xli {
+	background-color: #fff;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: transparent;
+	padding: 8px;
+	border-left:  1px solid #a8abad;
+	border-right: 1px solid #a8abad;
+	border-bottom: 1px solid #a8abad;
+	height: 31px;
+	overflow:hidden;text-overflow: ellipsis;white-space: nowrap;padding-left:16px;
+	color:black;font: bold 18px/33px Helvetica, Sans-serif;
+}
+
+.scroller .Xli:after {
+	content:"> ";color:#888;height:100%;vertical-align: middle;
+	font: bold 20px/30px Futura, "Futura Condensed", Helvetica, Arial, sans-serif;
+	float:right;margin-right:6px;
+}
+.scroller .Xli.no_action:after { content:""; }
+
+.darker .Xli {
+	background-color: #797979;
+	border-left:  1px solid #a8abad;
+	border-right: 1px solid #a8abad;
+	border-bottom: 1px solid #a8abad;
+	color:white;
+}
+.darker .Xli:after { color:#FFF; }
+
+
+.scroller .Xli:first-of-type {
+	border-top: 1px solid #acacac;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+}
+.scroller .Xli:last-of-type {
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.scroller .list_header {
+	font: bold 18px/22px Helvetica, Sans-serif;text-align: left;margin: 0px;width:100%;color:#777;padding:5px 14px 6px 14px;margin-bottom:4px;
+}
+
+/* ---------------------------------------------------------------------------------------- scroller (end) */
+
+/* ---------------------------------------------------------------------------------------- fullscreen scroller  */
+/* ------------------ default is light color  */
+.scroller.full { margin:0px;padding:0px; }
+.scroller.full .Xul { margin-bottom:0px;}
+.scroller.full .Xli {
+	color:#333;font: bold 16px/33px Helvetica, Sans-serif;border-radius: 0px;background-color: #eaeaea;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, from(#dfdfdf), to(#eaeaea));
+	background: -moz-linear-gradient(top, #dfdfdf 0%, #eaeaea 100%); /* FF3.6+ */
+	border:0px;border-bottom: 1px solid #c3c3c3;border-top: 1px solid #FFF;
+}
+.scroller.full .Xli:after { color:#000;}
+.scroller.full .list_header {
+	font: bold 14px/18px Helvetica, Sans-serif;margin: 0px;width:100%;color:#777;padding:6px 14px 6px 14px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------ dark color  */
+.scroller.full.dark { margin:0px;padding:0px;background-color:#000; }
+.scroller.full.dark .Xul { margin-bottom:0px;}
+.scroller.full.dark .Xli {
+	color:#FFF;font: bold 16px/33px Helvetica, Sans-serif;border-radius: 0px;background-color: #3C3D3E;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, from(#282829), to(#2F3031));
+	background: -moz-linear-gradient(top, #282829 0%, #2F3031 100%); /* FF3.6+ */
+	border:0px;border-bottom: 1px solid #1E1E1F;border-top: 1px solid #343536;
+}
+
+
+.scroller.full.dark .Xli:after {
+	color:#999;
+}
+
+.scroller.full.dark .list_header {
+	font: bold 14px/18px Helvetica, Sans-serif;margin: 0px;width:100%;color:#afafaf;padding:6px 14px 6px 14px;
+}
+
+
+
+/* ----------------------------------------------------------------------------------------fullscreen scroller (end) */
+
+
+
+
+/* ---------------------------------------------------------------------------------------- carousel */
+.carousel_wrapper {
+	width:100%;height:100%;
+	float:left;position:relative;	/* On older OS versions "position" and "z-index" must be defined, */
+	z-index:1;			/* it seems that recent webkit is less picky and works anyway. */
+	overflow:hidden;
+	-webkit-border-radius:10px;
+	-moz-border-radius:10px;
+	-o-border-radius:10px;
+	border-radius:10px;
+	border-radius: 0px;
+}
+
+.carousel {
+	margin:0px;padding:0px;background-color:#333; width:100%;height:100%;
+}
+.carousel .Xul { list-style:none;
+	display:block;
+	float:left;
+	width:100%;
+	height:100%;
+	padding:0;
+	margin:0;
+	text-align:left;
+	}
+.carousel .Xli {
+	-webkit-box-sizing:border-box;
+		-moz-box-sizing:border-box;
+		-o-box-sizing:border-box;
+		box-sizing:border-box;
+		display:block; float:left;
+		width:104px; height:100%;
+		text-align:center;
+}
+/* ---------------------------------------------------------------------------------------- carousel (end)*/
+
+
+
+
+
+/*  ------------------------------------------------------------- loading screen animation  */
+.loading_container {
+	position:absolute;left:0px;top:0px;right:0px;bottom:-60px;text-align: center;background:rgba(0,0,0,.8);opacity:0.0;z-index:15;
+	-moz-transition-property: opacity;-webkit-transition-property: opacity;-o-transition-property: opacity;-transition-property: opacity;transition-property: opacity;
+	-moz-transition-duration: 0.3s;-webkit-transition-duration: 0.3s;-o-transition-duration: 0.3s;transition-duration: 0.3s;
+}
+.loading_container.active {
+	opacity:1.0;
+}
+.loading_window {
+	width: 100%;margin: 0px auto;vertical-align:center;position:absolute;top:36%;left:0%;
+}
+.loading_text {
+	font-family:Arial;font-weight:bold;font-size:16px;text-align:center;color:#FFF;line-height:120%;margin:0px 0px 0px 0px;text-shadow: 2px 2px 2px rgba(0,0,0,1);width:100%;
+}
+.animation_block {
+	display: inline-block;
+	margin:6px 0px 10px 0px;
+}
+
+.barlittle {
+	background-color:#FFF;width:16px;height:16px;float:left;margin-left:8px;opacity:0.7;
+	-webkit-animation:move 1.2s infinite linear;-moz-animation:move 1.2s infinite linear;
+}
+#block_1 {-webkit-animation-delay: .3s;-moz-animation-delay: .3s;}
+#block_2 {-webkit-animation-delay: .2s;-moz-animation-delay: .2s;}
+#block_3 {-webkit-animation-delay: .1s;-moz-animation-delay: .1s;}
+#block_4 {-webkit-animation-delay: .2s;-moz-animation-delay: .2s;}
+#block_5 {-webkit-animation-delay: .3s;-moz-animation-delay: .3s;}
+
+@-webkit-keyframes move{
+from {-webkit-transform: scale(1.0);}
+to {-webkit-transform: scale(0.4);}
+}
+@-moz-keyframes move{
+	0%{-moz-transform: scale(1.0);}
+	100%{-moz-transform: scale(0.4);}
+}
+/*  ------------------------------------------------------------- loading screen animation   (end)  */
+
+
+
+
+
+
+
+
+/* SMALL BUTTONS
+
+------------------------------------------------------------------------------------------------------------------------------- */
+/* align button on the LEFT */
+.sm_but_icon {overflow:hidden; height:40px;padding:0px 0px;float:right;margin:0px 3px 0px 0px;}
+.sm_but_icon:active {background:rgba(0, 0, 0, 0.2);}
+
+.sm_but_icon.left {float:left;margin:0px 0px 0px 3px;}	/* align button on the LEFT */
+
+.sm_but_icon.invisible {visibility:hidden;}				/* for creating an invisible button to help center the title of toolbar h1*/
+
+
+/* 
+
+adding this will put a nice dark tint to the windows if added to sm_but_icon
+background:rgba(0,0,0, 0.25);
+
+.sm_but_icon:hover,
+.sm_but_icon:focus,
+.sm_but_icon:active {background:rgba(255, 255, 255, 0.3);}
+ * Better legacy support (FF < 3.5) by using display-inline and negative margins to pull :before over padding 
+ * set on the parent to avoid potential text-decoration:underline ugliness
+ *
+ * You could also use the positioning and z-index hack to push the pseudo-element behind the content
+ * and treat it more like a normal background image instead of a DOM element.
+
+.sm_but_icon:hover:before,
+.sm_but_icon:active:before,
+.sm_but_icon:focus:before,
+.sm_but_icon:active:before {background-position:-120px -60px;}
+
+ */
+
+/* NOTE THE FOLLOWING SHOULD BE ADJUSTED BY DEVICE... MOBILE HAS LESS WITH margin-left and margin-right */
+.sm_but_icon:before {
+	content:"";float:right;width:40px;height:37px;margin:2px 8px 0 8px;
+}
+
+@media screen and (max-width: 480px) {
+	.sm_but_icon:before {
+		margin:2px 4px 0 4px;
+	}
+}
+
+/*--------------------------------------------------------------button types*/
+
+/* sectionw			------------white section button */
+.sm_but_icon.sectionw:before { background:url(mobie_icons.png) -5px 0px; }
+
+.sm_but_icon.section_sm_w:before { background:url(mobie_icons.png) -346px 0px; }
+
+/* sectionb			------------black section button */
+.sm_but_icon.sectionb:before { background:url(mobie_icons.png) -5px -35px; }
+.sm_but_icon.sectionb:active {background:rgba(255, 255, 255, 0.2);}
+
+
+
+/* settingsw		------------white settings button */
+.sm_but_icon.settingsw:before { background:url(mobie_icons.png) -58px 0px; }
+
+.sm_but_icon.settings_sm_w:before { background:url(mobie_icons.png) -811px 0px;margin-right:0px; }
+
+/* settingsb		------------black settings button */
+.sm_but_icon.settingsb:before { background:url(mobie_icons.png) -58px -35px; }
+.sm_but_icon.settingsb:active {background:rgba(255, 255, 255, 0.2);}
+
+/* leftarroww		------------white left button */
+.sm_but_icon.leftarroww:before { background:url(mobie_icons.png) -523px 0px; }
+
+/* leftarrowb		------------black left button */
+.sm_but_icon.leftarrowb:before { background:url(mobie_icons.png) -523px -35px; }
+.sm_but_icon.leftarrowb:active {background:rgba(0, 0, 0, 0.2);}
+
+/* sharew			------------white share button */
+.sm_but_icon.sharew:before { background:url(mobie_icons.png) -110px 2px; }
+
+/* shareb			------------black share button */
+.sm_but_icon.shareb:before { background:url(mobie_icons.png) -110px -35px; }
+.sm_but_icon.shareb:active {background:rgba(255, 255, 255, 0.2);}
+
+
+/* ------------whitedotshade button */
+.sm_but_icon.whitedotshade:before { background:url(mobie_icons.png) -1671px -36px; }
+.sm_but_icon.whitedotshade:active {background:rgba(255, 255, 255, 0.2);}
+
+/* ------------example section button */
+.sm_but_icon.example:before {
+    background:url(mobie_icons.png) -1657px -36px;
+}
+.sm_but_icon.example:active:before {
+    background:url(mobie_icons.png) -1657px -36px;
+}
+.sm_but_icon.example:active {background:rgba(255, 255, 255, 0.2);}
+
+/*--------------------------------------------------------------button types (end) */
