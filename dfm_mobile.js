@@ -119,7 +119,7 @@ function Interface (main, options) {
 	
 
 	this.init = function() {
-		console.debug('------mobie: Interface object created------');
+		console.debug('------dfm_mobile: Interface object created------');
 		//document.get;
 		//Rules on DoNextArray. Best to use function(). When We dont call functions, make sure you ALWAYS add xObject.runDoNext(); at end to possibly catch anything else
 		//			qued in the list
@@ -141,7 +141,7 @@ function Interface (main, options) {
 				});
 		
 		//---dont need to set runDoNext here, as it will call it from showWindow();
-		//setTimeout(function() {  xObject.runDoNext(); }, 10);
+		if (main!='') setTimeout(function() {  xObject.runDoNext(); }, 10);
 		
 		this.createBlockerDiv();
 	}
@@ -154,7 +154,7 @@ function Interface (main, options) {
 		blockerdiv.onclick = function() {
 			xObject.closeActiveWindow();		//closes top window when user clicks it (can only be clicked if top window is not full width (menu) or alert box, etc.)
 		};
-		document.getElementById('mobie').appendChild( blockerdiv );
+		document.getElementById('dfm_mobile').appendChild( blockerdiv );
 		
 		
 	}
@@ -178,7 +178,7 @@ function Interface (main, options) {
 			var wrappers = xElement.getElementsByClassName("wrapper");
 			for (var i = 0, len = wrappers.length; i < len; i++) {
 				//-----lets give them id's if they dont have one
-				console.debug('------mobie: Scroller created------:' );
+				console.debug('------dfm_mobile: Scroller created------:' );
 				if ( wrappers[i].id == '' ) {
 					wrappers[i].id = 'wrapper_id_'+ Math.floor((Math.random()*1000000)+1);
 				}
@@ -225,7 +225,7 @@ function Interface (main, options) {
 			//-----------------------------------------LAST we filter through wrappers and make them scrollable	
 			var wrappers = xElement.getElementsByClassName("carousel_wrapper");
 			for (var i = 0, len = wrappers.length; i < len; i++) {
-				console.debug('------mobie: Carousel created------:' );
+				console.debug('------dfm_mobile: Carousel created------:' );
 				//-----lets give them id's if they dont have one
 				if ( wrappers[i].id == '' ) {
 					wrappers[i].id = 'car_wrapper_id_'+ Math.floor((Math.random()*1000000)+1);
@@ -254,10 +254,10 @@ function Interface (main, options) {
 	}
 	
 	this.resizeScrollers = function() {
-		console.debug('------mobie: resizeScrollers------' );
-		console.debug('------mobie: DoNextArray.length: '+ this.DoNextArray.length );
-		console.debug('------mobie: this.currentWindow.object.id: '+ this.currentWindow.object.id );
-		console.debug('------mobie: this.busy: '+ this.busy );
+		console.debug('------dfm_mobile: resizeScrollers------' );
+		console.debug('------dfm_mobile: DoNextArray.length: '+ this.DoNextArray.length );
+		console.debug('------dfm_mobile: this.currentWindow.object.id: '+ this.currentWindow.object.id );
+		console.debug('------dfm_mobile: this.busy: '+ this.busy );
 		
 		for (var i=0; i<this.scrollerArray.length;i++) {
 			var xScrollerObject = this.scrollerArray[i];
@@ -272,7 +272,7 @@ function Interface (main, options) {
 				
 				/*
 				setTimeout(function() {
-					console.debug('------mobie: jump to page------: '+ xScrollerObject.currPageX );
+					console.debug('------dfm_mobile: jump to page------: '+ xScrollerObject.currPageX );
 					xScrollerObject.scrollToPage(xScrollerObject.currPageX, 0);
 				}, 700);
 				*/
@@ -280,7 +280,7 @@ function Interface (main, options) {
 				
 				//only need to jump to another page if its a carousel
 				var x = function() {
-					console.debug('------mobie: jump to page------: '+ xScrollerObject.currPageX );
+					console.debug('------dfm_mobile: jump to page------: '+ xScrollerObject.currPageX );
 					setTimeout(function() {  
 						xScrollerObject.scrollToPage(xScrollerObject.currPageX, 0);
 						setTimeout(function() {  xObject.runDoNext(); }, 10);
@@ -316,15 +316,15 @@ function Interface (main, options) {
 			for (var z=0; z<this.scrollerArray.length;z++) {
 				if ( this.scrollerArray[z] == tempObject ) {
 					this.scrollerArray.splice(z,1);
-					console.debug('------mobie: Scroller deleted------:' );
+					console.debug('------dfm_mobile: Scroller deleted------:' );
 				}
 			}
 		}
 	}
 	
 	this.changeOrientation = function() {
-		console.debug('------mobie: changeOrientation------------------------------------------------');
-		document.getElementById('mobie').style.opacity = '0.0';
+		console.debug('------dfm_mobile: changeOrientation------------------------------------------------');
+		document.getElementById('dfm_mobile').style.opacity = '0.0';
 		
 		if ( this.DoNextArray.length == 0 ) {
 			this.DoNextArray = new Array( 
@@ -363,15 +363,15 @@ function Interface (main, options) {
 	}
 	
 	this.setSizes = function() {
-		console.debug('------mobie: setSizes------: '+ window.innerHeight);
+		console.debug('------dfm_mobile: setSizes------: '+ window.innerHeight);
 		var xwidth = window.innerWidth;var xheight = window.innerHeight;
-		document.getElementById('mobie').style.width = xwidth +"px";
-		document.getElementById('mobie').style.height = xheight +"px";
+		document.getElementById('dfm_mobile').style.width = xwidth +"px";
+		document.getElementById('dfm_mobile').style.height = xheight +"px";
 		
 		//{background-color:green;position:relative;width:inherit;height:inherit;visibility:hidden;z-index:1;}
-		ChangeStyleSheet('#mobie > div', 'width', xwidth+'px', 0);
-		ChangeStyleSheet('#mobie > div', 'height', xheight+'px', 0);
-		ChangeStyleSheet('#mobie > div', 'left', xwidth+'px', 0);
+		ChangeStyleSheet('#dfm_mobile > div', 'width', xwidth+'px', 0);
+		ChangeStyleSheet('#dfm_mobile > div', 'height', xheight+'px', 0);
+		ChangeStyleSheet('#dfm_mobile > div', 'left', xwidth+'px', 0);
 		
 		ChangeStyleSheet('.carousel .Xli', 'width', xwidth+'px', 0);		//sets carousel width to full screen
 		
@@ -380,14 +380,14 @@ function Interface (main, options) {
 	
 	this.xChecker = function() {
 		//runs every half second or so to check various things
-		//console.debug('------mobie: xChecker------: '+ this.windowHeight +', '+ window.innerHeight);
+		//console.debug('------dfm_mobile: xChecker------: '+ this.windowHeight +', '+ window.innerHeight);
 		//first check to see if we hide URL bar
 		
 		//return 0;	//TURN THIS OFF
 		
 		//setTimeout( function() { xObject.xChecker();}, 1000);
 		if ( this.windowHeight != window.innerHeight ) {
-			console.debug('------mobie: xChecker------: size has changed');
+			console.debug('------dfm_mobile: xChecker------: size has changed');
 			
 			if ( this.DoNextArray.length == 0 ) {
 				this.DoNextArray = new Array( 
@@ -434,17 +434,17 @@ function Interface (main, options) {
 	
 	this.runDoNext = function() {
 		//looks at function this.DoNextArray, if its not empty, then it will do the first thing in the array
-		//console.debug('------mobie: runDoNext------: '+ this.DoNextArray[0]);
+		//console.debug('------dfm_mobile: runDoNext------: '+ this.DoNextArray[0]);
 		var xLength = this.DoNextArray.length;
 		if ( xLength > 0 ) {
-			//alert( '------mobie: runDoNext------: run: '+ this.DoNextArray[0] );
-			//console.debug('------mobie: runDoNext------: run: '+ this.DoNextArray[0] );
+			//alert( '------dfm_mobile: runDoNext------: run: '+ this.DoNextArray[0] );
+			//console.debug('------dfm_mobile: runDoNext------: run: '+ this.DoNextArray[0] );
 			setTimeout( this.DoNextArray.shift(), 10);
 			//setTimeout( function () { xObject.DoNextArray.shift() }, 10);
 			
-			//nothing else to do, so lets turn mobie visible just in case it is not!
+			//nothing else to do, so lets turn dfm_mobile visible just in case it is not!
 			if ( xLength == 1 ) {
-				setTimeout(function() { document.getElementById('mobie').style.opacity = '1.0'; }, 20);
+				setTimeout(function() { document.getElementById('dfm_mobile').style.opacity = '1.0'; }, 20);
 			}
 		}
 	}
@@ -454,10 +454,10 @@ function Interface (main, options) {
 		//this.runDoNext();
 		//return;
 		if ( this.hideURLbar ) {
-			console.debug('------mobie: hideAddressBar------ ');
+			console.debug('------dfm_mobile: hideAddressBar------ ');
 			if (navigator.userAgent.indexOf("iPhone") != -1) {
 				//-----------iphone
-				//console.debug('------mobie: hideAddressBar iphone------');
+				//console.debug('------dfm_mobile: hideAddressBar iphone------');
 				if(!window.location.hash) {
 					if(document.height <= window.outerHeight + 10) {
 						document.body.style.height = (window.outerHeight + 60) +'px';
@@ -487,12 +487,12 @@ function Interface (main, options) {
 				this.hideAddressBarDone(0);
 			} else {
 				this.windowHeight = window.innerHeight;
-				console.debug('------mobie: hideAddressBar finished 1------');
+				console.debug('------dfm_mobile: hideAddressBar finished 1------');
 				setTimeout(function() {  xObject.runDoNext(); }, 10);
 			}
 		} else {
 			this.windowHeight = window.innerHeight;
-			console.debug('------mobie: hideAddressBar finished 2------');
+			console.debug('------dfm_mobile: hideAddressBar finished 2------');
 			setTimeout(function() {  xObject.runDoNext(); }, 10);	//we dont hide the URL bar with this, so 
 		}
 	
@@ -506,19 +506,19 @@ function Interface (main, options) {
 		//if ( (navigator.userAgent.match(/iPhone/i)) && (document.height <= window.outerHeight + 10) ) {	//fixed this line - works better on iphone
 		if ( (navigator.userAgent.match(/iPhone/i)) && (document.documentElement.scrollHeight == window.innerHeight) ) {
 			this.windowHeight = window.innerHeight;
-			console.debug('------mobie: hideAddressBar finished 3------');
+			console.debug('------dfm_mobile: hideAddressBar finished 3------');
 			setTimeout(function() {  xObject.runDoNext(); }, 10);
 			//alert( 'boom');
 		} else if ( (navigator.userAgent.match(/Android/i)) && (window.innerHeight >= Math.floor( window.outerHeight/window.devicePixelRatio ) ) ) {
 			this.windowHeight = window.innerHeight;
-			console.debug('------mobie: hideAddressBar finished 4------');
+			console.debug('------dfm_mobile: hideAddressBar finished 4------');
 			setTimeout(function() {  xObject.runDoNext(); }, 10);
 		} else {
 			if ( xnum < 100 ) {
 				xnum = xnum + 1;
 				setTimeout( function(){ xObject.hideAddressBarDone( xnum ); }, 10 );
 			} else {
-				console.debug('------mobie: hideAddressBar ERROR 58------'+ document.height );
+				console.debug('------dfm_mobile: hideAddressBar ERROR 58------'+ document.height );
 				//alert("ERROR");
 				this.windowHeight = window.innerHeight;
 				setTimeout(function() {  xObject.runDoNext(); }, 10);
@@ -534,7 +534,7 @@ function Interface (main, options) {
 	*/
 	
 	this.refreshWindow = function( xID ) {
-		console.debug('------mobie: refreshWindow------: '+ xID );
+		console.debug('------dfm_mobile: refreshWindow------: '+ xID );
 		//refreshes a window, checks scrollers
 		
 		var zElement = xObject.doesWindowExist( xID );
@@ -592,7 +592,7 @@ function Interface (main, options) {
 				setTimeout(function() {  document.getElementById( 'xloader' ).className = "loading_container"; }, 1);
 				document.getElementById( 'xloader' ).addEventListener( whichTransitionEvent(), function(){
 					//----------------------------------------------------------------------animation done
-					console.debug('------mobie: loading screen TRANSITION DONE' );
+					console.debug('------dfm_mobile: loading screen TRANSITION DONE' );
 					this.removeEventListener( whichTransitionEvent(),arguments.callee,false);	//stops event listenter from being called multiple times
 					document.body.removeChild( document.getElementById( 'xloader' ) );	//removes it from page
 				}, false);
@@ -606,7 +606,7 @@ function Interface (main, options) {
 	
 	this.createNewWindowFromURL = function( xID, xURL, xHTML, options ) {
 		//----------DYNAMICALLY creates a new window from an external URL
-		console.debug('------mobie: createNewWindowFromURL------: '+ xID );
+		console.debug('------dfm_mobile: createNewWindowFromURL------: '+ xID );
 		if ( this.busy ) return;
 		if (options == undefined ) options = {};		//just in case user does not define options
 		
@@ -614,6 +614,7 @@ function Interface (main, options) {
 			//xHTML can be left empty or not listed at all (if there are no options)
 			// 		should also only be html for toolbar and EMPTY content div
 			if ( ( xHTML == undefined ) || ( xHTML == '' ) ) {
+				//alert( 'no html given for new window, so put loading screen over whole interface');
 				//no html was given, so put LOADING SCREEN over the whole interface
 				this.showLoadingScreenFull();
 				request(
@@ -671,7 +672,7 @@ function Interface (main, options) {
 									
 									
 								} else {
-									console.debug('------mobie: loaded data was for old window!!!------: '+ xID );
+									console.debug('------dfm_mobile: loaded data was for old window!!!------: '+ xID );
 								}
 								
 							}
@@ -719,7 +720,7 @@ function Interface (main, options) {
 	
 	this.createNewWindowFromHTML = function( xID, xhtml, options ) {
 		//----------DYNAMICALLY creates a new htmlcode for a window and inserts it into page code (will still need to be made visible with function showWindow)
-		console.debug('------mobie: createNewWindowFromHTML------: '+ xID );
+		console.debug('------dfm_mobile: createNewWindowFromHTML------: '+ xID );
 		if ( this.busy ) return;
 		
 		if ( this.DoNextArray.length == 0 ) {
@@ -736,7 +737,7 @@ function Interface (main, options) {
 				if (options.permanentPage == undefined) options.permanentPage = 0;
 
 				setTimeout(function() {  
-					document.getElementById( 'mobie' ).appendChild(newdiv);
+					document.getElementById( 'dfm_mobile' ).appendChild(newdiv);
 					if ( xtrans != undefined ) {
 						setTimeout(function() {  xInterface.showWindow( xID, options ); }, 1);
 					}
@@ -748,7 +749,7 @@ function Interface (main, options) {
 			}
 		} else {
 			//------------we are busy doing something, so do it after everything is done
-			console.debug('------mobie: createNewWindowFromHTML------: BUSY *** adding to queue'+ id  );
+			console.debug('------dfm_mobile: createNewWindowFromHTML------: BUSY *** adding to queue'+ id  );
 			var x = function() {
 				xObject.createNewWindowFromHTML( xID, xhtml, options );
 				setTimeout(function() {  xObject.runDoNext(); }, 10);
@@ -772,7 +773,7 @@ function Interface (main, options) {
 	
 	this.showWindow = function( id, options ) {
 		//finds an existing div in the html and makes it visible and active
-		console.debug('------mobie: showWindow------: '+ id);
+		console.debug('------dfm_mobile: showWindow------: '+ id);
 		if ( !this.allowUserEvent() ) return;
 		
 		if (options == undefined ) options = {};		//just in case user does not define options
@@ -780,12 +781,14 @@ function Interface (main, options) {
 		if ( this.DoNextArray.length == 0 ) {
 			//------------now we actually start the transition to show the new page
 			this.busy = 1;
-			//------------------create the layer object assigning any functions attached or passed to layer
+			
+			//----------------process the back window
 			var backWindow = 0;
 			if ( this.WindowArray.length > 0 ) {
 				backWindow = this.currentWindow;
 			}
 			
+			//----------------process the new window
 			var newElement = this.doesWindowExist( id );	//does it exist? If so return that window object otherwise return false
 			if ( !newElement ) {
 				//--------------------------------window does not exist so create window object
@@ -796,6 +799,7 @@ function Interface (main, options) {
 				//--------------------------------window already exists, but user has sent options, 
 				//		so lets make sure they get into the existing window, just in case they have changed
 				for (i in options) newElement.options[i] = options[i];
+				newElement.backToWindowObject = backWindow;				//resets the backwindow each time this window is shown
 			}
 			
 			if (options.onOpenStart) {
@@ -834,7 +838,12 @@ function Interface (main, options) {
 					//if ( backWindow ) backWindow.object.className = 'active hidden';							//hides the back window
 					//var overlay = '';
 				//}
-				if ( backWindow ) backWindow.object.className = 'active'+ background_overlay;
+				if ( backWindow ) {
+					backWindow.object.className = 'active'+ background_overlay;
+					//backWindow.object.className = '';
+					xObject.possiblyDeleteWindow( backWindow );
+				}
+				
 				
 				newElement.object.className = 'active front '+ newElement_overlay;										//main window is front and ready
 				//---------prep back window (end)
@@ -872,10 +881,10 @@ function Interface (main, options) {
 				//	http://www.cuppadev.co.uk/the-trouble-with-css-transitions/
 				
 				var xTransitionEvent = whichTransitionEvent();
-				console.debug('------mobie: xTransitionEvent: '+ xTransitionEvent );
+				console.debug('------dfm_mobile: xTransitionEvent: '+ xTransitionEvent );
 				newElement.object.addEventListener( xTransitionEvent, function(){
 					//----------------------------------------------------------------------animation done
-					console.debug('------mobie: showWindow TRANSITION DONE (its now visible)' );
+					console.debug('------dfm_mobile: showWindow TRANSITION DONE (its now visible)' );
 					this.removeEventListener( whichTransitionEvent(),arguments.callee,false);	//stops event listenter from being called multiple times
 					WhenTransitionIsDone();
 				}, false);
@@ -885,7 +894,7 @@ function Interface (main, options) {
 			
 			
 			//------------we are busy doing something else right now, so do it after everything is done by adding it to the DoNextArray
-			console.debug('------mobie: show------: BUSY *** adding to queue'+ id  );
+			console.debug('------dfm_mobile: show------: BUSY *** adding to queue'+ id  );
 			var x = function() {
 				xObject.showWindow( id, options );
 				setTimeout(function() {  xObject.runDoNext(); }, 10);
@@ -896,12 +905,13 @@ function Interface (main, options) {
 		setTimeout(function() {  xObject.runDoNext(); }, 10);
 	}
 	
-	this.closeActiveWindow = function() {
-		console.debug('------mobie: closeActiveWindow------: '+ this.currentWindow.id );
+	this.closeActiveWindow = function( options ) {
+		console.debug('------dfm_mobile: closeActiveWindow------: '+ this.currentWindow.id + ', back: '+ this.currentWindow.backToWindowObject.id );
 		if ( this.busy ) return;
 		this.busy = 1; setTimeout(function() {  xObject.busy = 0; }, 500);
 		
 		//closes the active window (unless of course there is none in history)
+		//if ( options ) alert( options.xrun );
 		
 		if (this.currentWindow.backToWindowObject) {
 			var closingWindow = this.currentWindow;	//this.WindowArray[ (this.WindowArray.length - 1) ];
@@ -910,13 +920,13 @@ function Interface (main, options) {
 			//first turn the back window visible and get it ready to show
 			var backWindow = closingWindow.backToWindowObject;
 			backWindow.object.className = 'active';
-			
+			console.debug('------dfm_mobile: backWindow: ' + backWindow.id );
 			if (backWindow.options.onOpenStart) backWindow.options.onOpenStart.call(backWindow, backWindow.options.onOpenStart);	//call any functions onOpenStart
 			
 			var WhenTransitionIsDone = function() {
 				//alert( '454');
 				//declare this as a var function simply so i can call it easly from the two places below
-				console.debug('------mobie: closeActiveWindow------: DONE' );
+				console.debug('------dfm_mobile: closeActiveWindow------: DONE' );
 				closingWindow.object.className = '';
 				xObject.possiblyDeleteWindow( closingWindow );
 				
@@ -924,7 +934,9 @@ function Interface (main, options) {
 				
 				if (closingWindow.options.onCloseDone) closingWindow.options.onCloseDone.call(closingWindow, closingWindow.options.onCloseDone);
 				if (closingWindow.options.onActiveAgain) closingWindow.options.onActiveAgain.call(closingWindow, closingWindow.options.onActiveAgain);
-				
+				if ( options ) {
+					if ( options.runOnceWhenDoneClosing ) options.runOnceWhenDoneClosing.call(options, options.runOnceWhenDoneClosing);
+				}
 				xObject.currentWindow = backWindow;
 				
 				
@@ -952,7 +964,7 @@ function Interface (main, options) {
 					}, 100);	//we have to let the previous class take affect before we change it again
 				
 				setTimeout(function() {
-						console.debug('------mobie: closeActiveWindow ANIMATION DONE' );
+						console.debug('------dfm_mobile: closeActiveWindow ANIMATION DONE' );
 						WhenTransitionIsDone();
 					}, 450);
 				
@@ -964,7 +976,7 @@ function Interface (main, options) {
 				closingWindow.object.className = 'active animated front '+ xtrans;
 				closingWindow.object.addEventListener( whichTransitionEvent(), function(){
 					//---------------------closing transition done
-					console.debug('------mobie: closeActiveWindow ANIMATION DONE' );
+					console.debug('------dfm_mobile: closeActiveWindow ANIMATION DONE' );
 					this.removeEventListener( whichTransitionEvent(),arguments.callee,false);	//stops this from being called multiple times
 					WhenTransitionIsDone();
 				}, false);
@@ -982,11 +994,11 @@ function Interface (main, options) {
 		//if window is not set as permanent (hard coded into the html or labeled as a keeper when dynamically ccreated) it will be deleted for good...dead
 		if ( ! tempWindowObject.options.permanentPage ) {
 			//this is NOT a permanent (hard coded) window, so delete
-			document.getElementById( "mobie" ).removeChild( tempWindowObject.object );	//removes it from page
+			document.getElementById( "dfm_mobile" ).removeChild( tempWindowObject.object );	//removes it from page
 			for (var i=0; i<this.WindowArray.length;i++) {
 				if ( this.WindowArray[i] == tempWindowObject ) {
 					this.WindowArray.splice(i,1);
-					console.debug('------mobie: Window deleted------:' );
+					console.debug('------dfm_mobile: Window deleted------:' );
 				}
 			}
 			
@@ -1041,7 +1053,7 @@ function Interface (main, options) {
 		
 		/*
 		//creates the string of window names that we will never fully delete (usually because they are hardcoded onto the HTML)
-		var divs = document.getElementById( 'mobie' );	//.getElementsByTagName("div")
+		var divs = document.getElementById( 'dfm_mobile' );	//.getElementsByTagName("div")
 		//alert( divs.childNodes.length );
 		for (var i = 0, len = divs.childNodes.length; i < len; i++) {
 			if ( divs.childNodes[i].tagName == 'DIV') {
@@ -1085,6 +1097,7 @@ function Interface (main, options) {
 			//alert( toolbarElements[i].id );
 		}
 	}
+	
 	//---------------dead functions (end)
 	
 	//this.init();
@@ -1092,7 +1105,7 @@ function Interface (main, options) {
 }
 
 function Window ( id, xback, options ) {
-	console.debug('------mobie: Window Object created------: '+ id );
+	console.debug('------dfm_mobile: Window Object created------: '+ id );
 	this.id = id;
 	if ( !document.getElementById( id ) ) { alert( 'error creating window for div: '+ id ); } else {
 		this.object = document.getElementById( id );
@@ -1151,7 +1164,7 @@ function Window ( id, xback, options ) {
 
 
 function Layer ( id, xtrans ) {
-	console.debug('------mobie: Layer created------: '+ id +', '+ xtrans );
+	console.debug('------dfm_mobile: Layer created------: '+ id +', '+ xtrans );
 	alert( 'we dont use layer objects any more');
 	//this.zindex = 1;
 	this.id = id;
@@ -1178,7 +1191,7 @@ function ChangeStyleSheet( xtitle, xattribute, xvalue, xstylesheet ) {
 		}
 	}
 	
-	alert('please make sure you put styles.css FIRST in your primary webpage calling mobie. Before any other css or any internal css. That should fix this problem: '+ xtitle);
+	alert('please make sure you put styles.css FIRST in your primary webpage calling dfm_mobile. Before any other css or any internal css. That should fix this problem: '+ xtitle);
 	return false;		//only does this if it does not find the item
 }
 
@@ -1255,6 +1268,73 @@ function preloadimages(arr){
     }
 }
 
+//var URLarray = new Array();
+//var historyLoc = 0;
+
+//keep track of URLs, add them when we setURLBarTo, then on popstate, check to see where we are vs the URLarray to know if we went backwards
+//might also have to keep track of where we are currently at in the URLarray, there can be urls in the back and forward
+
+
+function setURLBarTo( xURL, xForward ) {
+	//xForward : 1 = true (new URL or forward button), 0 = false (back button)
+	//alert( xURL );
+	window.history.pushState({"html":'<BR>FUNFUN<BR>',"pageTitle":"CJs title"},"", xURL);
+	
+	if ( xForward ) {
+		URLarray.push( xURL );
+		historyLoc = URLarray.length - 1;
+	} else {
+		
+		historyLoc = historyLoc - 1;
+	}
+}
+
+//setURLBarTo( xURL, 1 );	//2nd var is xForward - tells that we are moving forward to new URL
+
+
+window.onpopstate = function(e){
+	//console.debug( e.state );
+	//console.debug( window.history );
+	//return;
+	
+	//window.History.Adapter.bind (window, 'back', function () {
+	//	alert( 'bing');
+	//});
+	
+	/*
+	var rootUrl = document.location.protocol+'//'+(document.location.hostname||document.location.host);
+	if ( document.location.port||false ) {
+		rootUrl += ':'+document.location.port;
+	}
+	rootUrl += '/';
+	// Return
+	alert( rootUrl );
+	*/
+	
+	/*
+	//alert( window.history.length );
+	//alert( "location: " + document.location + ", state: " + JSON.stringify(event.state) + ", URLarray[historyLoc]: "+ URLarray[historyLoc] );
+	//called when user hits forward backwards buttons on browser
+    if(e.state){
+		//forward!!! I think???
+		//document.getElementById("content").innerHTML = e.state.html;
+        //document.title = e.state.pageTitle;
+		//alert( 'boom');
+    } else {
+		//back I think!!!!?
+		//console.debug('back: '+ URLarray.length);
+		if ( URLarray.length > 0 ) {
+			xInterface.closeActiveWindow();			//THIS IS NOT DONE
+			//back button
+			//URLarray.push( xURL );
+			//setURLBarTo( URLarray[ historyLoc - 1 ], 0 )
+			//historyLoc = historyLoc - 1;
+			//alert( URLarray[ historyLoc ] );
+		}
+	}
+	*/
+	//return;
+};
 
 function preloadImages( imageArray, doneFunction ) {
 	//load all the images in imageArray then run doneFunction

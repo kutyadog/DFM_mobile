@@ -6,263 +6,105 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		
-		<link rel="stylesheet" type="text/css" media="all" href="css/styles.css">
-		<script type="text/javascript" src="mobie.js"></script>
+		<link rel="stylesheet" type="text/css" media="all" href="css/dfm_mobile_styles.css">	<!-- dfm_mobile css -->
+		<link rel="stylesheet" type="text/css" media="all" href="css/custom.css">				<!-- specific to this project -->
+		<script type="text/javascript" src="dfm_mobile.js"></script>
+		<script src="JSXCompressor/jsxcompressor.min.js" type="text/javascript"></script>		<!-- uncompresses json - wont need once NGPS feed done -->
+		<script src="http://sandbox.dailyme.com/rmv2/js/recommender.js"></script>				<!-- newstogram -->
 		
-		<style type="text/css">
-			
-			
-		</style>
-
+		<style type="text/css"></style>
+		
+		
 		<script>
+		//content:"";
 			document.addEventListener('DOMContentLoaded', function (e) { pageloaded(); }, false);
+			var xtesting = 0;
+			var xInterface;
+			
+			var xFeedList = new Array();			//property list of all sections and their feeds
+			var activeSection 	= 0;				//the current section number (in xFeedList array) - pointer
+			var StoryList = new Array();			//array with all current section stories
+			var activeStory		= 0;				//the current story   number (in StoryList array) - pointer
+			var propertyTitle = '';
+			var propertyImage = '';
+			var backgroundsplash = '';
 			
 			function pageloaded() {
-				//xInterface = new Interface( '' );	//this shows nothing but initiates the class
-				xInterface = new Interface( 'window_1' );	//, {transition: 'fade'}
-				//xInterface.showWindow( 'window_2', {});
-				//xInterface.showWindow( 'window_1', 'slideUp');
-				//xInterface.showWindow( 'window_1');
-				
-				setTimeout(function() {
-					//xInterface.showWindow( 'window_4', {transition: 'fade'} );
-					
-					/*
-					setTimeout(function() {
-						xInterface.showWindow( 'window_2', {transition: 'fade', 
-							onOpenStart: function () {
-								alert('onOpen function called!');
-							} } );
-					}, 1000);
-					*/
-					
-					/*
-					//---------------------------------------------load external URL with toolbar/content html prebuilt
-					var xString = 	   '<div class="toolbar native">';
-					xString = xString +'<div class="sm_but_icon leftarroww left"  onclick="xInterface.closeActiveWindow();"></div>';
-					xString = xString +'<div class="sm_but_icon settingsw invisible"></div>';
-					xString = xString +'	<h1>External 2</h1>';
-					xString = xString +'</div>';
-					xString = xString +'<div class="content belowtoolbar pattern" ></div>';
-					
-					xInterface.createNewWindowFromURL('window_77', 'external_content2.php', xString, {
-						onOpenDone: function () {
-							//alert('onOpen function called!');
-							console.debug('------mobie: onOpenDone for window_1 (called when the window is fully done opening)' );
-						}
-					});
-					//---------------------------------------------load external URL with toolbar/content html prebuilt (end)
-					*/
-					
-					/*
-					xInterface.createNewWindowFromURL('window_77', 'external_content.php', '', {
-						onOpenDone: function () {
-							//alert('onOpen function called!');
-							console.debug('------mobie: onOpenDone for window_1 (called when the window is fully done opening)' );
-						}
-					});
-					*/
-					
-					//xInterface.createNewWindowFromHTML( 'window45', '<div class="toolbar back"><h1>test window</h1></div><BR><BR><BR>THis is new window yay fun<BR><BR>', {transition:'slideUp'});
-					
-					//xInterface.showLoadingScreenFull();	//turns on loading screen
-					//xInterface.showLoadingScreenFull(0);	//turns off loading screen
-					
-					/*
-					xInterface.showWindow( 'window_1', {
-						transition: 'slideUp',
-						onOpenDone: function () {
-							//alert('onOpen function called!');
-							console.debug('------mobie: onOpenDone for window_1 (called when the window is fully done opening)' );
-						},
-						onCloseDone: function () {
-							//alert('onCloseDone function called!');
-							console.debug('------mobie: onCloseDone for window_1 (called when the window is fully done closing)' );
-						}
-					});
-					*/
-					
-					//xInterface.showWindow( 'window_2', 'slide');
-					//
-					//document.querySelector('#mobie > div').className = 'active';
-					////document.querySelector('.toplevel').className = 'active';
-				}, 2000);
-				
-				setTimeout(function() {
-					
-					//xInterface.showWindow( 'window45', 'slideUp');
-					//xInterface.showWindow( 'window_2', 'slide');
-					//alert( document.getElementById( 'frank' ).offsetWidth );
-					
-					//var newElement = document.getElementById( 'window_2' );
-					//newElement.className = 'front tester';
-				}, 4000);
-				
-				setTimeout(function() {
-					//xInterface.closeActiveWindow();
-				}, 6000);
-				
-				setTimeout(function() {
-					//var newElement = document.getElementById( 'window_1' );newElement.style.left = '50%';
-				}, 5000);
-				
-				setTimeout(function() {
-					//xInterface.closeActiveWindow();
-				}, 6000);
-				
-				
-			}
-			
-			function openBasicWindow( xtitle, xtrans ) {
-				var toolbarString = '<div class="toolbar native"><div class="sm_but_icon leftarroww left"  onclick="xInterface.closeActiveWindow();"></div><div class="sm_but_icon settingsw invisible" ></div><h1>'+ xtitle +'</h1></div><div class="content belowtoolbar " style=""></div>';
-				var options = { transition: xtrans };
-				//var xString = '<div id="window_1" ><div class="toolbar native"><div class="sm_but_icon sectionw left" ></div><div class="sm_but_icon settingsw " onclick="xInterface.showWindow( \'settings_window\', { transition: \''+ xtrans +'\' });"></div><h1>Basic Window</h1></div></div>';
-				//-------create it!
-				xInterface.createNewWindowFromHTML( xtitle, toolbarString, options);
-				
-			}
-			
-			function openNewRandomWindow( xtitle ) {
-				//-------first lets choose a random toolbar style
-				var xrandom = Math.floor((Math.random()*6)+1);
-				var xstyle = '';
-				if (xrandom == 1 ) {
-					xstyle = 'native ';
-				} else if (xrandom == 2 ) {
-					xstyle = 'tbdark ';
-				} else if (xrandom == 3 ) {
-					xstyle = 'darkblue';
-				} else if (xrandom == 4 ) {
-					xstyle = 'purple ';
-				} else if (xrandom == 5 ) {
-					xstyle = 'black ';
-				}
-				var toolbarString = '<div class="toolbar '+ xstyle +'"><div class="sm_but_icon leftarroww left"  onclick="xInterface.closeActiveWindow();"></div><h1>'+ xtitle +'</h1></div>';
-				
-				//-------now lets create content
-				var contentString = '<div class="content belowtoolbar" style="">';
-				contentString = contentString + '<div style="width:96%;margin:auto;margin-top:10px;font-family:Arial;font-weight:bold;font-size:18px;text-align:left;color:#FFF;">This is the content for window "'+ xtitle +'"</div>';
-				contentString = contentString + '</div>';
-				
-				//-------now determine type of transition for window
-				var options = Math.floor((Math.random()*6)+1);
-				if (xrandom == 1 ) {
-					options = 'slideUp';
-				} else if (xrandom == 2 ) {
-					options = 'slideDown';
-				} else if (xrandom == 3 ) {
-					options = 'slideRight';
-				} else if (xrandom == 4 ) {
-					options = 'fade';
-				} else {
-					options = 'slide';
-				}
-				options = { transition: options, permanentPage: '0' };
-				//-------create it!
-				xInterface.createNewWindowFromHTML( xtitle, toolbarString + contentString, options);
-				
-			}
-			
-			function createExternalContainer() {
-				//---------------------------------------------load external URL with toolbar/content html prebuilt
-				var xString = 	   '<div class="toolbar native">';
-				xString = xString +'<div class="sm_but_icon leftarroww left"  onclick="xInterface.closeActiveWindow();"></div>';
-				xString = xString +'<div class="sm_but_icon settingsw invisible"></div>';
-				xString = xString +'	<h1>External 2</h1>';
-				xString = xString +'</div>';
-				xString = xString +'<div class="content belowtoolbar pattern" ></div>';
+				//xInterface = new Interface( 'test', {transition: 'fade'});
+				xInterface = new Interface( '' );	//this shows nothing but initiates the class
 
-				xInterface.createNewWindowFromURL('window_77', 'external_content2.php', xString, {} );
-				//---------------------------------------------load external URL with toolbar/content html prebuilt (end)
+				//once interface is loaded we:
+				//	1. load local content
+				loadPropertyData();			//eventually once this is loading external content, it will need other things to wait until it is done
+
+				//	2. build the sections menu window
+				renderSectionsWindow();
+
+				//-----------------------------------------------------launch environment
+				preloadimages([ propertyImage ]).done(function(images){
+					//when images are done loading:
+					xInterface.showWindow( 'splash', {transition: 'fade'} );
+					setTimeout(function() { loadNewSection(); }, 1500);
+
+					//alert(images.length) //alerts 3//alert(images[0].src+" "+images[0].width) //alerts '1.gif 220'
+				});
+				//http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml
 			}
-			
-			
-			//loading external window. U should be able to create window, giving it id
-			//		then you have 2 choices:
-			//			1. u can send html for the toolbar & content divs or
-			//			2. u can leave html blank and it will render it fully from external
+			//xInterface.removeLoaderInWindow('home');//xInterface.putLoaderInWindow( 'home' );//
 			
 		</script>
-		<title>Mobie</title>
+		
+		<title>Denver Post</title>
+		<!-- 
 		<script src="iscroll.js" type="text/javascript"></script>
+		-->
+		<script src="universal.js" type="text/javascript"></script>
 	</head>
 <body>
 
-<div id="mobie" >
+<div id="dfm_mobile" >
 	
-	<div id="window_1" >
-		<div class="toolbar native">
+	<div id="splash" >
+		<div class="content" >
+			<div style="position:absolute;background-color:none;width:100%;height:100%;top:0%;background-image:url(denverpostsplash.gif);background-size: contain;background-repeat:no-repeat;background-position:center;background-color:#0079c2;"></div>
+		</div>
+	</div><!-- /splash -->
+	
+	
+	<div id="home" >
+		<div class="toolbar darkblue">
 			<!-- ALL buttons first -->
-			<div class="sm_but_icon sectionw left" onclick="xInterface.showWindow( 'sections_window', { transition: 'slideRight', overlay:300 });"></div>
-			<div class="sm_but_icon settingsw " onclick="xInterface.showWindow( 'settings_window', { transition: 'fade', overlay:1 });"></div>
+			<div class="sm_but_icon section_sm_w left" onclick="xInterface.showWindow( 'sections_window', { transition: 'slideRight', overlay:1 });"></div>
+			<div class="sm_but_icon settings_sm_w " onclick="xInterface.showWindow( 'settings_window', { transition: 'fade', overlay:1 });"></div>
 			
 			<!-- then add title -->
-			<h1>Mobie</h1>
+			<h1>The Denver Post</h1>
 		</div>
-		
-		
-		<div class="content belowtoolbar pattern" >
-			<div class="scroller">
-				<div class="list_header ">CSS Window Types:</div>
-				<ul class="list">
-					<li onclick="xInterface.showWindow( 'window_2');">Box Scroller dark</li>
-					<li onclick="xInterface.showWindow( 'window_4');">Full Scroller light</li>
-					<li onclick="xInterface.showWindow( 'window_5');">Full Scroller dark</li>
-				</ul>
-				<div class="list_header">Window Transitions</div>
-				<ul class="list">
-					<li onclick="openBasicWindow('Slide Transition', 'slide');">Default slide</li>
-					<li onclick="openBasicWindow('SlideRight Transition', 'slideRight');">slideRight</li>
-					<li onclick="openBasicWindow('SlideUp Transition', 'slideUp');">SlideUp</li>
-					<li onclick="openBasicWindow('SlideDown Transition', 'slideDown');">slideDown</li>
-					<li onclick="openBasicWindow('Fade Transition', 'fade');">Fade</li>
-					<li onclick="openBasicWindow('Instant Transition', 'instant');">Instant</li>
-					
-				</ul>
-				<div class="list_header">Other Pages</div>
-				<ul class="list">
-					<li onclick="xInterface.showWindow( 'window_carousel');">Carousel Example</li>
-					<li onclick="xInterface.createNewWindowFromURL('window_66', 'external_content.php');">Load external</li>
-					<li onclick="createExternalContainer();">Load external 2</li>
-					<li onclick="xInterface.showWindow( 'double_scroll_window');">Two Scrollers</li>
-					<li onclick="xInterface.showWindow( 'window_3');">Test Window</li>
-					<li onclick="openNewRandomWindow('windowOne');">Javascript window 1</li>
-					<li onclick="openNewRandomWindow('windowTwo');">Javascript window 2</li>
-					<li onclick="openNewRandomWindow('windowThree');">Javascript window 3</li>
-					<li onclick="openNewRandomWindow('windowFour');">Javascript window 4</li>
-					<li class="no_action" >No action item 1</li>
-					<li class="no_action" >No action item 2</li>
-				</ul>
+		<div class="content belowtoolbar " style="background-color:#333;">
+			<div id="home_section_list" class="scroller full custom"></div>
+		</div>
+	</div><!-- /home -->
+	
+	<div id="story_window" >
+		<div class="content " style="background-color:#FFF;">
+			
+			<div id="story_container" class="scroller "></div>
+		</div>
+	</div><!-- /story_window -->
+	
+	<div id="share_window">
+		<div class="content alertwindow overlay" style="">
+			<div class="close" onclick="xInterface.closeActiveWindow();"><img src="css/close_pop.png" class="btn_close" title="Close Window" style="float: right;margin: -10px -10px 0 0;" /></div>
+			<div style="position:absolute;top:20px;left:20px;right:20px;margin:auto;text-align:center;border:1px solid #333;">
+				<div style="position:relative;margin:10px;width:200px;display:inline-block;"  ontouchstart="xActiveTouch = 1;" ontouchmove="xActiveTouch = 0;" onclick="event.returnValue=false;if (xActiveTouch) { alert('234'); }">
+					<div class="list_image_title" style="margin:5px 0px 0px 0px;width:100%;color:#333;">Sharing alert window will contain buttons for social sharing sites such as Facebook and twitter.</div>
+				</div>
 			</div>
 		</div>
-	</div><!-- /window_1 -->
+	</div><!-- /share_window -->
 	
-	<div id="window_carousel">
-		<div class="toolbar ">
-			<!-- ALL buttons first -->
-			<div class="sm_but_icon leftarroww left"  onclick="xInterface.closeActiveWindow();"></div>
-			<div class="sm_but_icon settingsw invisible"></div><!-- center title by having same amount of buttons on each side. This one is on right (default) -->
-			<!-- then add title -->
-			<h1>Carousel Horizontal scroll</h1>
-		</div>
-		
-		<div class="content belowtoolbar black" style="">
-			<div class="carousel "><!-- /scroller width will have to be set by javascript-->
-				<ul class="framelist"><!-- /thelist -->
-					<li><strong>1.</strong> <em>A robot may not injure a human being or, through inaction, allow a human being to come to harm.</em></li>
-					<li><strong>2.</strong> <em>A robot must obey any orders given to it by human beings, except where such orders would conflict with the First Law.</em></li>
-					<li><strong>3.</strong> <em>A robot must protect its own existence as long as such protection does not conflict with the First or Second Law.</em></li>
-					<li><strong>Zeroth Law:</strong> <em>A robot may not harm humanity, or, by inaction, allow humanity to come to harm.</em></li>
-					<li><strong>Lyuben Dilov's Forth law:</strong> <em>A robot must establish its identity as a robot in all cases.</em></li>
-					<li><strong>Harry Harrison's Forth law:</strong> <em>A robot must reproduce. As long as such reproduction does not interfere with the First Law.</em></li>
-					<li><strong>Nikola Kesarovski's Fifth law:</strong> <em>A robot must know it is a robot.</em></li>
-				</ul>
-			</div>
-		</div>
-	</div><!-- /window_5 -->
-	
-	<div id="sections_window" style="width:300px;">
-			<div class="toolbar ">
+	<div id="sections_window" style="width:300px;border-right:1px solid #000;">
+			<div class="toolbar darkdarkblue">
 				<!-- ALL buttons first -->
 				<div class="sm_but_icon leftarroww left"  onclick="xInterface.closeActiveWindow();"></div>
 				<div class="sm_but_icon settingsw invisible"></div><!-- center title by having same amount of buttons on each side. This one is on right (default) -->
@@ -271,228 +113,23 @@
 			</div>
 
 			<div class="content belowtoolbar black overlay" style="">
-				<div class="scroller full dark">
-					<div class="list_header ">NEW SECTIONS</div>
-					<ul class="list ">
-						<li onclick="openNewRandomWindow('xwindowOne');">Dynamic link One</li>
-						<li onclick="openNewRandomWindow('xwindowTwo');">Dynamic link Two</li>
-						<li onclick="openNewRandomWindow('xwindowThree');">Dynamic link Three</li>
-						<li onclick="openNewRandomWindow('xwindowFour');">Dynamic link Four</li>
-					</ul>
-					<div class="list_header ">OLD SECTIONS</div>
-					<ul class="list ">
-						<li onclick="openNewRandomWindow('ywindowOne');">Dynamic link One</li>
-						<li onclick="openNewRandomWindow('ywindowTwo');">Dynamic link Two</li>
-						<li onclick="openNewRandomWindow('ywindowThree');">Dynamic link Three</li>
-						<li onclick="openNewRandomWindow('ywindowFour');">Dynamic link Four</li>
-						<li onclick="openNewRandomWindow('ywindowFive');">Dynamic link Five</li>
-						<li onclick="openNewRandomWindow('ywindowSix');">Dynamic link Six</li>
-						<li onclick="openNewRandomWindow('ywindowSeven');">Dynamic link Seven</li>
-						<li onclick="openNewRandomWindow('ywindowEight');">Dynamic link Eight</li>
-						<li onclick="openNewRandomWindow('ywindowNine');">Dynamic link Nine</li>
-						<li onclick="openNewRandomWindow('ywindowOne');">Dynamic link One</li>
-						<li onclick="openNewRandomWindow('ywindowTwo');">Dynamic link Two</li>
-						<li onclick="openNewRandomWindow('ywindowThree');">Dynamic link Three</li>
-						<li onclick="openNewRandomWindow('ywindowFour');">Dynamic link Four</li>
-						<li onclick="openNewRandomWindow('ywindowFive');">Dynamic link Five</li>
-						<li onclick="openNewRandomWindow('ywindowSix');">Dynamic link Six</li>
-						<li onclick="openNewRandomWindow('ywindowSeven');">Dynamic link Seven</li>
-						<li onclick="openNewRandomWindow('ywindowEight');">Dynamic link Eight</li>
-						<li onclick="openNewRandomWindow('ywindowNine');">Dynamic link Nine</li>
-						<li onclick="openNewRandomWindow('ywindowOne');">Dynamic link One</li>
-						<li onclick="openNewRandomWindow('ywindowTwo');">Dynamic link Two</li>
-						<li onclick="openNewRandomWindow('ywindowThree');">Dynamic link Three</li>
-						<li onclick="openNewRandomWindow('ywindowFour');">Dynamic link Four</li>
-						<li onclick="openNewRandomWindow('ywindowFive');">Dynamic link Five</li>
-						<li onclick="openNewRandomWindow('ywindowSix');">Dynamic link Six</li>
-					</ul>
-					<div class="" style="padding:15px;">
-						This is a modified regular window, simply with less width set in the STYLE of the top window div (in this case 'sections_window'). Any sort of transition will work but play around and find the one that works best for you.
-					</div>
-				</div>
+				<div id="sections_container" class="scroller full dark"></div>
 			</div>
 
 	</div><!-- /sections_window -->
 	
-	
-	
-	
-	<div id="double_scroll_window">
-		<div class="toolbar native">
-			<!-- ALL buttons first -->
-			<div class="sm_but_icon leftarroww left"  onclick="xInterface.closeActiveWindow();"></div>
-			<div class="sm_but_icon settingsw invisible"></div><!-- center title by having same amount of buttons on each side. This one is on right (default) -->
-			<!-- then add title -->
-			<h1>Double Scroll</h1>
-		</div>
-		
-		<div class="content belowtoolbar pattern" style="">
-			<div class="" style="position:absolute;top:0%;left:0px;bottom:50%;right:0px;background-color:#2c678c;color:white;">
-				<div class="carousel " style="background-color:#2c678c;"><!-- /scroller width will have to be set by javascript-->
-					<ul class="framelist"><!-- /thelist -->
-						<li><strong>1.</strong> A robot may not injure a human being or, through inaction, allow a human being to come to harm.</li>
-						<li><strong>2.</strong> A robot must obey any orders given to it by human beings, except where such orders would conflict with the First Law.</li>
-						<li><strong>3.</strong> A robot must protect its own existence as long as such protection does not conflict with the First or Second Law.</li>
-						<li><strong>Zeroth Law:</strong> A robot may not harm humanity, or, by inaction, allow humanity to come to harm.</li>
-						<li><strong>Lyuben Dilov's Forth law:</strong> A robot must establish its identity as a robot in all cases.</li>
-						<li><strong>Harry Harrison's Forth law:</strong> A robot must reproduce. As long as such reproduction does not interfere with the First Law.</li>
-						<li><strong>Nikola Kesarovski's Fifth law:</strong> A robot must know it is a robot.</li>
-					</ul>
-				</div>
-			</div>
-			<div style="position:absolute;top:50%;left:0px;bottom:0px;right:0px;background-color:#FFF;">
-				<div class="scroller full" style="background-color:none;margin:15px;padding-bottom:30px;">
-					Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! Scrollable content here about scrollable things and fun! 
-				</div>
-			</div>
-		</div>
-	</div><!-- /window_4 -->
-	
-	<div id="window_4">
-		<div class="toolbar native">
-			<!-- ALL buttons first -->
-			<div class="sm_but_icon leftarroww left"  onclick="xInterface.closeActiveWindow();"></div>
-			<div class="sm_but_icon settingsw invisible"></div><!-- center title by having same amount of buttons on each side. This one is on right (default) -->
-			<!-- then add title -->
-			<h1>Full Screen Scroller v1</h1>
-		</div>
-		
-		<div class="content belowtoolbar pattern" style="">
-			<div class="scroller full">
-				<div class="list_header ">THIS IS THE DEFAULT VERSION</div>
-				<ul class="list ">
-					<li onclick="openNewRandomWindow('xwindowOne');">Dynamic link One</li>
-					<li onclick="openNewRandomWindow('xwindowTwo');">Dynamic link Two</li>
-					<li onclick="openNewRandomWindow('xwindowThree');">Dynamic link Three</li>
-					<li onclick="openNewRandomWindow('xwindowFour');">Dynamic link Four</li>
-					<li onclick="openNewRandomWindow('xwindowFive');">Dynamic link Five</li>
-					<li onclick="openNewRandomWindow('xwindowSix');">Dynamic link Six</li>
-				</ul>
-				<div class="list_header ">CATEGORY HEADER</div>
-				<ul class="list ">
-					<li onclick="openNewRandomWindow('ywindowOne');">Dynamic link One</li>
-					<li onclick="openNewRandomWindow('ywindowTwo');">Dynamic link Two</li>
-					<li onclick="openNewRandomWindow('ywindowThree');">Dynamic link Three</li>
-					<li onclick="openNewRandomWindow('ywindowFour');">Dynamic link Four</li>
-					<li onclick="openNewRandomWindow('ywindowFive');">Dynamic link Five</li>
-					<li onclick="openNewRandomWindow('ywindowSix');">Dynamic link Six</li>
-					<li onclick="openNewRandomWindow('ywindowSeven');">Dynamic link Seven</li>
-					<li onclick="openNewRandomWindow('ywindowEight');">Dynamic link Eight</li>
-					<li onclick="openNewRandomWindow('ywindowNine');">Dynamic link Nine</li>
-				</ul>
-			</div>
-		</div>
-	</div><!-- /window_4 -->
-	
-	<div id="window_5">
-		<div class="toolbar ">
-			<!-- ALL buttons first -->
-			<div class="sm_but_icon leftarroww left"  onclick="xInterface.closeActiveWindow();"></div>
-			<div class="sm_but_icon settingsw invisible"></div><!-- center title by having same amount of buttons on each side. This one is on right (default) -->
-			<!-- then add title -->
-			<h1>Full Screen Scroller v2</h1>
-		</div>
-		
-		<div class="content belowtoolbar black" style="">
-			<div class="scroller full dark">
-				<div class="list_header ">THIS IS THE DARK VERSION</div>
-				<ul class="list ">
-					<li onclick="openNewRandomWindow('xwindowOne');">Dynamic link One</li>
-					<li onclick="openNewRandomWindow('xwindowTwo');">Dynamic link Two</li>
-					<li onclick="openNewRandomWindow('xwindowThree');">Dynamic link Three</li>
-					<li onclick="openNewRandomWindow('xwindowFour');">Dynamic link Four</li>
-					<li onclick="openNewRandomWindow('xwindowFive');">Dynamic link Five</li>
-					<li onclick="openNewRandomWindow('xwindowSix');">Dynamic link Six</li>
-				</ul>
-				<div class="list_header ">CATEGORY HEADER</div>
-				<ul class="list ">
-					<li onclick="openNewRandomWindow('ywindowOne');">Dynamic link One</li>
-					<li onclick="openNewRandomWindow('ywindowTwo');">Dynamic link Two</li>
-					<li onclick="openNewRandomWindow('ywindowThree');">Dynamic link Three</li>
-					<li onclick="openNewRandomWindow('ywindowFour');">Dynamic link Four</li>
-					<li onclick="openNewRandomWindow('ywindowFive');">Dynamic link Five</li>
-					<li onclick="openNewRandomWindow('ywindowSix');">Dynamic link Six</li>
-					<li onclick="openNewRandomWindow('ywindowSeven');">Dynamic link Seven</li>
-					<li onclick="openNewRandomWindow('ywindowEight');">Dynamic link Eight</li>
-					<li onclick="openNewRandomWindow('ywindowNine');">Dynamic link Nine</li>
-				</ul>
-			</div>
-		</div>
-	</div><!-- /window_5 -->
-	
-	<div id="window_2">
-		<div class="toolbar ">
-			<!-- ALL buttons first -->
-			<div class="sm_but_icon leftarroww left"  onclick="xInterface.closeActiveWindow();"></div>
-			<div class="sm_but_icon settingsw invisible"></div><!-- center title by having same amount of buttons on each side. This one is on right (default) -->
-			<!-- then add title -->
-			<h1>Hardcoded Window 2</h1>
-		</div>
-		
-		<div class="content belowtoolbar" style="">
-			<div class="scroller">
-				<ul class="list darker">
-					<li onclick="openNewRandomWindow('xwindowOne');">Dynamic link One</li>
-					<li onclick="openNewRandomWindow('xwindowTwo');">Dynamic link Two</li>
-					<li onclick="openNewRandomWindow('xwindowThree');">Dynamic link Three</li>
-					<li onclick="openNewRandomWindow('xwindowFour');">Dynamic link Four</li>
-					<li onclick="openNewRandomWindow('xwindowFive');">Dynamic link Five</li>
-					<li onclick="openNewRandomWindow('xwindowSix');">Dynamic link Six</li>
-				</ul>
-				<ul class="list darker">
-					<li onclick="openNewRandomWindow('ywindowOne');">Dynamic link One</li>
-					<li onclick="openNewRandomWindow('ywindowTwo');">Dynamic link Two</li>
-					<li onclick="openNewRandomWindow('ywindowThree');">Dynamic link Three</li>
-					<li onclick="openNewRandomWindow('ywindowFour');">Dynamic link Four</li>
-					<li onclick="openNewRandomWindow('ywindowFive');">Dynamic link Five</li>
-					<li onclick="openNewRandomWindow('ywindowSix');">Dynamic link Six</li>
-					<li onclick="openNewRandomWindow('ywindowSeven');">Dynamic link Seven</li>
-					<li onclick="openNewRandomWindow('ywindowEight');">Dynamic link Eight</li>
-					<li onclick="openNewRandomWindow('ywindowNine');">Dynamic link Nine</li>
-					<li onclick="openNewRandomWindow('ywindowTen');">Dynamic link Ten</li>
-					<li onclick="openNewRandomWindow('ywindowEleven');">Dynamic link Eleven</li>
-					<li onclick="openNewRandomWindow('ywindowTwelve');">Dynamic link Twelve</li>
-
-				</ul>
-			</div>
-		</div>
-	</div><!-- /window_2 -->
-	
-	<div id="window_3" >
-		<div class="toolbar ">
-			<!-- ALL buttons first -->
-			<div class="sm_but_icon leftarroww left"  onclick="xInterface.closeActiveWindow();"></div>
-			<div class="sm_but_icon settingsw invisible"></div><!-- center title by having same amount of buttons on each side. This one is on right (default) -->
-			<!-- then add title -->
-			<h1>Hardcoded Window 3</h1>
-		</div>
-		
-		<div class="content belowtoolbar" style="">
-			<div style="width:96%;margin:auto;margin-top:10px;font-family:Arial;font-weight:bold;font-size:18px;text-align:left;color:#FFF;">Other galleries you might like:</div>
-			<div style="width:96%;margin:auto;margin-top:14px;text-align:center;border:1px solid white;">
-				<div style="position:relative;margin:10px;width:200px;display:inline-block;"  ontouchstart="xActiveTouch = 1;" ontouchmove="xActiveTouch = 0;" onclick="event.returnValue=false;if (xActiveTouch) { alert('234'); }">
-					<div style="background-size: 100%;background-position:0px -50px;width:100%;height:100px;border:1px solid #FFF;background-image:url();background-repeat:no-repeat;"></div>
-					<div class="list_image_title" style="margin:5px 0px 0px 0px;width:100%;">Title</div>
-					<div class="list_image_date" style="margin:-4px 0px 0px 0px;">asdf | PHOTO</div>
-				</div>
-			</div>
-		</div>
-	</div><!-- /window_3 -->
-	
 	<div id="settings_window">
 		<div class="content alertwindow overlay" style="">
 			<div class="close" onclick="xInterface.closeActiveWindow();"><img src="css/close_pop.png" class="btn_close" title="Close Window" style="float: right;margin: -10px -10px 0 0;" /></div>
-			
 			<div style="position:absolute;top:20px;left:20px;right:20px;margin:auto;text-align:center;border:1px solid #333;">
 				<div style="position:relative;margin:10px;width:200px;display:inline-block;"  ontouchstart="xActiveTouch = 1;" ontouchmove="xActiveTouch = 0;" onclick="event.returnValue=false;if (xActiveTouch) { alert('234'); }">
-					<div style="background-size: 100%;background-position:0px -50px;width:100%;height:100px;border:1px solid #FFF;background-image:url();background-repeat:no-repeat;"></div>
-					<div class="list_image_title" style="margin:5px 0px 0px 0px;width:100%;">Title</div>
-					<div class="list_image_date" style="margin:-4px 0px 0px 0px;">asdf | PHOTO</div>
+					<div class="list_image_title" style="margin:5px 0px 0px 0px;width:100%;color:#333;">Settings window will contain features such as 'View Desktop Version', change article text size, etc.</div>
 				</div>
 			</div>
 		</div>
 	</div><!-- /settings_window -->
+	
+</div><!-- /dfm_mobile -->
 
-</div><!-- /mobie -->
 </body>
 </html>

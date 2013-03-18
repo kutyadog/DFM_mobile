@@ -9,11 +9,11 @@ h1 {
 .nowrap {
 	overflow:hidden;text-overflow: ellipsis;white-space: nowrap;
 }
-/* ----------------------------------------------------------------------------------------mobie / window management */
-#mobie {opacity:0.0;color:white;position:absolute;top:0px;left:0px;width:1px;height:1px;overflow:hidden;height:45px;}
-#mobie > div {position:relative;width:inherit;height:inherit;visibility:hidden;z-index:1;left:100%;top:0%;opacity:1.0;}/* ----off screen, not active/used yet */
-#mobie > div.active {position:absolute;left:0%;top:0%;visibility:visible;z-index:8;}	/* ----active, been shown but could be in background or in front */
-#mobie > div.animated {
+/* ----------------------------------------------------------------------------------------dfm_mobile / window management */
+#dfm_mobile {opacity:0.0;color:white;position:absolute;top:0px;left:0px;width:1px;height:1px;overflow:hidden;height:45px;}
+#dfm_mobile > div {position:relative;width:inherit;height:inherit;visibility:hidden;z-index:1;left:100%;top:0%;opacity:1.0;}/* ----off screen, not active/used yet */
+#dfm_mobile > div.active {position:absolute;left:0%;top:0%;visibility:visible;z-index:8;}	/* ----active, been shown but could be in background or in front */
+#dfm_mobile > div.animated {
 	/* ----the div will transition to any changes, otherwise changes happen immediately */
 	visibility:visible;
 	-moz-transition-property: left, top, opacity;
@@ -26,23 +26,23 @@ h1 {
 		transition-duration: 0.45s;
 }
 
-#mobie > div.front {z-index:10;}
-#mobie > div.hidden {visibility:hidden;z-index:1;}
-#mobie > div.overlay {background-color:none;}
-#mobie > div.behindoverlay {visibility:visible;opacity:1.0;}	/* ----for a background window when an overlay is on top */
-#mobie > div.tester {background-color:green;}
+#dfm_mobile > div.front {z-index:10;}
+#dfm_mobile > div.hidden {visibility:hidden;z-index:1;}
+#dfm_mobile > div.overlay {background-color:none;}
+#dfm_mobile > div.behindoverlay {visibility:visible;opacity:1.0;}	/* ----for a background window when an overlay is on top */
+#dfm_mobile > div.tester {background-color:green;}
 
 
 /* ---------------- window transtion types */
-#mobie > div.slide {left:100%;top:0%;}
-#mobie > div.slideRight {left:-100%;top:0%;}
-#mobie > div.slideUp {left:0%;top:100%;}
-#mobie > div.slideDown {left:0%;top:-100%;}
-#mobie > div.fade {left:0%;top:0%;opacity:0.0;}
+#dfm_mobile > div.slide {left:100%;top:0%;}
+#dfm_mobile > div.slideRight {left:-100%;top:0%;}
+#dfm_mobile > div.slideUp {left:0%;top:100%;}
+#dfm_mobile > div.slideDown {left:0%;top:-100%;}
+#dfm_mobile > div.fade {left:0%;top:0%;opacity:0.0;}
 /* ---------------- window transtion types (end)*/
 
-#mobie > div.blockerdiv {position:absolute;left:0%;top:0%;background-color:none;z-index:8;visibility:visible;}
-/* ----------------------------------------------------------------------------------------mobie / window management (end) */
+#dfm_mobile > div.blockerdiv {position:absolute;left:0%;top:0%;background-color:none;z-index:8;visibility:visible;}
+/* ----------------------------------------------------------------------------------------dfm_mobile / window management (end) */
 
 .content {
 	position:absolute;top:0px;left:0px;right:0px;bottom:0px;
@@ -163,6 +163,7 @@ h1 {
 
 .scroller {
 	margin:15px 10px 15px 10px;padding-bottom:20px;
+	margin:0px;padding:0px;
 }
 
 .scroller .Xul {
@@ -212,6 +213,9 @@ h1 {
 	font: bold 18px/22px Helvetica, Sans-serif;text-align: left;margin: 0px;width:100%;color:#777;padding:5px 14px 6px 14px;margin-bottom:4px;
 }
 
+.list {
+	padding-left:0px;margin:0px;margin-bottom:8px;
+}
 /* ---------------------------------------------------------------------------------------- scroller (end) */
 
 /* ---------------------------------------------------------------------------------------- fullscreen scroller  */
@@ -300,12 +304,16 @@ h1 {
 	}
 .carousel .Xli {
 	-webkit-box-sizing:border-box;
-		-moz-box-sizing:border-box;
-		-o-box-sizing:border-box;
-		box-sizing:border-box;
-		display:block; float:left;
-		width:104px; height:100%;
-		text-align:center;
+	-moz-box-sizing:border-box;
+	-o-box-sizing:border-box;
+	box-sizing:border-box;
+	display:block; float:left;
+	width:104px; height:100%;
+	text-align:center;
+}
+
+.carousel .list {
+	margin:0px;
 }
 /* ---------------------------------------------------------------------------------------- carousel (end)*/
 
@@ -407,50 +415,54 @@ background:rgba(0,0,0, 0.25);
 /*--------------------------------------------------------------button types*/
 
 /* sectionw			------------white section button */
-.sm_but_icon.sectionw:before { background:url(mobie_icons.png) -5px 0px; }
+.sm_but_icon.sectionw:before { background:url(dfm_mobile_icons.png) -5px 0px; }
 
-.sm_but_icon.section_sm_w:before { background:url(mobie_icons.png) -346px 0px; }
+.sm_but_icon.section_sm_w:before { background:url(dfm_mobile_icons.png) -346px 0px; }
 
 /* sectionb			------------black section button */
-.sm_but_icon.sectionb:before { background:url(mobie_icons.png) -5px -35px; }
+.sm_but_icon.sectionb:before { background:url(dfm_mobile_icons.png) -5px -35px; }
 .sm_but_icon.sectionb:active {background:rgba(255, 255, 255, 0.2);}
 
 
 
 /* settingsw		------------white settings button */
-.sm_but_icon.settingsw:before { background:url(mobie_icons.png) -58px 0px; }
+.sm_but_icon.settingsw:before { background:url(dfm_mobile_icons.png) -58px 0px; }
 
-.sm_but_icon.settings_sm_w:before { background:url(mobie_icons.png) -811px 0px;margin-right:0px; }
+.sm_but_icon.settings_sm_w:before { background:url(dfm_mobile_icons.png) -811px 0px;margin-right:0px; }
 
 /* settingsb		------------black settings button */
-.sm_but_icon.settingsb:before { background:url(mobie_icons.png) -58px -35px; }
+.sm_but_icon.settingsb:before { background:url(dfm_mobile_icons.png) -58px -35px; }
 .sm_but_icon.settingsb:active {background:rgba(255, 255, 255, 0.2);}
 
 /* leftarroww		------------white left button */
-.sm_but_icon.leftarroww:before { background:url(mobie_icons.png) -523px 0px; }
+.sm_but_icon.leftarroww:before { background:url(dfm_mobile_icons.png) -523px 0px; }
 
 /* leftarrowb		------------black left button */
-.sm_but_icon.leftarrowb:before { background:url(mobie_icons.png) -523px -35px; }
+.sm_but_icon.leftarrowb:before { background:url(dfm_mobile_icons.png) -523px -35px; }
 .sm_but_icon.leftarrowb:active {background:rgba(0, 0, 0, 0.2);}
 
 /* sharew			------------white share button */
-.sm_but_icon.sharew:before { background:url(mobie_icons.png) -110px 2px; }
+.sm_but_icon.sharew:before { background:url(dfm_mobile_icons.png) -110px 2px; }
 
 /* shareb			------------black share button */
-.sm_but_icon.shareb:before { background:url(mobie_icons.png) -110px -35px; }
+.sm_but_icon.shareb:before { background:url(dfm_mobile_icons.png) -110px -35px; }
 .sm_but_icon.shareb:active {background:rgba(255, 255, 255, 0.2);}
 
+/* closew			------------white close button */
+.sm_but_icon.closew:before { background:url(dfm_mobile_icons.png) -402px 2px; }
+/* closeb			------------black close button */
+.sm_but_icon.closeb:before { background:url(dfm_mobile_icons.png) -402px -35px; }
 
 /* ------------whitedotshade button */
-.sm_but_icon.whitedotshade:before { background:url(mobie_icons.png) -1671px -36px; }
+.sm_but_icon.whitedotshade:before { background:url(dfm_mobile_icons.png) -1671px -36px; }
 .sm_but_icon.whitedotshade:active {background:rgba(255, 255, 255, 0.2);}
 
 /* ------------example section button */
 .sm_but_icon.example:before {
-    background:url(mobie_icons.png) -1657px -36px;
+    background:url(dfm_mobile_icons.png) -1657px -36px;
 }
 .sm_but_icon.example:active:before {
-    background:url(mobie_icons.png) -1657px -36px;
+    background:url(dfm_mobile_icons.png) -1657px -36px;
 }
 .sm_but_icon.example:active {background:rgba(255, 255, 255, 0.2);}
 
