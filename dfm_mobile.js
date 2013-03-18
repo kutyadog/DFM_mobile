@@ -1191,7 +1191,8 @@ function ChangeStyleSheet( xtitle, xattribute, xvalue, xstylesheet ) {
 		}
 	}
 	
-	alert('please make sure you put styles.css FIRST in your primary webpage calling dfm_mobile. Before any other css or any internal css. That should fix this problem: '+ xtitle);
+	//line below should not be commented, it helps find bugs CJ - I commented it out so Boho & Jackson can test without annoying alerts on load
+	//alert('please make sure you put dfm_mobile_styles.css FIRST in your primary webpage calling dfm_mobile. Before any other css or any internal css. That should fix this problem: '+ xtitle);
 	return false;		//only does this if it does not find the item
 }
 
