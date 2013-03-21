@@ -1,7 +1,8 @@
-//builds a window object the first time an existing html window is created. These are permanent windows.
-//	dynamically created windows are not permanent unless the window object options.permanentPage is set to 1 (default)
 
 /* ******NOTES:
+
+//  builds a window object the first time an existing html window is created. These are permanent windows.
+//	dynamically created windows are not permanent unless the window object options.permanentPage is set to 1 (default)
 
 
 TODO:
@@ -9,10 +10,7 @@ TODO:
 * Add ability to clear out history and create new 'home' window
 * when interface is built, we need to be able to set a transition for that window
 * add big buttons for content (not toolbar)
-
 * need to find a way for users to add scrollEnd / ScrollStart functions to their carousels
-* allow user to also set beforeOpen function on window
-
 * create a window option 'alwaysCloseToWindow' pointing to a window_id, that way when that window is open, it will always close to the set window (started it, its in options now on window class)
 
 * finalize orientation change so that it will watch the size of the browser window and will see that it is changing in size 
@@ -20,6 +18,8 @@ TODO:
 
 * photo gallery, flip view: So image fills screen, when you want to go to the next image, you can swipe right or left to go forward/backward. 
 		The image will flip revealing next photo in series. Will use smart load to watch array of images and start loading images 1 or 2 out
+* Build properties in init that are device/os/browser specific so that we can reference them throughout
+* Build smart scrolling - look at device, os and browser and determine best way to scroll (ie native ios for newer versions, etc.) Also make scrolling faster in Android
 
 
 DONE:
@@ -77,6 +77,8 @@ function Interface (main, options) {
 	//    top = style.getPropertyValue('margin');
 	
 	//----------------add external js
+	// here we are dynamically loading external iscroll.js file and running it.
+	// this code could be used for other external files and possibly there is a better way to do this such as dynamically adding it to header
 	//<script src="js/iscroll.js" type="text/javascript"></script>
 	var xURL = "iscroll.js";
 	//if ( ( xHTML == undefined ) || ( xHTML == '' ) ) {
