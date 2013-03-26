@@ -6,6 +6,7 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		
+		
 		<link rel="stylesheet" type="text/css" media="all" href="css/dfm_mobile_styles.css">	<!-- dfm_mobile css -->
 		<link rel="stylesheet" type="text/css" media="all" href="css/custom.css">				<!-- specific to this project -->
 		<script type="text/javascript" src="dfm_mobile.js"></script>
@@ -28,6 +29,8 @@
 			var propertyTitle = '';
 			var propertyImage = '';
 			var backgroundsplash = '';
+			var AppleAppID;
+			var topDomain;
 			
 			function pageloaded() {
 				//xInterface = new Interface( 'test', {transition: 'fade'});
@@ -49,6 +52,17 @@
 					//alert(images.length) //alerts 3//alert(images[0].src+" "+images[0].width) //alerts '1.gif 220'
 				});
 				//http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml
+				
+				//----------------------add the app checker for iOS (should be moved to dfm_mobile and only run if iOS) 
+				//<meta name="apple-itunes-app" content="app-id=375264133">
+				var viewPortTag=document.createElement('meta');
+				//viewPortTag.id="viewport";
+				viewPortTag.name = "apple-itunes-app";
+				viewPortTag.content = "app-id="+ AppleAppID;		//375264133
+				document.getElementsByTagName('head')[0].appendChild(viewPortTag);
+				//----------------------add the app checker for iOS (should be moved to dfm_mobile and only run if iOS) (END)
+				
+				
 			}
 			//xInterface.removeLoaderInWindow('home');//xInterface.putLoaderInWindow( 'home' );//
 			
@@ -74,11 +88,11 @@
 	<div id="home" >
 		<div class="toolbar darkblue">
 			<!-- ALL buttons first -->
-			<div class="sm_but_icon section_sm_w left" onclick="xInterface.showWindow( 'sections_window', { transition: 'slideRight', overlay:1 });"></div>
-			<div class="sm_but_icon settings_sm_w " onclick="xInterface.showWindow( 'settings_window', { transition: 'fade', overlay:1 });"></div>
+			<div class="sm_but_icon section_sm_w left" onclick="showSectionsWindow();"></div>
+			<div class="sm_but_icon settings_sm_w " onclick="showPhotoGallery(); //xInterface.showWindow( 'gallery_window', { transition: 'fade', overlay:1 });"></div>
 			
 			<!-- then add title -->
-			<h1>The Denver Post</h1>
+			<h1><img src="images/denverpost/denver_logo.png" width="200" alt="Denver Logo" style="margin-top:5px;margin-left:-5px;"/></h1>
 		</div>
 		<div class="content belowtoolbar " style="background-color:#333;">
 			<div id="home_section_list" class="scroller full custom"></div>
@@ -91,6 +105,13 @@
 			<div id="story_container" class="scroller "></div>
 		</div>
 	</div><!-- /story_window -->
+	
+	<div id="gallery_window" >
+		<div class="content " style="background-color:#000;">
+			
+		</div>
+	</div><!-- /gallery_window -->
+	
 	
 	<div id="share_window">
 		<div class="content alertwindow overlay" style="">

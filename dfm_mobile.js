@@ -119,9 +119,67 @@ function Interface (main, options) {
 		window.addEventListener(orientationEvent,function(){ xObject.changeOrientation(); },true);
 	}, 1000);		//give this a bit of time before running. Again, Firefox Android is causing timing issues
 	
+	
+	
+	this.initTouchFeatures = function() {
+		//--------------------------------keep track of touch events 3-22-2013
+		//				user can assign function to run in a window for swiperight swipeleft that will be called here
+		
+		this.touchLoc = new Array();
+
+		document.addEventListener('touchstart', function(event) {
+			var touch = event.touches[0];
+			xObject.touchLoc = new Array(touch.pageX, touch.pageY);
+			//setTimeout(function() {  alert(xObject.touchLoc[0]); }, 1000);		//do we need this?
+		}, false);
+
+		document.addEventListener('touchend', function(event) {
+			//event.preventDefault();
+			var touch = event.changedTouches[0];
+			var xchange = touch.pageX - xObject.touchLoc[0];
+			var ychange = touch.pageY - xObject.touchLoc[1];
+			//console.log("Change x:" + ( xchange ) + ", y:" + ( ychange ) );
+			
+			if ( xchange > 120 && Math.abs(ychange) < 20 ) {
+				//console.log( 'swipe right' );
+				if (xObject.currentWindow.options.onSwipeRight) xObject.currentWindow.options.onSwipeRight.call(xObject.currentWindow, xObject.currentWindow.options.onSwipeRight);
+			} else if ( xchange < -120 && Math.abs(ychange) < 20 ) {
+				//console.log( 'swipe left' );
+				if (xObject.currentWindow.options.onSwipeLeft) xObject.currentWindow.options.onSwipeLeft.call(xObject.currentWindow, xObject.currentWindow.options.onSwipeLeft);
+				
+			} else if ( Math.abs(xchange) < 10 && Math.abs(ychange) < 10 ) {
+				//console.log( 'touch tap' );
+				if (xObject.currentWindow.options.onTouchTap) xObject.currentWindow.options.onTouchTap.call(xObject.currentWindow, xObject.currentWindow.options.onTouchTap);
+				
+			}
+		}, false);
+		
+		//-----------examples of how this can be setup
+		/*
+		xInterface.showWindow( 'story_window', {
+			onCloseDone: function () {
+				//alert('onCloseDone function called!');
+				console.debug('------dfm_mobile: onCloseDone for story_window' );
+				this.WindowScrollerArray[0].scrollTo(0,0,0);
+			},
+			onSwipeLeft: function () {
+				//alert('onSwipeLeft');
+				console.log( 'onSwipeLeft' );
+			},
+			onTouchTap: function () {
+				//alert('onTouchTap');
+				console.log( 'onTouchTap' );
+			}
+		} );
+		*/
+		
+	}
 
 	this.init = function() {
 		console.debug('------dfm_mobile: Interface object created------');
+		
+		this.initTouchFeatures();
+		
 		//document.get;
 		//Rules on DoNextArray. Best to use function(). When We dont call functions, make sure you ALWAYS add xObject.runDoNext(); at end to possibly catch anything else
 		//			qued in the list
@@ -205,13 +263,13 @@ function Interface (main, options) {
 				var xwidth = window.innerWidth;
 				scrollers[i].style.width = (FrameCount * xwidth) +'px';
 				
-				//-------------------------------------FIRST WE wrap scroller div inside of a 'wrapper' div
+				//-------------------------------------NEXT WE wrap scroller div inside of a 'wrapper' div
 				if ( scrollers[i].id == '' ) {
 					//give the carousel an id. Important because in next filter through wrappers, we will need to reference this to resize
 					scrollers[i].setAttribute("id", 'carousel_id_'+ Math.floor((Math.random()*1000000)+1));
 				}
 				
-				//-------------------------------------SECOND we wrap scroller div inside of a 'wrapper' div
+				//-------------------------------------THIRD we wrap scroller div inside of a 'wrapper' div
 				var wrap = document.createElement('div'); wrap.appendChild(scrollers[i].cloneNode(true));
 				var xHTML = '<div class="carousel_wrapper">' + wrap.innerHTML +'</div>';
 				var xParent = scrollers[i].parentNode;xParent.removeChild( scrollers[i] );
@@ -376,6 +434,7 @@ function Interface (main, options) {
 		ChangeStyleSheet('#dfm_mobile > div', 'left', xwidth+'px', 0);
 		
 		ChangeStyleSheet('.carousel .Xli', 'width', xwidth+'px', 0);		//sets carousel width to full screen
+		ChangeStyleSheet('.carousel .Xli', 'height', xheight+'px', 0);		//sets carousel width to full screen
 		
 		setTimeout(function() {  xObject.runDoNext(); }, 10);
 	}
@@ -1124,7 +1183,10 @@ function Window ( id, xback, options ) {
 		url:null,
 		alwaysRefreshURL:0,
 		overlay:0,
-		alwaysCloseToWindow:0
+		alwaysCloseToWindow:0,
+		onSwipeLeft: null,
+		onSwipeRight: null,
+		onTouchTap: null
 	}
 	// User defined options
 	for (i in options) this.options[i] = options[i];
@@ -1370,3 +1432,53 @@ function countTheKids( parent ){
 	}
 	return realKids;
 }
+
+
+
+
+
+//<div>ontouchmove="touchMove(event)"</div>
+//<div>ontouchstart="touchStart(event)"</div>
+
+/*
+function touchStart( e ) {
+ var box = document.getElementById("box");
+ box.style.background = "green";
+ e.preventDefault();
+ return false;
+}
+
+function touchMove( e ) {
+ var targetEvent =  e.touches.item(0);
+ var box = document.getElementById("box");
+ box.style.background = "yellow";
+ box.style.left = targetEvent.clientX + "px";
+ box.style.top= targetEvent.clientY + "px";
+ e.preventDefault();
+ return false;
+}
+*/
+
+/*
+function draw(event){
+   // get the touch coordinates
+   var coors = {
+      x: event.targetTouches[0].pageX,
+      y: event.targetTouches[0].pageY
+   };
+   // pass the coordinates to the appropriate handler
+   drawer[event.type](coors);
+}
+ 
+// attach the touchstart, touchmove, touchend event listeners.
+canvas.addEventListener('touchstart',draw, false);
+canvas.addEventListener('touchmove',draw, false);
+canvas.addEventListener('touchend',draw, false);
+
+// prevent elastic scrolling
+document.body.addEventListener('touchmove',function(event){
+  event.preventDefault();
+},false);	// end body:touchmove
+
+*/
+

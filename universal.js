@@ -54,8 +54,8 @@ function clickNewSection( xnum ) {
 }
 
 function loadNewSection() {
-	console.debug( 'loadNewSection: '+ xFeedList[activeSection].title);
 	xURL = 'denverfeed.php?x='+ xFeedList[activeSection].url;
+	//console.debug( 'loadNewSection: '+ xURL);
 	request(
 		xURL, null,function() {
 			if ( this.readyState == 4) {
@@ -77,13 +77,28 @@ function loadNewSection() {
 	);
 }
 
+function getStoryIdFromURL( xURL ) {
+	//xURL = 'http://www.elpasotimes.com/newupdated/ci_22867699/border-agents-seize-3-5-tons-marijuana-southern?source=most_viewed';
+	var ID = xURL.split('/ci_');
+	if ( ID.length > 1 ) {
+		ID = ID[1].split('/');ID = ID[0];
+	} else {
+		ID = 0;
+	}
+	return ID;
+}
+
+function clickStory( xnum ) {
+	viewStory(xnum);
+}
+
 function DrawStoryList() {
-	console.debug( 'DrawStoryList: ');
+	//console.debug( 'DrawStoryList: ');
 	var xString = '';//<div class="scroller">';
 	xString +=	'<div class="list_header " style="">'+ xFeedList[activeSection].title +'</div>';
 	xString +=	'<ul class="list Xul">';
 	for (var i=0; i<StoryList.length;i++) {
-		xString +=	'	<li class="Xli" onclick="viewStory('+ i +');" style="">';
+		xString +=	'	<li class="Xli" onclick="clickStory('+ i +');" style="">';
 		xString +=	'		<div class="story_title">'+ StoryList[i].title +'</div>';
 		xString +=	'		<div class="" style="font: bold 12px/12px Helvetica, Sans-serif;color:#464646;margin-top:-4px;width:100%;">'+ StoryList[i].pubDate +'</div>';
 		xString +=	'	</li>';
@@ -110,7 +125,11 @@ function DrawStoryList() {
 		setTimeout(function() { xInterface.showWindow( 'home', {transition: 'fade'} ); }, 1000);
 	}
 	
+	//need to scroll to the top just in case user has already scrolled down on a previous story list
+	//xInterface.WindowScrollerArray[0].scrollTo(0,0,0);
 }
+
+
 
 function dumpProps(obj, parent) {
    // Go through all the properties of the passed-in object
@@ -130,7 +149,13 @@ function dumpProps(obj, parent) {
    }
 }
 
-
+function showSectionsWindow() {
+	xInterface.showWindow( 'sections_window', { transition: 'slideRight', overlay:1,
+	onSwipeLeft: function () {
+		xInterface.closeActiveWindow();
+	}
+	 });
+}
 
 function viewStory(xnum) {
 	if ( xInterface.allowUserEvent() ) {
@@ -164,10 +189,11 @@ function viewStory(xnum) {
 		xString += '</div>';
 		*/
 		
-		xString += '<div class="toolbar movable lightGray">';
-		xString += '	<div class="sm_but_icon section_sm_w left" onclick="xInterface.showWindow( \'sections_window\', { transition: \'slideRight\', overlay:1 });"></div>';
+		//------------------------------------------------------toolbar
+		xString += '<div class="toolbar movable white">';
+		xString += '	<div class="sm_but_icon section_sm_w left" onclick="showSectionsWindow();"></div>';
 		xString += '	<div class="sm_but_icon closeb "  onclick="xInterface.closeActiveWindow();"></div>';
-		xString += '<h1>Story</h1></div>';
+		xString += '<h1><img src="images/denverpost/denver_logo_b.png" width="200" alt="Denver Logo" style="margin-top:5px;margin-left:-5px;"/></h1></div>';
 		
 		//http://blog.stevenlevithan.com/archives/faster-than-innerhtml
 		//http://ejohn.org/blog/javascript-micro-templating/
@@ -179,10 +205,11 @@ function viewStory(xnum) {
 		xString += '<div id="story_ad_top" style="height:50px;margin-top:20px;"></div>';
 		xString += '<div class="story_breadCrumbs side_margin"><span class="fakelink" onclick="clickNewSection(1);">Home</span> / <span class="fakelink" onclick="clickNewSection(1);">News</span> / Story</div>';
 		
+		xString += '<div class="story_headline side_margin">'+StoryList[ activeStory ].title +'</div>';
+		
 		if ( xURL ) xString += '<div class="side_margin"><img src="'+ xURL +'" style="width:100%;display:block;margin:auto;" /></div>';
         
-		
-		xString += '<div class="story_headline side_margin">'+StoryList[ activeStory ].title +'</div>';
+		if ( xURL ) console.debug(xURL );
 		xString += '<div class="story_pubdate side_margin">PUBLISHED '+ StoryList[ activeStory ].pubDate.toUpperCase() +'</div>';
 		xString += '<div class="story_update side_margin">UPDATED '+StoryList[ activeStory ].lastUpdate[0].toUpperCase() +'</div>';
 		xString += '<div class="story_author side_margin">By Kirk Mitchell, The Denver Post</div>';
@@ -241,9 +268,18 @@ function viewStory(xnum) {
 				//alert('onCloseDone function called!');
 				console.debug('------dfm_mobile: onCloseDone for story_window' );
 				this.WindowScrollerArray[0].scrollTo(0,0,0);
+			},
+			onSwipeLeft: function () {
+				//alert('onSwipeLeft');
+				console.log( 'onSwipeLeft' );
+			},
+			onTouchTap: function () {
+				//alert('onTouchTap');
+				console.log( 'onTouchTap' );
 			}
 		} );
-
+		
+		////
 		//setTimeout(function() { xInterface.resizeScrollers(); }, 10);
 
 		/*
@@ -307,7 +343,6 @@ function openStoryFromStory(xnum) {
 	
 	//xInterface.closeActiveWindow();
 	
-	
 }
 
 function loadPropertyData() {
@@ -341,6 +376,10 @@ function loadPropertyData() {
 	activeSection = 1;		//breaking news
 	propertyImage = 'denverpostsplash.gif';
 	backgroundsplash = '0079c2';				//el paso 'f2f8fe'
+	
+	AppleAppID = "375264133";
+	topDomain = get_top_domain();
+	if (topDomain == 'localhost') topDomain = 'denverpost.com';	//added only for dev, delete before live
 }
 
 function renderSectionsWindow() {
@@ -357,6 +396,85 @@ function renderSectionsWindow() {
 }
 
 
+//showPhotoGallery();
+
+function showPhotoGallery() {
+	//render the contents for a gallery and put it in gallery_window div
+	var xHeadline = 'Celebrations marking Nowruz the Persian new year';
+	var xDescription = 'Photos of Nowruz festivals celebrating the Persian new year in Turkey, Central Asian republics, Iraq, Iran, Azerbaijan and war-torn Afghanistan coinciding with the astronomical vernal equinox. Nowruz is calculated according to a solar calendar, this year marking 1392.';
+	var photoArray = new Array( 'http://mediacenter.smugmug.com/photos/i-VBJ7cBb/1/480x480/i-VBJ7cBb-480x480.jpg','http://mediacenter.smugmug.com/photos/i-bDnNStp/1/480x480/i-bDnNStp-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-5b7kskC/1/480x480/i-5b7kskC-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-PKHmZkh/1/480x480/i-PKHmZkh-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-3VkCthh/1/480x480/i-3VkCthh-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-mFMJBws/1/480x480/i-mFMJBws-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-s6XKRZk/1/480x480/i-s6XKRZk-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-4dZ8KpS/1/480x480/i-4dZ8KpS-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-wn5BrMx/1/480x480/i-wn5BrMx-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-s2wJXtx/1/480x480/i-s2wJXtx-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-k8DSbVx/1/480x480/i-k8DSbVx-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-rLdWf9G/1/480x480/i-rLdWf9G-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-G68BMQx/1/480x480/i-G68BMQx-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-J2KSmDh/1/480x480/i-J2KSmDh-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-7sHXcfq/1/480x480/i-7sHXcfq-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-c9TK8Tc/1/480x480/i-c9TK8Tc-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-8Lm5bwB/1/480x480/i-8Lm5bwB-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-rNQ9LDv/1/480x480/i-rNQ9LDv-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-PbSB6Wc/1/480x480/i-PbSB6Wc-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-9BRnxWT/1/480x480/i-9BRnxWT-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-Rpxd5BT/1/480x480/i-Rpxd5BT-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-LDhLXKH/1/480x480/i-LDhLXKH-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-Gk3kG9n/1/480x480/i-Gk3kG9n-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-6hmXdDq/1/480x480/i-6hmXdDq-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-VNBxgLs/1/480x480/i-VNBxgLs-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-6PC5JQ2/1/480x480/i-6PC5JQ2-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-BMpqcBC/1/480x480/i-BMpqcBC-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-bbBwb3C/1/480x480/i-bbBwb3C-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-CJJ54kx/1/480x480/i-CJJ54kx-480x480.jpg' );
+	var captionArray = new Array( 'caption_1', 'caption_2', 'caption_3', 'caption_4', 'caption_5', 'caption_6', 'caption_7', 'caption_8' );
+	
+	if ( xInterface.allowUserEvent() ) {
+		//----------------------------------------------build gallery string
+		var xString = '';
+		xString += '<div class="content " style="background-color:#GGG;">';
+		xString += '	<div class="carousel "><!-- /scroller width will have to be set by javascript-->';
+		xString += '		<ul class="list" style=""><!-- /thelist -->';
+		
+		for (var i=0; i<photoArray.length;i++) {
+			xString += '<li class="Xli" id="photoframe_'+ (i+1) +'" style="position:relative;" ontouchstart="xActiveTouch = 1;" ontouchmove="xActiveTouch = 0;" ontouchend="if (xActiveTouch) { xGallery.toggleTopLayer(); }">		<div class="gallery_bigImage" style="background-image:url('+ photoArray[i] +');background-size: contain;"></div>	</li>';
+		}
+		xString += '</ul></div></div>';
+		//----------------------------------------------build gallery string (end)
+		
+		document.getElementById( 'gallery_window' ).innerHTML = xString;
+		
+		/*
+		// eventually here i will add ads to the galleries
+		//---now that the divs are there, we need to dynamically add the ads
+		setTimeout(function() { 
+			addAdToDiv( '300x50', 'story_ad_top' );
+			addAdToDiv( '300x50', 'story_ad_bottom' );
+			newsToGram();
+		}, 1000);
+		*/
+		
+		//setTimeout(function() { xInterface.resizeScrollers(); }, 10);
+		
+		/*
+		xInterface.showWindow( 'gallery_window', {
+			onCloseDone: function () {
+				//alert('onCloseDone function called!');
+				console.debug('------dfm_mobile: onCloseDone for gallery_window from showPhotoGallery' );
+				this.WindowScrollerArray[0].scrollTo(0,0,0);
+			}
+		} );
+		*/
+		
+		if ( xInterface.doesWindowExist( 'gallery_window' ) ) {
+			//console.debug( 'it exists!: ');
+			setTimeout(function() { xInterface.resizeScrollers(); }, 10);
+			//setTimeout(function() { xInterface.refreshWindow('home'); }, 10);
+		} else {
+			//console.debug( 'create new: ');
+			setTimeout(function() { xInterface.showWindow( 'gallery_window', { transition: 'fade', overlay:1 }); }, 100);
+		}
+		
+		
+	}
+}
+
+function loadArticleWithID( xID ) {
+	var xURL = topDomain + '/mngi/servletDispatch/JsonArticleServlet.dyn?ci=' + xID;
+	//http://www.denverpost.com/mngi/servletDispatch/JsonArticleServlet.dyn?ci=22872574
+	return xURL;
+	//alert( xURL );
+}
+
+function get_top_domain(){
+	var i,h,
+	weird_cookie='weird_get_top_level_domain=cookie',
+	hostname = document.location.hostname.split('.');
+	for(i=hostname.length-1; i>=0; i--) {
+		h = hostname.slice(i).join('.');
+		document.cookie = weird_cookie + ';domain=.' + h + ';';
+		if(document.cookie.indexOf(weird_cookie)>-1){
+			document.cookie = weird_cookie.split('=')[0] + '=;domain=.' + h + ';expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			return h;
+		}
+	}
+}
 
 
 
