@@ -1,6 +1,6 @@
 <?php
 //$xURL = 'http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml'
-$xURL = $_GET["x"];
+$xURL = 'http://' . $_GET["x"];
 //$xURL = 'denvertest.xml';
 $xsourcefile = file_get_contents( $xURL );
 $xsourcefile = str_replace(":encoded",'',$xsourcefile);$xsourcefile = str_replace(":creator",'',$xsourcefile);$xsourcefile = str_replace(":content",'',$xsourcefile);$xsourcefile = str_replace(":source",'',$xsourcefile);
