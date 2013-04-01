@@ -80,7 +80,7 @@ function Interface (main, options) {
 	// here we are dynamically loading external iscroll.js file and running it.
 	// this code could be used for other external files and possibly there is a better way to do this such as dynamically adding it to header
 	//<script src="js/iscroll.js" type="text/javascript"></script>
-	var xURL = "iscroll.js";
+	var xURL = "js/iscroll.js";
 	//if ( ( xHTML == undefined ) || ( xHTML == '' ) ) {
 		//no html was given, so put LOADING SCREEN over the whole interface
 		//this.showLoadingScreenFull();
