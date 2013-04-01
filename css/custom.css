@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*HOME*/
 .story_title {
 	font-size:1.1em;
@@ -8,6 +9,16 @@
 	font-size:0.75em;
 	font-weight:500;
 	line-height:2em;
+=======
+.splash {
+	position:absolute;background-color:none;width:100%;height:100%;top:0%;
+	background-size: contain;background-repeat:no-repeat;background-position:center;
+}
+
+.story_headline {
+	font: bold 20px/24px Helvetica, Sans-serif;
+	color:#464646;margin:10px 0px 6px 0px;
+>>>>>>> 73a52dd8cfa8f93975a600c4edaf20f5d9d052ce
 }
 .flag {
 	text-indent:-9999px;
