@@ -1192,6 +1192,7 @@ function Window ( id, xback, options ) {
 	for (i in options) this.options[i] = options[i];
 	
 	
+	
 	if ( this.options.overlay ) {
 		console.debug('			--creating overlay holder div' );
 		//alert( this.object.innerHTML );
@@ -1219,6 +1220,24 @@ function Window ( id, xback, options ) {
 		//this.object.appendChild(xbackground);
 	}
 	
+	/*
+	//-----------------EXAMPLES
+	xInterface.showWindow( 'story_window', {
+		onCloseDone: function () {
+			//alert('onCloseDone function called!');
+			console.debug('------dfm_mobile: onCloseDone for story_window' );
+			this.WindowScrollerArray[0].scrollTo(0,0,0);
+		},
+		onSwipeLeft: function () {
+			//alert('onSwipeLeft');
+			console.log( 'onSwipeLeft' );
+		},
+		onTouchTap: function () {
+			//alert('onTouchTap');
+			console.log( 'onTouchTap' );
+		}
+	} );
+	*/
 	
 	//this.zindex = 1;
 	//this.id = id;
