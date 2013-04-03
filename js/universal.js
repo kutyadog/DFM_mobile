@@ -6,9 +6,9 @@ function addAdToDiv( xSize, xDiv ) {
 	//alert( xSize+":"+ xDiv );
 	var xString;
 	if ( xSize == '300x50') {
-		xString = '<img src="ad_300x50.gif" width="300" height="50" style="display:block;margin:auto;" />';
+		xString = '<img src="assets/ad_300x50.gif" width="300" height="50" style="display:block;margin:auto;" />';
 	} else if ( xSize == '300x250') {
-		xString = '<img src="ad_300x250.gif" width="300" height="250" style="display:block;margin:auto;" />';
+		xString = '<img src="assets/ad_300x250.gif" width="300" height="250" style="display:block;margin:auto;" />';
 	} else {
 		alert( 'wrong ad size: '+ xSize );
 		return;
@@ -143,261 +143,6 @@ function showSectionsWindow() {
 	 });
 }
 
-function viewStory() {
-	//if ( xInterface.allowUserEvent() ) {
-
-		//dumpProps( StoryContent );
-		
-		//----------------------------------------------build story view div string
-		var xString = '';
-		var xURL = 0;
-		
-		/*
-		if ( StoryList[ activeStory ].media['@attributes'] ) {
-			xURL = StoryList[ activeStory ].media['@attributes'].url;
-		}
-		*/
-		
-		//------------------------------------------------------toolbar
-		xString += '<div class="toolbar movable white">';
-		xString += '	<div class="sm_but_icon section_sm_w left" onclick="showSectionsWindow();"></div>';
-		xString += '	<div class="sm_but_icon closeb "  onclick="xInterface.closeActiveWindow();"></div>';
-		xString += '<h1><img src="props/'+ topDomain +'/logo_b.png" width="200" alt="Logo" style="margin-top:5px;margin-left:-5px;"/></h1></div>';
-		
-		//http://blog.stevenlevithan.com/archives/faster-than-innerhtml
-		//http://ejohn.org/blog/javascript-micro-templating/
-		
-		xString += '<div id="story_ad_top" style="height:50px;margin-top:20px;"></div>';
-		xString += '<div class="story_breadCrumbs side_margin"><span class="fakelink" onclick="clickNewSection(1);">Home</span> / <span class="fakelink" onclick="clickNewSection(1);">News</span> / Story</div>';
-		
-		xString += '<div class="story_headline side_margin">'+ StoryContent['headline'] +'</div>';
-		console.debug( StoryContent['headline'] );
-		//if ( xURL ) xString += '<div class="side_margin"><img src="'+ xURL +'" style="width:100%;display:block;margin:auto;" /></div>';
-        
-		//if ( xURL ) console.debug(xURL );
-		xString += '<div class="story_pubdate side_margin">PUBLISHED '+ StoryContent['startDate'] +'</div>';
-		xString += '<div class="story_update side_margin">UPDATED '+ StoryContent['updateDate'] +'</div>';
-		xString += '<div class="story_author side_margin">'+ StoryContent['bylineEncoded'] +'</div>';
-		xString += '<div class="story_content side_margin">'+ StoryContent['body'] +'</div>';
-		
-		xString += '<div id="story_related_content side_margin" style="margin-bottom:40px;">';
-			xString += '<div class="story_author">Related stories:</div>';
-		
-			for (var i=0; i<3;i++) {
-				xString += '<li onclick="openStoryFromStory('+i+');">Related content</li>';
-			}
-		xString += '</div>';
-		
-		xString += '<div id="story_ad_bottom" style="height:50px;"></div>';
-		
-		xString += '<div class="ng-recommender" id="ng-recommender" style="height:350px;width:100%;display:block;padding:0px;margin-top:10px;"></div>';
-		
-		//xString += '</div>';
-		//----------------------------------------------build story view div string (end)
-		
-		document.getElementById( 'story_container' ).innerHTML = xString;
-		
-		/*
-		xInterface.showWindow( 'story_window', {
-			onCloseDone: function () {
-				//alert('onCloseDone function called!');
-				console.debug('------dfm_mobile: onCloseDone for story_window' );
-				this.WindowScrollerArray[0].scrollTo(0,0,0);
-			},
-			onSwipeLeft: function () {
-				//alert('onSwipeLeft');
-				console.log( 'onSwipeLeft' );
-			},
-			onTouchTap: function () {
-				//alert('onTouchTap');
-				console.log( 'onTouchTap' );
-			}
-		} );
-		*/
-		
-		//xInterface.removeLoaderInWindow('story_window');
-		setTimeout(function() { xInterface.removeLoaderInWindow( 'story_window' ); }, 200);
-		//---now that the divs are there, we need to dynamically add the ads
-		setTimeout(function() { 
-			addAdToDiv( '300x50', 'story_ad_top' );
-			addAdToDiv( '300x50', 'story_ad_bottom' );
-			//will need to add a 320x50 ad size here!!!
-			//addAdToDiv( '300x250', 'story_ad_bottom' );
-			newsToGram();
-		}, 1000);
-		/*
-		if ( xURL ) {
-			//-------there is an image, so create listener to resize 'story_window' after image is loaded (since we dont know its size ahead of time)
-			xInterface.putLoaderInWindow( 'story_window' );
-			preloadimages([ xURL ]).done(function(images){
-				console.debug('story image loaded' );
-				//when images are done loading:
-				xInterface.removeLoaderInWindow('story_window');
-				setTimeout(function() { xInterface.resizeScrollers(); }, 100);
-			})
-
-		} else {
-			//-------no images, just a story
-			setTimeout(function() { xInterface.resizeScrollers(); }, 10);
-
-		}
-		*/
-		setTimeout(function() { xInterface.resizeScrollers(); }, 10);
-
-		
-	//} else {
-	//	alert( 'error 292342 in universal.js');
-	//}
-}
-
-function viewStoryOLD(xnum) {
-	if ( xInterface.allowUserEvent() ) {
-		activeStory = xnum;
-
-		//document.getElementById( 'story_title' ).innerHTML = xFeedList[activeSection].title;
-
-		//----------------create story page!!!
-		/*
-		denver.html:135@attributes.url
-		denver.html:135@attributes.fileSize
-		denver.html:135@attributes.type
-		*/
-
-		//dumpProps( StoryList[ activeStory ].media );
-		
-		//----------------------------------------------build story view div string
-		var xString = '';
-		var xURL = 0;
-		if ( StoryList[ activeStory ].media['@attributes'] ) {
-			xURL = StoryList[ activeStory ].media['@attributes'].url;
-		}
-		
-		//xString += '<img src="ad_300x50.gif" width="300" height="50" style="display:block;margin:auto;" />';
-		//xString += '<div class="story_top_ad"><script> alert(1); <\/script></div>';	//did not work
-		
-		/*
-		xString += '<div class="toolbar movable">';
-		xString += '	<div class="sm_but_icon leftarrowb left"  onclick="xInterface.closeActiveWindow();"></div>';
-		xString += '	<div class="sm_but_icon shareb " onclick="xInterface.showWindow( \'sections_window\', { transition: \'slideRight\', overlay:1 });"></div>';
-		xString += '</div>';
-		*/
-		
-		//------------------------------------------------------toolbar
-		xString += '<div class="toolbar movable white">';
-		xString += '	<div class="sm_but_icon section_sm_w left" onclick="showSectionsWindow();"></div>';
-		xString += '	<div class="sm_but_icon closeb "  onclick="xInterface.closeActiveWindow();"></div>';
-		xString += '<h1><img src="props/'+ topDomain +'/logo_b.png" width="200" alt="Logo" style="margin-top:5px;margin-left:-5px;"/></h1></div>';
-		
-		//http://blog.stevenlevithan.com/archives/faster-than-innerhtml
-		//http://ejohn.org/blog/javascript-micro-templating/
-		
-		//xString += '<div id="story_content" style="margin:0px 0px 0px 0px;">';
-		
-		//xString += '<div class="story_breadCrumbs side_margin"  style="" onclick="xInterface.closeActiveWindow();"> View Section Front</div>';
-		
-		xString += '<div id="story_ad_top" style="height:50px;margin-top:20px;"></div>';
-		xString += '<div class="story_breadCrumbs side_margin"><span class="fakelink" onclick="clickNewSection(1);">Home</span> / <span class="fakelink" onclick="clickNewSection(1);">News</span> / Story</div>';
-		
-		xString += '<div class="story_headline side_margin">'+StoryList[ activeStory ].title +'</div>';
-		
-		if ( xURL ) xString += '<div class="side_margin"><img src="'+ xURL +'" style="width:100%;display:block;margin:auto;" /></div>';
-        
-		if ( xURL ) console.debug(xURL );
-		xString += '<div class="story_pubdate side_margin">PUBLISHED '+ StoryList[ activeStory ].pubDate.toUpperCase() +'</div>';
-		xString += '<div class="story_update side_margin">UPDATED '+StoryList[ activeStory ].lastUpdate[0].toUpperCase() +'</div>';
-		xString += '<div class="story_author side_margin">By Kirk Mitchell, The Denver Post</div>';
-		xString += '<div class="story_content side_margin">'+StoryList[ activeStory ].description +'</div>';
-		
-		xString += '<div id="story_related_content side_margin" style="margin-bottom:40px;">';
-			xString += '<div class="story_author">Related stories:</div>';
-		
-			for (var i=0; i<3;i++) {
-				xString += '<li onclick="openStoryFromStory('+i+');">'+ StoryList[ i ].title +'</li>';
-			}
-		xString += '</div>';
-		
-		xString += '<div id="story_ad_bottom" style="height:50px;"></div>';
-		
-		xString += '<div class="ng-recommender" id="ng-recommender" style="height:350px;width:100%;display:block;padding:0px;margin-top:10px;"></div>';
-		
-		//xString += '</div>';
-		//----------------------------------------------build story view div string (end)
-		
-		document.getElementById( 'story_container' ).innerHTML = xString;
-		
-		//---now that the divs are there, we need to dynamically add the ads
-		setTimeout(function() { 
-			addAdToDiv( '300x50', 'story_ad_top' );
-			addAdToDiv( '300x50', 'story_ad_bottom' );
-			//will need to add a 320x50 ad size here!!!
-			//addAdToDiv( '300x250', 'story_ad_bottom' );
-			newsToGram();
-		}, 1000);
-		
-		if ( xURL ) {
-			//-------there is an image, so create listener to resize 'story_window' after image is loaded (since we dont know its size ahead of time)
-			xInterface.putLoaderInWindow( 'story_window' );
-			preloadimages([ xURL ]).done(function(images){
-				console.debug('story image loaded' );
-				//when images are done loading:
-				xInterface.removeLoaderInWindow('story_window');
-				setTimeout(function() { xInterface.resizeScrollers(); }, 100);
-				//xInterface.resizeScrollers();
-				/*
-				setTimeout(function() { 
-					xInterface.removeLoaderInWindow('story_window');
-					xInterface.resizeScrollers();
-				}, 100);
-				*/
-			})
-
-		} else {
-			//-------no images, just a story
-			setTimeout(function() { xInterface.resizeScrollers(); }, 10);
-
-		}
-
-
-		xInterface.showWindow( 'story_window', {
-			onCloseDone: function () {
-				//alert('onCloseDone function called!');
-				console.debug('------dfm_mobile: onCloseDone for story_window' );
-				this.WindowScrollerArray[0].scrollTo(0,0,0);
-			},
-			onSwipeLeft: function () {
-				//alert('onSwipeLeft');
-				console.log( 'onSwipeLeft' );
-			},
-			onTouchTap: function () {
-				//alert('onTouchTap');
-				console.log( 'onTouchTap' );
-			}
-		} );
-		
-		////
-		//setTimeout(function() { xInterface.resizeScrollers(); }, 10);
-
-		/*
-		if ( xInterface.doesWindowExist( 'story_window' ) ) {
-			console.debug( 'it exists!: ');
-
-
-		} else {
-			console.debug( 'create new: ');
-
-		}
-		*/
-
-
-		/*
-		<div class="content belowtoolbar " style="background: url( 'http://ca1media.mobi/content/tools/images/paper_pattern.gif');color:#333;">
-			<div id="story_container" class="scroller "></div>
-		</div>
-		<div id="story_container" class="content belowtoolbar " style="background: url( 'http://ca1media.mobi/content/tools/images/paper_pattern.gif');color:#333;"></div>
-		*/
-	}
-}
-
 function newsToGram() {
 	//http://sandbox.dailyme.com/rmv2/docs/recommender-3.html
 	var ngRec = new Newstogram.recommender({
@@ -527,33 +272,6 @@ function getStoryIdFromURL( xURL ) {
 	return ID;
 }
 
-function clickStory( xnum ) {
-	//viewStory(xnum);
-	//console.debug( "clicked story with id: "+ xnum + ', '+ getStoryIdFromURL( StoryList[xnum].link[0]) );
-	
-	var xString = '';
-	//------------------------------------------------------toolbar
-	xString += '<div class="toolbar movable white">';
-	xString += '	<div class="sm_but_icon section_sm_w left" onclick="showSectionsWindow();"></div>';
-	xString += '	<div class="sm_but_icon closeb "  onclick="xInterface.closeActiveWindow();"></div>';
-	xString += '<h1><img src="props/'+ topDomain +'/logo_b.png" width="200" alt="Logo" style="margin-top:5px;margin-left:-5px;"/></h1></div>';
-	document.getElementById( 'story_container' ).innerHTML = xString;
-	
-	xInterface.putLoaderInWindow( 'story_window' );
-	
-	loadNgpsStoryContentByID( getStoryIdFromURL( StoryList[xnum].link[0]) );
-	
-	setTimeout(function() { xInterface.showWindow( 'story_window' ); }, 100);
-	
-	
-	//calling xtory url works these two ways
-	//var xStoryURL = StoryList[xnum].link;
-	//console.debug( "story URL: "+ xStoryURL[0] );
-	//or
-	//console.debug( "story URL: "+ StoryList[xnum].link[0] );
-	
-	
-}
 
 function loadNgpsStoryContentByID( xID ) {
 	console.debug( "loading NGPS story with id: "+ xID );
@@ -781,3 +499,220 @@ function loadPropertyData() {
 }
 
 //---------------Eventually all code below should be moved to property specific prop.js in each props folder (end)
+
+
+function clickStory( xnum ) {
+	//viewStory(xnum);
+	//console.debug( "clicked story with id: "+ xnum + ', '+ getStoryIdFromURL( StoryList[xnum].link[0]) );
+	
+	/*
+	var xString = '';
+	//------------------------------------------------------toolbar created so that something is there while the page loads
+	//-------NOTE THAT THE CODE BELOW IS NOT SET FOR THIS STYLE AND WILL CAUSE A RED FLASH!!!!!!!! FIX IT BEFORE MAKING IT LIVE AGAIN
+	xString += '<div class="toolbar movable white">';
+	xString += '	<div class="sm_but_icon section_sm_w left" onclick="showSectionsWindow();"></div>';
+	xString += '	<div class="sm_but_icon closeb "  onclick="xInterface.closeActiveWindow();"></div>';
+	xString += '<h1><img src="props/'+ topDomain +'/logo_b.png" width="200" alt="Logo" style="margin-top:5px;margin-left:-5px;"/></h1></div>';
+	document.getElementById( 'story_container' ).innerHTML = xString;
+	*/
+	
+	document.getElementById( 'story_container' ).innerHTML = '';
+	
+	//xInterface.putLoaderInWindow( 'story_window' );
+	
+	loadNgpsStoryContentByID( getStoryIdFromURL( StoryList[xnum].link[0]) );
+	
+	setTimeout(function() { xInterface.showWindow( 'story_window' ); }, 100);
+	
+	
+	//calling xtory url works these two ways
+	//var xStoryURL = StoryList[xnum].link;
+	//console.debug( "story URL: "+ xStoryURL[0] );
+	//or
+	//console.debug( "story URL: "+ StoryList[xnum].link[0] );
+	
+	
+}
+
+function viewStory() {
+	//if ( xInterface.allowUserEvent() ) {
+
+		//dumpProps( StoryContent );
+		
+		//----------------------------------------------build story view div string
+		var xString = '';
+		var xURL = 0;
+		
+		/*
+		if ( StoryList[ activeStory ].media['@attributes'] ) {
+			xURL = StoryList[ activeStory ].media['@attributes'].url;
+		}
+		*/
+		
+		
+		xString += '<div class="toolbar lightGray">';
+		
+		//xString += '<h1><img src="props/'+ topDomain +'/logo_b.png" width="200" alt="Logo" style="margin-top:5px;margin-left:-5px;"/></h1></div>';
+		//.flag.dark {
+		//	background: url('../assets/flag_dark.svg') no-repeat 50%;
+		//}
+		
+		//xString += '	<div class="sm_but_icon section_sm_w left" onclick="xInterface.showWindow( \'sections_window\', { transition: \'slideRight\', overlay:1 });"></div>';
+		// xString += '<a class="btn-navbar" onclick="xInterface.showWindow( \'sections_window\', { transition: \'slideRight\', overlay:1 });"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a>';
+		//xString += '	<div class="sm_but_icon closeb "  onclick="xInterface.closeActiveWindow();"></div>';
+		xString += '<div class="sm_but_icon close" onclick="xInterface.closeActiveWindow();">×</div>'
+		// xString += '<h4>Section Here</h4>';
+		xString += '<h4><img src="props/'+ topDomain +'/logo_b.png" width="180" alt="Logo" style="margin-top:12px;margin-left:-2px;"/></h4>'
+		xString += '<div class="sm_but_icon share right"></div>'
+		xString += '</div>';
+		//http://blog.stevenlevithan.com/archives/faster-than-innerhtml
+		//http://ejohn.org/blog/javascript-micro-templating/
+		//xString += '<div id="story_content">';
+		
+		//xString += '<div class="story_breadCrumbs side_margin" onclick="xInterface.closeActiveWindow();">View Section Front</div>';
+		
+		xString += '<div id="story_ad_top"></div>';
+		xString += '<ul class="breadcrumb">';
+		xString += '<li><a href="#" onclick="clickNewSection(1);">Home</a></li><li><a href="#" onclick="clickNewSection(1);">News</a></li><li class="active">Story</li>';
+		xString += '</ul>';
+
+		xString += '<div class="story_wrapper"><h1 class="story_headline">' + StoryContent['headline'] + '</h1>';
+		xString += '<p class="meta">';
+		xString += '<span class="story_author">'+ StoryContent['bylineEncoded'] +'</span>';
+		xString += '<span class="story_pubdate">Published: ' + StoryContent['startDate'] + '</span>';
+		if(StoryContent['updateDate'] != '') {
+			xString += '<span class="story_update">Updated: '+ StoryContent['updateDate'] +'</span>';
+		}
+		xString += '</p><!-- .meta -->';
+		//if ( xURL ) xString += '<div class="main_image"><img src="'+ xURL +'" /></div><!-- .main-image -->';
+		
+		xString += '<div class="story_content">' + StoryContent['body'] + '</div><!-- #story_content -->';
+		
+		xString += '<div id="story_related_content">';
+		xString += '<h3 class="page-header">Related stories</h3>';
+		
+		//xString += '<ul class="link-list">';
+		//for (var i=0; i<3;i++) {
+		//	xString += '<li onclick="openStoryFromStory('+i+');">'+ StoryList[ i ].title +'</li>';
+		//}
+		//xString += '</ul>';
+		xString += '</div><!-- #story_related_content -->';
+		xString += '</div> <!-- story_wrapper -->';
+		
+		xString += '<div id="story_ad_bottom" style="height:50px;"></div>';
+		xString += '<div class="ng-recommender" id="ng-recommender" style="height:350px;width:100%;display:block;padding:0px;margin-top:10px;"></div>';
+		
+		document.getElementById( 'story_container' ).innerHTML = xString;
+		
+		/*
+		xInterface.showWindow( 'story_window', {
+			onCloseDone: function () {
+				//alert('onCloseDone function called!');
+				console.debug('------dfm_mobile: onCloseDone for story_window' );
+				this.WindowScrollerArray[0].scrollTo(0,0,0);
+			},
+			onSwipeLeft: function () {
+				//alert('onSwipeLeft');
+				console.log( 'onSwipeLeft' );
+			},
+			onTouchTap: function () {
+				//alert('onTouchTap');
+				console.log( 'onTouchTap' );
+			}
+		} );
+		*/
+		
+		//xInterface.removeLoaderInWindow('story_window');
+		//setTimeout(function() { xInterface.removeLoaderInWindow( 'story_window' ); }, 200);
+		//---now that the divs are there, we need to dynamically add the ads
+		setTimeout(function() { 
+			addAdToDiv( '300x50', 'story_ad_top' );
+			addAdToDiv( '300x50', 'story_ad_bottom' );
+			//will need to add a 320x50 ad size here!!!
+			//addAdToDiv( '300x250', 'story_ad_bottom' );
+			newsToGram();
+		}, 1000);
+		/*
+		if ( xURL ) {
+			//-------there is an image, so create listener to resize 'story_window' after image is loaded (since we dont know its size ahead of time)
+			xInterface.putLoaderInWindow( 'story_window' );
+			preloadimages([ xURL ]).done(function(images){
+				console.debug('story image loaded' );
+				//when images are done loading:
+				xInterface.removeLoaderInWindow('story_window');
+				setTimeout(function() { xInterface.resizeScrollers(); }, 100);
+			})
+
+		} else {
+			//-------no images, just a story
+			setTimeout(function() { xInterface.resizeScrollers(); }, 10);
+
+		}
+		*/
+		setTimeout(function() { xInterface.resizeScrollers(); }, 10);
+
+		
+	//} else {
+	//	alert( 'error 292342 in universal.js');
+	//}
+}
+
+
+
+function DrawStoryList() {
+	//console.debug( 'DrawStoryList: ');
+	var xString = '';//<div class="scroller">';
+	xString +=	'<div class="list_header " style="">'+ xFeedList[activeSection].title +'</div>';
+	xString +=	'<ul class="list Xul">';
+	for (var i=0; i<StoryList.length;i++) {
+		xString +=	'	<li class="Xli" onclick="clickStory('+ i +');" style="">';
+		xString +=	'		<div class="story_title">'+ StoryList[i].title +'</div>';
+		xString +=	'		<div class="story_time">'+ StoryList[i].pubDate +'</div>';
+		xString +=	'	</li>';
+	}
+	
+	xString +=	'</ul>';
+	//xString +=	'</div>';
+	xString +=	'	<footer><img class="dfm-logo" src="assets/dfm_logo.png" />';
+	
+	var d = new Date().getUTCFullYear();
+	xString +=	'		<p class="credits">All contents © '+ d +' Digital First Media or other copyright holders. All rights reserved. This material may not be published, broadcast, rewritten or redistributed for any commercial purpose.</p>';
+	
+	xString +=	'</footer>';
+	
+	/*
+	xString +=	'<div class="list_header " style="">'+ xFeedList[activeSection].title +'</div>';
+	xString +=	'<ul class="list Xul">';
+	for (var i=0; i<StoryList.length;i++) {
+		xString +=	'	<li class="Xli" onclick="clickStory('+ i +');" style="">';
+		xString +=	'		<div class="story_title">'+ StoryList[i].title +'</div>';
+		xString +=	'		<div class="" style="font: bold 12px/12px Helvetica, Sans-serif;color:#464646;margin-top:-4px;width:100%;">'+ StoryList[i].pubDate +'</div>';
+		xString +=	'	</li>';
+	}
+	
+	xString +=	'</ul>';
+	//xString +=	'</div>';
+	xString +=	'	<div style="background-color:none;"><img src="dfm_logo.png" style="max-width:100px;display:block;margin:auto;margin-top:12px;margin-bottom:5px;" />';
+	
+	var d = new Date().getUTCFullYear();
+	xString +=	'		<div style="display: block;margin: 0px auto;width:90%;color:white;font-family:Arial;font-size:10px;color:#FFF;text-align:center;line-height:100%;padding-bottom:20px;">';
+	xString +=	'		All contents © '+ d +' Digital First Media or other copyright holders. All rights reserved. This material may not be published, broadcast, rewritten or redistributed for any commercial purpose.</div>';
+	
+	xString +=	'</div>';
+	*/
+	
+	document.getElementById( 'home_section_list' ).innerHTML = xString;
+	
+	if ( xInterface.doesWindowExist( 'home' ) ) {
+		console.debug( 'it exists!: ');
+		setTimeout(function() { xInterface.resizeScrollers(); }, 10);
+		//setTimeout(function() { xInterface.refreshWindow('home'); }, 10);
+	} else {
+		console.debug( 'create new: ');
+		setTimeout(function() { xInterface.showWindow( 'home', {transition: 'fade'} ); }, 1000);
+	}
+	
+	//need to scroll to the top just in case user has already scrolled down on a previous story list
+	//xInterface.WindowScrollerArray[0].scrollTo(0,0,0);
+}
+
