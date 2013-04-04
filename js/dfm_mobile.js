@@ -146,6 +146,14 @@ function Interface (main, options) {
 			} else if ( xchange < -120 && Math.abs(ychange) < 20 ) {
 				//console.log( 'swipe left' );
 				if (xObject.currentWindow.options.onSwipeLeft) xObject.currentWindow.options.onSwipeLeft.call(xObject.currentWindow, xObject.currentWindow.options.onSwipeLeft);
+			
+			} else if ( ychange < -120 && Math.abs(xchange) < 20 ) {
+				//console.log( 'swipe up' );
+				if (xObject.currentWindow.options.onSwipeUp) xObject.currentWindow.options.onSwipeUp.call(xObject.currentWindow, xObject.currentWindow.options.onSwipeUp);
+			
+			} else if ( ychange > 120 && Math.abs(xchange) < 20 ) {
+				//console.log( 'swipe down' );
+				if (xObject.currentWindow.options.onSwipeDown) xObject.currentWindow.options.onSwipeDown.call(xObject.currentWindow, xObject.currentWindow.options.onSwipeDown);
 				
 			} else if ( Math.abs(xchange) < 10 && Math.abs(ychange) < 10 ) {
 				//console.log( 'touch tap' );
@@ -1186,6 +1194,8 @@ function Window ( id, xback, options ) {
 		alwaysCloseToWindow:0,
 		onSwipeLeft: null,
 		onSwipeRight: null,
+		onSwipeUp: null,
+		onSwipeDown: null,
 		onTouchTap: null
 	}
 	// User defined options
