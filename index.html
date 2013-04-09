@@ -7,14 +7,11 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		
 		
-		<link rel="stylesheet" type="text/css" media="all" href="css/style.css">					<!-- dfm_mobile css -->
+		<link rel="stylesheet" type="text/css" media="all" href="css/style.css">										<!-- dfm_mobile css -->
 		
 		<script type="text/javascript" src="js/dfm_mobile.js"></script>
 		<script src="js/JSXCompressor/jsxcompressor.min.js" type="text/javascript"></script>		<!-- uncompresses json - wont need once NGPS feed done -->
-		<script src="http://sandbox.dailyme.com/rmv2/js/recommender.js"></script>					<!-- newstogram -->
-		
-		<style type="text/css"></style>
-		
+		<script src="http://sandbox.dailyme.com/rmv2/js/recommender.js"></script>										<!-- newstogram -->
 		
 		<script>
 		//content:"";
@@ -33,11 +30,51 @@
 			var AppleAppID;
 			var topDomain;
 			
+			function get_top_domain(){
+				var i,h,
+				weird_cookie='weird_get_top_level_domain=cookie',
+				hostname = document.location.hostname.split('.');
+				for(i=hostname.length-1; i>=0; i--) {
+					h = hostname.slice(i).join('.');
+					document.cookie = weird_cookie + ';domain=.' + h + ';';
+					if(document.cookie.indexOf(weird_cookie)>-1){
+						document.cookie = weird_cookie.split('=')[0] + '=;domain=.' + h + ';expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+						return h;
+					}
+				}
+			}
+			
+			
 			function pageloaded() {
+				//-------everything has loaded, now we need to get property specific js and css before we do anything
+				//			yeah not truly efficient, this process can be cleaned up i think for speed but for now, it works
+				
+				//---for testing loading of external js along with code at bottom of universal.js
 				//fetchExternalJSON('http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml');
 				//setTimeout(function() { fetchExternalJSON('http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml'); }, 4000);
 				//return 0;
 				
+				//---------------------------------------------load property specific external files
+				topDomain = get_top_domain();
+				//if ( (topDomain == 'localhost') || (topDomain == 'ca1media.mobi') ) topDomain = 'denverpost.com';	//added only for dev, delete before live	//elpasotimes	//denverpost
+				topDomain = 'denverpost.com';
+
+				//js
+				var url = 'props/'+ topDomain +'/prop.js';
+				var script = document.createElement('script');script.setAttribute('src', url);script.setAttribute('id', 'propJS');script.setAttribute('type', 'text/javascript');
+				document.getElementsByTagName('head')[0].appendChild(script);
+				script.onload = script.onreadystatechange = function() {
+					showInterface();
+				};
+
+				//css
+				var url = 'props/'+ topDomain +'/prop.css';
+				var fileref=document.createElement("link");fileref.setAttribute("rel", "stylesheet");fileref.setAttribute("type", "text/css");fileref.setAttribute("href", url)
+				if (typeof fileref!="undefined") document.getElementsByTagName("head")[0].appendChild(fileref);
+				//---------------------------------------------load property specific external files (end)
+			}
+			
+			function showInterface() {
 				//xInterface = new Interface( 'test', {transition: 'fade'});
 				xInterface = new Interface( '' );	//this shows nothing but initiates the class
 
@@ -45,16 +82,17 @@
 				//	1. load local content
 				loadPropertyData();			//eventually once this is loading external content, it will need other things to wait until it is done
 				
-				
 				//	2. build the sections menu window
 				renderSectionsWindow();
+				
+				//prepareAds();
 
 				//-----------------------------------------------------launch environment
 				preloadimages([ 'props/'+ topDomain +'/'+ propertySplashImage ]).done(function(images){
 					//when images are done loading:
 					
 					//-----------------show splash!
-					var xString = '<div class="content" ><div class="splash" style="background-image:url(props/'+ topDomain +'/'+ propertySplashImage +');background-color:#0079c2;"></div></div>'
+					var xString = '<div class="content" ><div class="splash" style="background-image:url(props/'+ topDomain +'/'+ propertySplashImage +');background-color:#'+ backgroundsplash +';"></div></div>'
 					document.getElementById( 'splash' ).innerHTML = xString;
 					setTimeout(function() { xInterface.showWindow( 'splash', {transition: 'fade'} ); }, 100);
 					
@@ -128,7 +166,6 @@
 	
 	<div id="story_window" >
 		<div class="content " style="background-color:#FFF;">
-			
 			<div id="story_container" class="scroller "></div>
 		</div>
 	</div><!-- /story_window -->
@@ -174,6 +211,7 @@
 			</div>
 		</div>
 	</div><!-- /settings_window -->
+	
 	
 </div><!-- /dfm_mobile -->
 

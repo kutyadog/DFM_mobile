@@ -1462,7 +1462,13 @@ function countTheKids( parent ){
 	return realKids;
 }
 
-
+function addScriptToHead( xURL ) {
+	var script = document.createElement('script');
+	script.setAttribute('src', xURL);
+	script.setAttribute('id', 'jsonScript');
+	script.setAttribute('type', 'text/javascript');
+	document.getElementsByTagName('head')[0].appendChild(script);
+}
 
 
 

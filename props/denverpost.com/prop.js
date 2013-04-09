@@ -1,4 +1,4 @@
-function loadPropertyData() {
+//function customPropertyData() {
 	//----Eventually I will pull each properties data from the server
 	//		So, for example, this property (denver) would call to server passing unique property id
 	//		The server would then send back a JSON array with all the properties data,
@@ -27,12 +27,12 @@ function loadPropertyData() {
 	
 	propertyTitle = 'The Denver Post';
 	activeSection = 1;		//breaking news
-	propertySplashImage = 'denverpostsplash.gif';
+	propertySplashImage = 'splash.gif';
 	backgroundsplash = '0079c2';				//el paso 'f2f8fe'
 	
 	AppleAppID = "375264133";
-	topDomain = get_top_domain();
-	if (topDomain == 'localhost') topDomain = 'denverpost.com';	//added only for dev, delete before live
+	//topDomain = get_top_domain();
+	//if (topDomain == 'localhost') topDomain = 'denverpost.com';	//added only for dev, delete before live
 	
 	/*
 	//http://feeds.cal-one.net/rss_content/bayarea-ipad-columnists.xml
@@ -55,4 +55,4 @@ function loadPropertyData() {
 			
 	*/
 		
-}
+//}

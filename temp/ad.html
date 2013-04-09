@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		
+		<script type='text/javascript'>
+			//<script src="http://www.googletagservices.com/tag/js/gpt_mobile.js"><\/script>
+			(function() {
+				var useSSL = 'https:' == document.location.protocol;
+				var src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt_mobile.js';
+				document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+			})();
+		</script>
+	
+	</head>
+	<body>
+		<script type='text/javascript'>
+			// As best I can tell - in order to dynamically render ads with js
+			// you must declare all ad spots (embedded in html) on initial render of page (at bottom in div 'mobile_ad_1')
+			// when you init the googletag you must enableAsyncRendering and then disableInitialLoad
+			//		this turns off rendering of ads (as many of them might be hidden from view on load)
+			// after init you can render that ad tag by its var name anytime
+			//		googletag.pubads().refresh([ad1]);
+			// you can even delete the div that contains the ad, recreate it and refresh the ad in the newly created div
+			
+			var ad1;
+			
+			googletag.cmd.push(function() {
+				ad1 = googletag.defineSlot('/8013/digital.first.media.test.site/Mobile', [300, 50], 'mobile_ad_1').addService(googletag.pubads());
+				googletag.pubads().enableAsyncRendering();
+				googletag.pubads().disableInitialLoad();		//turns off rendering on initial load
+				
+				googletag.enableServices();
+			});
+			
+			//----------------------------------------------------------------mobile_ad_1
+			//		refresh ad to show it (for the 1st time)
+			setTimeout(function() { googletag.pubads().refresh([ad1]); }, 500);
+
+			//		Empty 'ad_container' div (basically deleting the ad div), 
+			//		then insert a new empty 'mobile_ad_1' div
+			setTimeout(function() { 
+				document.getElementById( 'ad_container' ).innerHTML = "<div id='mobile_ad_1'></div>";
+			}, 1500);
+			
+			//		now try refreshing the ad again... it works!
+			setTimeout(function() { googletag.pubads().refresh([ad1]); }, 2500);
+			//----------------------------------------------------------------mobile_ad_1 (end)
+		</script>
+		
+		<div id='ad_container'>							<!-- a div that contains the ad div -->
+			<div id='mobile_ad_1'>						<!-- The ad div - MUST contain the js on initial load even if you delete and replace div later -->
+				<script type='text/javascript'>
+					googletag.cmd.push(function() { googletag.display('mobile_ad_1')});
+				</script>
+			</div>
+		</div>
+		
+		<img src="http://pubads.g.doubleclick.net/gampad/ad?iu=/8013/digital.first.media.test.site/Mobile&sz=300x50&mob=js&c=12345" alt="Smiley face" height="50" width="300">
+
+	</body>
+</html>

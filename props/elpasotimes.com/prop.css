@@ -1,0 +1,6 @@
+
+
+.toolbar.darkblue {
+	background-image: -webkit-gradient(linear, 50% 0, 50% 100%, from(#f1ac44), color-stop(0.03, #db9731), to(#bb7d1f));
+	background: -moz-linear-gradient(top, #f1ac44 0%, #db9731 50%, #db9731 51%, #bb7d1f 100%); /* FF3.6+ */
+}

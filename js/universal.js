@@ -1,8 +1,54 @@
 
+function replaceHtml(source, destination) {
+  while (destination.firstChild) {
+    destination.removeChild(destination.firstChild);
+  }
+  copyHtml(source, destination);
+}
 
 
-
-function addAdToDiv( xSize, xDiv ) {
+function addAdToDiv( xVar, xDiv ) {
+	console.debug( 'addAdToDiv: '+ xDiv);
+	
+	document.getElementById( xDiv ).innerHTML = '<img src="http://pubads.g.doubleclick.net/gampad/ad?iu=/8013/digital.first.media.test.site/Mobile&sz=300x50&mob=js&c='+ Math.floor((Math.random()*1000000)+1) +'" alt="Smiley face" height="50" width="300"> ';
+	
+	
+	//googletag.cmd.push(function() { googletag.display( xDiv )});
+	//googletag.display(xDiv);
+	//googletag.pubads().refresh([xVar]);
+	
+	//googletag.cmd.push(function() {
+	//	googletag.pubads().display('/8013/digital.first.media.test.site/Mobile', [[300, 50], [320, 50]], xDiv);
+	//});
+	
+	//replaceHtml()
+	
+	
+	//setTimeout(function() { googletag.pubads().refresh([ad1]); }, 500);
+	
+	//document.getElementById( xDiv ).innerHTML = '<img src="http://pubads.g.doubleclick.net/gampad/ad?iu=/8013/digital.first.media.test.site/Mobile&sz=300x50&c=12345">';
+	
+	/*
+	googletag.defineSlot('/8013/digital.first.media.test.site/Mobile', [[300, 50], [320, 50]], xDiv).setTargeting('pos','mc_interstitial').addService(googletag.pubads());
+	googletag.pubads().enableSyncRendering();
+	googletag.enableServices();
+	googletag.display(xDiv);
+	*/
+	
+	/*
+	googletag.cmd.push(function() {
+		var slot1 = googletag.defineSlot("/8013/digital.first.media.test.site/Mobile", [[300, 50], [320, 50]], xDiv).addService(googletag.pubads());
+		googletag.enableServices();
+		googletag.display(xDiv);
+		//setInterval(function(){googletag.pubads().refresh([slot1]);}, 9000);
+	});
+	
+	*/
+	
+	//<script type='text/javascript'>
+	//googletag.cmd.push(function() { googletag.display('mobile_small')});
+	//</script>
+	/*
 	//alert( xSize+":"+ xDiv );
 	var xString;
 	if ( xSize == '300x50') {
@@ -14,7 +60,63 @@ function addAdToDiv( xSize, xDiv ) {
 		return;
 	}
 	
+	
 	document.getElementById( xDiv ).innerHTML = xString;
+	*/
+	//setTimeout(function() { addTouchControlOverIframesInDiv( xDiv ); }, 2000);
+}
+
+function addTouchControlOverIframesInDiv( xDiv ) {
+	console.debug( 'addTouchControlOverIframesInDiv: '+ document.getElementById( xDiv ).id);
+	var i, frames;
+	frames = document.getElementById( xDiv ).getElementsByTagName("iframe");
+	console.debug( 'addTouchControlOverIframesInDiv: '+ frames.length );
+	for (i = 0; i < frames.length; ++i) {
+		//frames[i].style.width = "100px";			//works
+		
+		//frames[i].document.addEventListener('touchmove', function(event) {console.debug( 'touch moved');}, false);
+		
+		frames[i].contentWindow.document.body.addEventListener('touchmove', function (event) {
+			//parent.document.getElementById( xDiv ).parentNode.parentNode.dispatchEvent(event);
+			
+			//var arrFrames = parent.document.getElementsByTagName("IFRAME");
+			//console.debug( parent.document.getElementById( xDiv ).parentNode.parentNode.id );
+			
+			//for (var i = 0; i < arrFrames.length; i++) {
+			//	if (arrFrames[i].contentWindow === window) alert("yay!");
+			//}
+			//event.preventDefault();
+			//console.debug( window.parent);
+			//console.debug( 'touch moved1: '+ window.parent.parent.id);
+			/*
+			e = e || event;var target = e.target || e.srcElement;var id = target.id;
+			console.debug( 'touch moved1: '+ target);
+			console.debug( 'touch moved2: '+ target.id);
+			console.debug( 'touch moved3: '+ target.parent.parent.id);
+			console.debug( 'touch moved4: '+ target.parent.parent.parent.id);
+			*/
+		}, false);
+		//button2.dispatchEvent(event);
+		/*
+		frames[i].contentWindow.document.body.ontouchmove = function()  {
+		        //console.debug( 'touch moved');
+				e.preventDefault();
+		}
+		*/
+		
+		//document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+		/*
+	      // The iFrame
+	    frames[i].style.display = "none";
+	      // The corresponding DIV
+	    getElementById(frames[i].id + "-L").style.display = "";
+	    frames[i].onload = function()
+	    {
+	        getElementById(frames[i].id + "-L").style.display = "none";
+	        frames[i].style.display = "";
+	    }
+	*/
+	}
 }
 
 function clickNewSection( xnum ) {
@@ -347,13 +449,26 @@ function showArticlePhotoGallery() {
 
 
 function getStoryIdFromURL( xURL ) {
+	console.debug( "getStoryIdFromURL: "+ xURL );
 	//xURL = 'http://www.elpasotimes.com/newupdated/ci_22867699/border-agents-seize-3-5-tons-marijuana-southern?source=most_viewed';
-	var ID = xURL.split('/ci_');
+	//http://www.elpasotimes.com/news/ci_22955267?source=rss
+	//sometimes the id is something like this '22955267?source=rss' - need to remove anything after id
+	var ID = xURL.split('ci_');
 	if ( ID.length > 1 ) {
-		ID = ID[1].split('/');ID = ID[0];
+		ID = ID[1];
+		if (ID.indexOf("/") !== -1) {
+			ID = ID.split('/');
+			if ( ID.length > 1 ) ID = ID[0];
+		}
+		console.debug( "ID: "+ ID );
+		if (ID.indexOf("?") !== -1) {
+			ID = ID.split('?');
+			if ( ID.length > 1 ) ID = ID[0];
+		}
 	} else {
 		ID = 0;
 	}
+	console.debug( "ID: "+ ID );
 	return ID;
 }
 
@@ -361,10 +476,10 @@ function getStoryIdFromURL( xURL ) {
 function loadNgpsStoryContentByID( xID ) {
 	console.debug( "loading NGPS story with id: "+ xID );
 	//var xURL = 'jsonServLet.php?x=http://www.'+ topDomain + '/mngi/servletDispatch/JsonArticleServlet.dyn?ci=' + xID +'&includeBody=true;
-	var xURL = 'temp/jsonServLet.php?x=' + xID;
+	var xURL = 'temp/jsonServLet.php?x=' + xID +'&p='+ topDomain;
 	//http://www.denverpost.com/mngi/servletDispatch/JsonArticleServlet.dyn?ci=22872574
 	//return xURL;
-	//console.debug( xURL );
+	console.debug( xURL );
 	
 	//console.debug( 'loadNewSection: '+ xURL);
 	request(
@@ -507,19 +622,8 @@ function loadNgpsStoryContentByID( xID ) {
 
 
 
-function get_top_domain(){
-	var i,h,
-	weird_cookie='weird_get_top_level_domain=cookie',
-	hostname = document.location.hostname.split('.');
-	for(i=hostname.length-1; i>=0; i--) {
-		h = hostname.slice(i).join('.');
-		document.cookie = weird_cookie + ';domain=.' + h + ';';
-		if(document.cookie.indexOf(weird_cookie)>-1){
-			document.cookie = weird_cookie.split('=')[0] + '=;domain=.' + h + ';expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-			return h;
-		}
-	}
-}
+
+
 
 
 //---------------Eventually all code below should be moved to property specific prop.js in each props folder
@@ -531,7 +635,7 @@ function loadPropertyData() {
 	//		including property title, activeSection and an array of all the sections and their corresponding feeds (below)
 	
 	
-	
+	/*
 	xFeedList = new Array(
 			{ 'title' : 'Business', 'url' : 'http://extras.denverpost.com/media/MRSS/Business_230614.xml' },
 			{ 'title' : 'Breaking News', 'url' : 'http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml' },
@@ -548,6 +652,7 @@ function loadPropertyData() {
 			{ 'title' : 'Rockies', 'url' : 'http://extras.denverpost.com/media/MRSS/Rockies_230619.xml' }
 		);
 	
+	
 	//alert( xFeedList[0].title );
 	//alert( xFeedList[0].url );
 	
@@ -557,8 +662,7 @@ function loadPropertyData() {
 	backgroundsplash = '0079c2';				//el paso 'f2f8fe'
 	
 	AppleAppID = "375264133";
-	topDomain = get_top_domain();
-	if (topDomain == 'localhost') topDomain = 'denverpost.com';	//added only for dev, delete before live
+	*/
 	
 	/*
 	//http://feeds.cal-one.net/rss_content/bayarea-ipad-columnists.xml
@@ -647,7 +751,7 @@ function viewStory() {
 		
 		//xString += '<div class="story_breadCrumbs side_margin" onclick="xInterface.closeActiveWindow();">View Section Front</div>';
 		
-		xString += '<div id="story_ad_top"></div>';
+		xString += '<div id="story_ad_top" class="centered_ad"></div>';
 		xString += '<ul class="breadcrumb">';
 		xString += '<li><a href="#" onclick="clickNewSection(1);">Home</a></li><li><a href="#" onclick="clickNewSection(1);">News</a></li><li class="active">Story</li>';
 		xString += '</ul>';
@@ -854,11 +958,11 @@ function viewStory() {
 		//setTimeout(function() { xInterface.removeLoaderInWindow( 'story_window' ); }, 200);
 		//---now that the divs are there, we need to dynamically add the ads
 		setTimeout(function() { 
-			addAdToDiv( '300x50', 'story_ad_top' );
-			addAdToDiv( '300x50', 'story_ad_bottom' );
+			addAdToDiv( story_ad_top, 'story_ad_top' );
+			//addAdToDiv( 'story_ad_bottom' );
 			//will need to add a 320x50 ad size here!!!
 			//addAdToDiv( '300x250', 'story_ad_bottom' );
-			newsToGram();
+			//newsToGram();
 		}, 1000);
 		/*
 		if ( xURL ) {
@@ -943,6 +1047,7 @@ function DrawStoryList() {
 	//need to scroll to the top just in case user has already scrolled down on a previous story list
 	//xInterface.WindowScrollerArray[0].scrollTo(0,0,0);
 }
+
 
 
 

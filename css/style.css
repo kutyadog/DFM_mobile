@@ -667,11 +667,7 @@ background: linear-gradient(to bottom,  transparent 0%,rgba(0,0,0,0.5) 100%); /*
 	width:100%;
 	height:50px;
 }
-/*
-.flag.dark {
-	background: url('../assets/flag_dark.svg') no-repeat 50%;
-}
-*/
+
 /*FOOTER*/
 footer {
 	padding:0 1em;
@@ -911,3 +907,6 @@ img.dfm-logo {
 	height:50px;
 }
 
+.centered_ad img {
+	display:block;margin:auto;
+}
