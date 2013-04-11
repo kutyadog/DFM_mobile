@@ -903,10 +903,12 @@ img.dfm-logo {
 	background-repeat:no-repeat;background-position:center;background-color:#000;padding:0px;margin:0px; overflow:hidden;
 }
 
-#story_ad_top, #story_ad_bottom {
+#story_ad_top {
 	height:50px;
 }
-
+#story_ad_bottom {
+	height:250px;
+}
 .centered_ad img {
 	display:block;margin:auto;
 }

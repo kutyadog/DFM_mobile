@@ -1,123 +1,19 @@
 
-function replaceHtml(source, destination) {
-  while (destination.firstChild) {
-    destination.removeChild(destination.firstChild);
-  }
-  copyHtml(source, destination);
-}
 
 
-function addAdToDiv( xVar, xDiv ) {
+
+function addAdToDiv( xDiv, xWidth, xHeight ) {
 	console.debug( 'addAdToDiv: '+ xDiv);
 	
-	document.getElementById( xDiv ).innerHTML = '<img src="http://pubads.g.doubleclick.net/gampad/ad?iu=/8013/digital.first.media.test.site/Mobile&sz=300x50&mob=js&c='+ Math.floor((Math.random()*1000000)+1) +'" alt="Smiley face" height="50" width="300"> ';
-	
-	
-	//googletag.cmd.push(function() { googletag.display( xDiv )});
-	//googletag.display(xDiv);
-	//googletag.pubads().refresh([xVar]);
-	
-	//googletag.cmd.push(function() {
-	//	googletag.pubads().display('/8013/digital.first.media.test.site/Mobile', [[300, 50], [320, 50]], xDiv);
-	//});
-	
-	//replaceHtml()
-	
-	
-	//setTimeout(function() { googletag.pubads().refresh([ad1]); }, 500);
-	
-	//document.getElementById( xDiv ).innerHTML = '<img src="http://pubads.g.doubleclick.net/gampad/ad?iu=/8013/digital.first.media.test.site/Mobile&sz=300x50&c=12345">';
-	
-	/*
-	googletag.defineSlot('/8013/digital.first.media.test.site/Mobile', [[300, 50], [320, 50]], xDiv).setTargeting('pos','mc_interstitial').addService(googletag.pubads());
-	googletag.pubads().enableSyncRendering();
-	googletag.enableServices();
-	googletag.display(xDiv);
-	*/
-	
-	/*
-	googletag.cmd.push(function() {
-		var slot1 = googletag.defineSlot("/8013/digital.first.media.test.site/Mobile", [[300, 50], [320, 50]], xDiv).addService(googletag.pubads());
-		googletag.enableServices();
-		googletag.display(xDiv);
-		//setInterval(function(){googletag.pubads().refresh([slot1]);}, 9000);
-	});
-	
-	*/
-	
-	//<script type='text/javascript'>
-	//googletag.cmd.push(function() { googletag.display('mobile_small')});
-	//</script>
-	/*
-	//alert( xSize+":"+ xDiv );
-	var xString;
-	if ( xSize == '300x50') {
-		xString = '<img src="assets/ad_300x50.gif" width="300" height="50" style="display:block;margin:auto;" />';
-	} else if ( xSize == '300x250') {
-		xString = '<img src="assets/ad_300x250.gif" width="300" height="250" style="display:block;margin:auto;" />';
-	} else {
-		alert( 'wrong ad size: '+ xSize );
-		return;
-	}
-	
+	var xRandom = Math.floor((Math.random()*1000000)+1);
+	var xString = '<a href="https://pubads.g.doubleclick.net/gampad/jump?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'" target="_blank">';
+	xString += '<img src="https://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'"></a>';
 	
 	document.getElementById( xDiv ).innerHTML = xString;
-	*/
-	//setTimeout(function() { addTouchControlOverIframesInDiv( xDiv ); }, 2000);
+	//'<img src="http://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ Math.floor((Math.random()*1000000)+1) +'" alt="Smiley face" height="'+ xHeight+'" width="'+ xWidth+'"> ';
 }
 
-function addTouchControlOverIframesInDiv( xDiv ) {
-	console.debug( 'addTouchControlOverIframesInDiv: '+ document.getElementById( xDiv ).id);
-	var i, frames;
-	frames = document.getElementById( xDiv ).getElementsByTagName("iframe");
-	console.debug( 'addTouchControlOverIframesInDiv: '+ frames.length );
-	for (i = 0; i < frames.length; ++i) {
-		//frames[i].style.width = "100px";			//works
-		
-		//frames[i].document.addEventListener('touchmove', function(event) {console.debug( 'touch moved');}, false);
-		
-		frames[i].contentWindow.document.body.addEventListener('touchmove', function (event) {
-			//parent.document.getElementById( xDiv ).parentNode.parentNode.dispatchEvent(event);
-			
-			//var arrFrames = parent.document.getElementsByTagName("IFRAME");
-			//console.debug( parent.document.getElementById( xDiv ).parentNode.parentNode.id );
-			
-			//for (var i = 0; i < arrFrames.length; i++) {
-			//	if (arrFrames[i].contentWindow === window) alert("yay!");
-			//}
-			//event.preventDefault();
-			//console.debug( window.parent);
-			//console.debug( 'touch moved1: '+ window.parent.parent.id);
-			/*
-			e = e || event;var target = e.target || e.srcElement;var id = target.id;
-			console.debug( 'touch moved1: '+ target);
-			console.debug( 'touch moved2: '+ target.id);
-			console.debug( 'touch moved3: '+ target.parent.parent.id);
-			console.debug( 'touch moved4: '+ target.parent.parent.parent.id);
-			*/
-		}, false);
-		//button2.dispatchEvent(event);
-		/*
-		frames[i].contentWindow.document.body.ontouchmove = function()  {
-		        //console.debug( 'touch moved');
-				e.preventDefault();
-		}
-		*/
-		
-		//document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-		/*
-	      // The iFrame
-	    frames[i].style.display = "none";
-	      // The corresponding DIV
-	    getElementById(frames[i].id + "-L").style.display = "";
-	    frames[i].onload = function()
-	    {
-	        getElementById(frames[i].id + "-L").style.display = "none";
-	        frames[i].style.display = "";
-	    }
-	*/
-	}
-}
+
 
 function clickNewSection( xnum ) {
 	//called when a user clicks a new section in the sections window
@@ -156,6 +52,15 @@ function clickNewSection( xnum ) {
 }
 
 function loadNewSection() {
+	fetchExternalJSON(xFeedList[activeSection].url, 'DrawSectionFromJson' );
+	
+	//url = 'temp/test.json';
+	//console.debug( 'fetchExternalJSON: '+ url );
+	//putExternalJsIntoHeader(url, '');
+	
+	return 1;
+	
+	//--------------code below is the Old WAY OF DOING IT... Pulled the xml feed from temp/feed.php which processed it into json
 	xURL = 'temp/feed.php?x='+ xFeedList[activeSection].url;
 	//console.debug( 'loadNewSection: '+ xURL);
 	request(
@@ -179,22 +84,41 @@ function loadNewSection() {
 	);
 }
 
-
-function DrawStoryList() {
-	//console.debug( 'DrawStoryList: ');
+function DrawSectionFromJson( xjson ) {
+	console.debug( 'DrawSectionFromJson: '+ xjson.rss.channel.title["#cdata-section"] );
+	//dumpProps(xjson);
+	
+	//----------processing the convergencePublisher response
+	//StoryList.item.length
+	//StoryList.title['#cdata-section']
+	//StoryList.lastBuildDate
+	//------article data
+	//StoryList.item[0].pubDate
+	//StoryList.item[0].title['#cdata-section']
+	//StoryList.item[0].link['#cdata-section']
+	//------media
+	//StoryList.item[1]['media:content']['@url']
+	//StoryList.item[1]['media:content']['@fileSize']
+	//----------processing the convergencePublisher response (end)
+	
+	//dumpProps(xjson.rss.item.0.title);
+	
+	StoryList = xjson.rss.channel;
+	
 	var xString = '';//<div class="scroller">';
 	xString +=	'<div class="list_header " style="">'+ xFeedList[activeSection].title +'</div>';
 	xString +=	'<ul class="list Xul">';
-	for (var i=0; i<StoryList.length;i++) {
-		xString +=	'	<li class="Xli" onclick="clickStory('+ i +');" style="">';
-		xString +=	'		<div class="story_title">'+ StoryList[i].title +'</div>';
-		xString +=	'		<div class="" style="font: bold 12px/12px Helvetica, Sans-serif;color:#464646;margin-top:-4px;width:100%;">'+ StoryList[i].pubDate +'</div>';
+	for (var i=0; i<StoryList.item.length;i++) {
+		//console.debug( StoryList.item[i].meta[0]['#cdata-section'] );
+		xString +=	'	<li class="Xli" onclick="clickStory('+ StoryList.item[i].meta[0]['#cdata-section'] +');" style="">';
+		xString +=	'		<div class="story_title">'+ StoryList.item[i].title['#cdata-section'] +'</div>';
+		xString +=	'		<div class="story_time">'+ StoryList.item[i].pubDate +'</div>';
 		xString +=	'	</li>';
 	}
 	
 	xString +=	'</ul>';
 	//xString +=	'</div>';
-	xString +=	'	<div style="background-color:none;"><img src="dfm_logo.png" style="max-width:100px;display:block;margin:auto;margin-top:12px;margin-bottom:5px;" />';
+	xString +=	'	<footer><img class="dfm-logo" src="assets/dfm_logo.png" />';
 	
 	var d = new Date().getUTCFullYear();
 	xString +=	'		<div style="display: block;margin: 0px auto;width:90%;color:white;font-family:Arial;font-size:10px;color:#FFF;text-align:center;line-height:100%;padding-bottom:20px;">';
@@ -207,15 +131,18 @@ function DrawStoryList() {
 	if ( xInterface.doesWindowExist( 'home' ) ) {
 		console.debug( 'it exists!: ');
 		setTimeout(function() { xInterface.resizeScrollers(); }, 10);
+		setTimeout(function() { xInterface.removeLoaderInWindow('home'); }, 500);
 		//setTimeout(function() { xInterface.refreshWindow('home'); }, 10);
 	} else {
 		console.debug( 'create new: ');
 		setTimeout(function() { xInterface.showWindow( 'home', {transition: 'fade'} ); }, 1000);
 	}
 	
+	setTimeout(function() { xInterface.removeLoaderInWindow('home'); }, 500);
 	//need to scroll to the top just in case user has already scrolled down on a previous story list
 	//xInterface.WindowScrollerArray[0].scrollTo(0,0,0);
 }
+
 
 
 
@@ -637,19 +564,19 @@ function loadPropertyData() {
 	
 	/*
 	xFeedList = new Array(
-			{ 'title' : 'Business', 'url' : 'http://extras.denverpost.com/media/MRSS/Business_230614.xml' },
-			{ 'title' : 'Breaking News', 'url' : 'http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml' },
-			{ 'title' : 'Broncos', 'url' : 'http://extras.denverpost.com/media/MRSS/Broncos_230613.xml' },
-			{ 'title' : 'Sports', 'url' : 'http://extras.denverpost.com/media/MRSS/Breaking_Sports_247701.xml' },
-			{ 'title' : 'Entertainment', 'url' : 'http://extras.denverpost.com/media/MRSS/Entertainment_230611.xml' },
-			{ 'title' : 'Featured', 'url' : 'http://extras.denverpost.com/media/mRSS/Featured_237705.xml' },
-			{ 'title' : 'Nuggets', 'url' : 'http://extras.denverpost.com/media/MRSS/Nuggets_230616.xml' },
-			{ 'title' : 'Nation / World', 'url' : 'http://extras.denverpost.com/media/MRSS/Nation_World_230615.xml' },
-			{ 'title' : 'Lifestyle', 'url' : 'http://extras.denverpost.com/media/MRSS/Lifestyle_230610.xml' },
-			{ 'title' : 'Opinion', 'url' : 'http://extras.denverpost.com/media/MRSS/Opinion_230609.xml' },
-			{ 'title' : 'Politics', 'url' : 'http://extras.denverpost.com/media/MRSS/Politics_230620.xml' },
-			{ 'title' : 'Preps', 'url' : 'http://extras.denverpost.com/media/MRSS/Prep_Main_245424.xml' },
-			{ 'title' : 'Rockies', 'url' : 'http://extras.denverpost.com/media/MRSS/Rockies_230619.xml' }
+			{ 'title' : 'Business', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230614.xml' },
+			{ 'title' : 'Breaking News', 'url' : 'rss.denverpost.com/mngi/rss/CustomRssServlet/36/230605.xml' },
+			{ 'title' : 'Broncos', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230613.xml' },
+			{ 'title' : 'Sports', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/247701.xml' },
+			{ 'title' : 'Entertainment', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230611.xml' },
+			{ 'title' : 'Featured', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/237705.xml' },
+			{ 'title' : 'Nuggets', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230616.xml' },
+			{ 'title' : 'Nation / World', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230615.xml' },
+			{ 'title' : 'Lifestyle', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230610.xml' },
+			{ 'title' : 'Opinion', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230609.xml' },
+			{ 'title' : 'Politics', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230620.xml' },
+			{ 'title' : 'Preps', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/245424.xml' },
+			{ 'title' : 'Rockies', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230619.xml' }
 		);
 	
 	
@@ -690,7 +617,7 @@ function loadPropertyData() {
 //---------------Eventually all code below should be moved to property specific prop.js in each props folder (end)
 
 
-function clickStory( xnum ) {
+function clickStory( xID ) {
 	//viewStory(xnum);
 	//console.debug( "clicked story with id: "+ xnum + ', '+ getStoryIdFromURL( StoryList[xnum].link[0]) );
 	
@@ -709,7 +636,8 @@ function clickStory( xnum ) {
 	
 	//xInterface.putLoaderInWindow( 'story_window' );
 	
-	loadNgpsStoryContentByID( getStoryIdFromURL( StoryList[xnum].link[0]) );
+	//loadNgpsStoryContentByID( getStoryIdFromURL( StoryList[xnum].link[0]) );
+	loadNgpsStoryContentByID( xID );
 	
 	setTimeout(function() { xInterface.showWindow( 'story_window' ); }, 100);
 	
@@ -826,7 +754,7 @@ function viewStory() {
 		xString += '</div><!-- #story_related_content -->';
 		xString += '</div> <!-- story_wrapper -->';
 		
-		xString += '<div id="story_ad_bottom" style=""></div>';
+		xString += '<div id="story_ad_bottom" class="centered_ad"></div>';
 		xString += '<div class="ng-recommender" id="ng-recommender" style="height:350px;width:100%;display:block;padding:0px;margin-top:10px;"></div>';
 		
 		document.getElementById( 'story_container' ).innerHTML = xString;
@@ -958,7 +886,8 @@ function viewStory() {
 		//setTimeout(function() { xInterface.removeLoaderInWindow( 'story_window' ); }, 200);
 		//---now that the divs are there, we need to dynamically add the ads
 		setTimeout(function() { 
-			addAdToDiv( story_ad_top, 'story_ad_top' );
+			addAdToDiv( 'story_ad_top', '300', '50' );
+			addAdToDiv( 'story_ad_bottom', '300', '250' );
 			//addAdToDiv( 'story_ad_bottom' );
 			//will need to add a 320x50 ad size here!!!
 			//addAdToDiv( '300x250', 'story_ad_bottom' );
@@ -992,6 +921,8 @@ function viewStory() {
 
 
 function DrawStoryList() {
+	//THIS IS AN OLD FUNCTION
+	alert( "DrawStoryList is a depreciated function... remove it.");
 	//console.debug( 'DrawStoryList: ');
 	var xString = '';//<div class="scroller">';
 	xString +=	'<div class="list_header " style="">'+ xFeedList[activeSection].title +'</div>';
@@ -1054,8 +985,8 @@ function DrawStoryList() {
 
 //---------------------------Experimenting with loading external js by adding it to header
 
-function getJSON(url) {  //quick and dirty, just meant for quick proof of concept, no jquery needed
-	console.debug( 'getJSON' );
+function putExternalJsIntoHeader(url) {  //quick and dirty, just meant for quick proof of concept, no jquery needed
+	console.debug( 'putExternalJsIntoHeader: '+ url );
 	
 	var xObject = document.getElementById('jsonScript');
 	if ( xObject ) {
@@ -1069,10 +1000,25 @@ function getJSON(url) {  //quick and dirty, just meant for quick proof of concep
 	//document.getElementById('dynamic_code').setAttribute("src", url);
 }
 
+//fetchExternalJSON('http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml');
 
 //http://ca1media.mobi/content/tests/t1/simple.php
-function fetchExternalJSON(url){
-	console.debug( 'fetchExternalJSON' );
+function fetchExternalJSON(url, callback){
+	
+	//older way
+	//http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=json&uri=http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml&paramname=site&param=Denver+Post
+	
+	//newest recommended way to call Spreed to Json
+	//http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2spreed&uri=http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230605.xml&json=true
+	
+	//url = 'http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=json&uri='+ url +'&jsoncallback='+ callback;
+	url = 'http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2spreed&uri='+ url +'&json=true&jsoncallback='+ callback;
+	console.debug( 'fetchExternalJSON: '+ url );
+	putExternalJsIntoHeader( url );
+	
+	
+	
+	/*
 	var yql="select * from xml where url='" + url + "'";
 	yql="http://query.yahooapis.com/v1/public/yql?q=" +
 		encodeURIComponent(yql) +
@@ -1080,13 +1026,33 @@ function fetchExternalJSON(url){
 		"&callback=cbfunc";
 	//alert(yql);
 	getJSON(yql);
+	*/
 }
 
 
 function cbfunc(xjson){
-	console.debug( 'cbfunc' );
+	console.debug( xjson.rss.channel.lastBuildDate );
+	
+	//----------processing the convergencePublisher response
+	//xjson.rss.channel.item.length
+	//xjson.rss.channel.title['#cdata-section']
+	//xjson.rss.channel.lastBuildDate
+	//------article data
+	//xjson.rss.channel.item[0].pubDate
+	//xjson.rss.channel.item[0].title['#cdata-section']
+	//xjson.rss.channel.item[0].link['#cdata-section']
+	//------media
+	//xjson.rss.channel.item[1]['media:content']['@url']
+	//xjson.rss.channel.item[1]['media:content']['@fileSize']
+	//----------processing the convergencePublisher response (end)
+	
+	
+	
+	
+	
+	//dumpProps(xjson.rss.item.0.title);
 	//alert( json.query.results.json.data[0].aliasid );
-	dumpProps(xjson);
+	//dumpProps(xjson);
 	//var xData = xjson.query.results;
 	//console.debug( xData );
 	//alert( xData.startDate );

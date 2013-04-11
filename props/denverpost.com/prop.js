@@ -7,20 +7,22 @@
 	
 	
 	xFeedList = new Array(
-			{ 'title' : 'Business', 'url' : 'http://extras.denverpost.com/media/MRSS/Business_230614.xml' },
-			{ 'title' : 'Breaking News', 'url' : 'http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml' },
-			{ 'title' : 'Broncos', 'url' : 'http://extras.denverpost.com/media/MRSS/Broncos_230613.xml' },
-			{ 'title' : 'Sports', 'url' : 'http://extras.denverpost.com/media/MRSS/Breaking_Sports_247701.xml' },
-			{ 'title' : 'Entertainment', 'url' : 'http://extras.denverpost.com/media/MRSS/Entertainment_230611.xml' },
-			{ 'title' : 'Featured', 'url' : 'http://extras.denverpost.com/media/mRSS/Featured_237705.xml' },
-			{ 'title' : 'Nuggets', 'url' : 'http://extras.denverpost.com/media/MRSS/Nuggets_230616.xml' },
-			{ 'title' : 'Nation / World', 'url' : 'http://extras.denverpost.com/media/MRSS/Nation_World_230615.xml' },
-			{ 'title' : 'Lifestyle', 'url' : 'http://extras.denverpost.com/media/MRSS/Lifestyle_230610.xml' },
-			{ 'title' : 'Opinion', 'url' : 'http://extras.denverpost.com/media/MRSS/Opinion_230609.xml' },
-			{ 'title' : 'Politics', 'url' : 'http://extras.denverpost.com/media/MRSS/Politics_230620.xml' },
-			{ 'title' : 'Preps', 'url' : 'http://extras.denverpost.com/media/MRSS/Prep_Main_245424.xml' },
-			{ 'title' : 'Rockies', 'url' : 'http://extras.denverpost.com/media/MRSS/Rockies_230619.xml' }
+			{ 'title' : 'Business', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230614.xml' },
+			{ 'title' : 'Breaking News', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230605.xml' },
+			{ 'title' : 'Broncos', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230613.xml' },
+			{ 'title' : 'Sports', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/247701.xml' },
+			{ 'title' : 'Entertainment', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230611.xml' },
+			{ 'title' : 'Featured', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/237705.xml' },
+			{ 'title' : 'Nuggets', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230616.xml' },
+			{ 'title' : 'Nation / World', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230615.xml' },
+			{ 'title' : 'Lifestyle', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230610.xml' },
+			{ 'title' : 'Opinion', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230609.xml' },
+			{ 'title' : 'Politics', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230620.xml' },
+			{ 'title' : 'Preps', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/245424.xml' },
+			{ 'title' : 'Rockies', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230619.xml' }
 		);
+	
+	
 	
 	//alert( xFeedList[0].title );
 	//alert( xFeedList[0].url );

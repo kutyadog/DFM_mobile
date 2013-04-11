@@ -30,6 +30,9 @@
 			var AppleAppID;
 			var topDomain;
 			
+			var adunit = '/8013/digital.first.media.test.site/Mobile';		//this will probably need to be moved to property.js
+			
+			
 			function get_top_domain(){
 				var i,h,
 				weird_cookie='weird_get_top_level_domain=cookie',
@@ -49,10 +52,12 @@
 				//-------everything has loaded, now we need to get property specific js and css before we do anything
 				//			yeah not truly efficient, this process can be cleaned up i think for speed but for now, it works
 				
+				//http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=json&uri=http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml&paramname=site&param=Denver+Post
 				//---for testing loading of external js along with code at bottom of universal.js
 				//fetchExternalJSON('http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml');
-				//setTimeout(function() { fetchExternalJSON('http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml'); }, 4000);
 				//return 0;
+				//setTimeout(function() { fetchExternalJSON('http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml'); }, 4000);
+				
 				
 				//---------------------------------------------load property specific external files
 				topDomain = get_top_domain();

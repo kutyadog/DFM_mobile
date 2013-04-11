@@ -1,0 +1,781 @@
+DrawSectionFromJson({
+  "?xml": {
+    "@version": "1.0",
+    "@encoding": "utf-8"
+  },
+  "rss": {
+    "@version": "2.0",
+    "@xmlns:media": "http://search.yahoo.com/mrss/",
+    "channel": {
+      "title": {
+        "#cdata-section": "Breaking News"
+      },
+      "link": {
+        "#cdata-section": "www.denverpost.com"
+      },
+      "description": {
+        "#cdata-section": "The Denver Post - Breaking News"
+      },
+      "language": "us-en",
+      "copyright": "2009-2013 The Denver Post",
+      "lastBuildDate": "Thu, 11 Apr 2013 15:55:11 -0600",
+      "category": {
+        "#cdata-section": "colorado breaking news, sports, weather, traffic"
+      },
+      "item": [
+        {
+          "title": {
+            "#cdata-section": "Douglas County prosecutors drop charges against filmmaker"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_23005979"
+          },
+          "description": {
+            "#cdata-section": "Douglas County prosecutors dropped charges against a documentary filmmaker who tried to tape a Douglas County school board meeting last summer."
+          },
+          "author": {
+            "#cdata-section": "By Ryan Parker, The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "Suburbs"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_23005979"
+          },
+          "pubDate": "Thu, 11 Apr 2013 15:41:32 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 15:46:25 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "23005979"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": "Suburbs Douglas County prosecutors drop charges against filmmaker"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "Douglas County prosecutors dropped charges against a documentary filmmaker who tried to tape a Douglas County school board meeting last summer."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p>Douglas County prosecutors dropped charges against a documentary filmmaker who tried to tape a  Douglas County school board meeting last summer. </p><p>The decision not to prosecute  Brian Malone was announced Thursday, after lawyers with the American Civil Liberties Union filed for the charges to be dropped, according to a news release from John Krieger, ACLU Colorado spokesman. </p><p>Malone was charged with disrupting a lawful assembly stemming from an incident during an Aug. 7 meeting when the filmmaker refused to move  a tripod and camera from a location he previously had  been allowed to tape.</p><p>Malone was kicked out of the meeting, issued a ticket and banned from all future board meetings. </p><p>\"This decision reinforces that access to public meetings for the media and general public is a fundamental right that should never be criminalized,\"   said Mark Silverstein , ACLU Colorado legal director</p><p>The school district lifted the ban on Malone from meetings after a letter was sent on his behalf from the ACLU. </p><p><i>Ryan Parker: 303-954-2409, <a href='mailto:rparker@denverpost.com'>rparker@denverpost.com</a> or <a href='http://twitter.com/ryanparkerdp'>twitter.com/ryanparkerdp</a></i></p>"
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "Colorado bill to require DNA sample for minor offenses draws criticism in committee"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_23005906"
+          },
+          "description": {
+            "#cdata-section": "The question of whether Coloradans should have to submit a DNA sample if convicted of a misdemeanor brought forward a spirited back-and-forth between lawmakers Thursday as a House committee began hearing testimony on the measure. "
+          },
+          "author": {
+            "#cdata-section": "By Kurtis Lee, The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "Local News"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_23005906"
+          },
+          "pubDate": "Thu, 11 Apr 2013 15:26:08 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 15:46:25 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "23005906"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": "Local News Colorado bill to require DNA sample for minor offenses draws criticism in committee"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "The question of whether Coloradans should have to submit a DNA sample if convicted of a misdemeanor brought forward a spirited back-and-forth between lawmakers Thursday as a House committee began hearing testimony on the measure. "
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p>The question of whether Coloradans should have to submit a DNA sample  if convicted of a misdemeanor brought forward  a spirited back-and-forth between lawmakers Thursday as a House committee began hearing testimony on the measure. </p><p>Rep. Dan Pabon, D-Denver, the sponsor of the bill, opened testimony by issuing an amendment to the bill that would only require Class 1 misdemeanor convictions require a DNA submission. Pabon originally had sought to require convictions of Class 1, Class 2 and Class 3 misdemeanors be required to submit DNA samples. </p><p>\"This will help solve crimes and exonerate the innocent,\" said Pabon Thursday, comparing DNA to fingerprinting and mugshots. </p><p>State Rep. Jared Wright, R-Fruita, argued to Pabon there's 36 pages of Class 1 misdemeanors in Colorado that include relatively minor offenses and that DNA collection is a serious process. </p><p> \"DNA  is an inventory of everything in the home — fingerprint is just address to the home,\" Wright said. </p><p>Misdemeanors in Colorado include everything from domestic violence assaults to barbering without a license and tampering with election machinery. Upon convictions of these crimes,under the legislation, an individual would have pay a $128 fee for their DNA sample to be taken. </p><p>Pabon has stressed that by gathering DNA samples for misdemeanor crimes more violent felonies will be solved.  </p><p>But Rep. Claire Levy, D-Boulder, questioned the premise  of the bill. </p><p>\"So you're saying by committing a property offense, it's likely you'll commit more violent crimes,\"  Levy said. </p><p>Pabon said the reason his bill calls for DNA samples for all misdemeanors is for uniformity purposes. </p><p>\"It's for officers and court officials in collection of DNA,\" Pabon said. \"This gives some consistency to court officials to know what requires a DNA sample.\" </p><p>Already in Colorado those charged with a  felony or misdemeanor sexual misconduct  must submit a DNA sample. </p><p>The House Judiciary committee consists of seven Democrats and four Republicans who are expected to cast a vote on the measure Thursday afternoon. </p><p><i>Kurtis Lee: 303-954-1655, <a href='mailto:klee@denverpost.com'>klee@denverpost.com</a> or <a href='http://twitter.com/kurtisalee'>twitter.com/kurtisalee</a></i></p>"
+            },
+            {
+              "@id": "original-image",
+              "url": "http://extras.mnginteractive.com/live/media/site36/2013/0411/20130411__DNA-testing~p1.jpg",
+              "width": "600",
+              "height": "399",
+              "caption": "FILE -- The Freedom EVO made by TECAN is the Colorado Bureau of Investigation's DNA extraction robot that can processes many samples in a much shorter time for forensic studies. ",
+              "credit": "Joe Amon&#44; The Denver Post"
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "Colorado State gets USDA grant to improve farm practices in droughts"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_23005933"
+          },
+          "description": {
+            "#cdata-section": " Colorado State University has received an $883,000 grant from the U.S. Department of Agriculture to help farmers find ways to save water during droughts."
+          },
+          "author": {
+            "#cdata-section": "The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "news"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_23005933"
+          },
+          "pubDate": "Thu, 11 Apr 2013 15:32:33 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 15:36:32 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "23005933"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": " Colorado State gets USDA grant to improve farm practices in droughts"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": " Colorado State University has received an $883,000 grant from the U.S. Department of Agriculture to help farmers find ways to save water during droughts."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p> Colorado State University has received an  $883,000 grant from the U.S. Department of Agriculture to help farmers find ways to save water during droughts.</p><p>Farmers, in turn, will get an online tool to calculate water savings from different strategies, once CSU's  team of agricultural and environmental scientists finish their work</p><p>The USDA handed out $5.3 million to 13 research teams nationwide to help farmers  adapt to the extreme climate changes that cause drought.</p><p>\"Colorado's agricultural producers have been at the forefront of new conservation technologies that help more efficiently produce food, fiber and fuel for the country, largely due to CSU's leadership in agricultural research,\" U.S. Sen. Michael Bennet, D-Colo.,  said in a statement. \"This grant will help CSU continue to develop new ways for farmers and ranchers to protect their land, crops and water.\"</p><p>The project will examine water-savings from  changes in management of crops; soil tillage and amendments; and  irrigation. Sensors will track soil moisture and crop stress.</p><p>\"We want to maximize crop per drop, meaning crop yield per gallon of water,\" project leader Neil Hansen, an associate professor in the CSU Department of Soil and Crop Sciences, said in a statement. </p><p>\"Water is short, and we've got to get as much as we can from the little we've got,\" Hansen said.</p><p>Farmers affiliated with the  West Greeley Conservation District and the Lower South Platte Irrigation Research Farm will assist with the project. Several companies are also participating:  Dupont Pioneer,  Regenesis Management, Biochar Solutions, John Deere Water and 21st Century Ag Equipment.</p>"
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "Child dies in single-vehicle crash on I-70 in Summit County"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_23003917"
+          },
+          "description": {
+            "#cdata-section": "An 11-year-old boy has died in a roll-over crash on I-70 in Summit County, according to the Colorado State Patrol."
+          },
+          "author": {
+            "#cdata-section": "By Kieran Nicholson, The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "Local News"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_23003917"
+          },
+          "pubDate": "Thu, 11 Apr 2013 11:23:41 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 15:16:28 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "23003917"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": "Local News Child dies in single-vehicle crash on I-70 in Summit County"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "An 11-year-old boy has died in a roll-over crash on I-70 in Summit County, according to the Colorado State Patrol."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p>An 11-year-old boy  has died in a roll-over crash on I-70 in Summit County, according to the Colorado State Patrol. </p><p>The single-vehicle crash happened at about 9 a.m. in the eastbound lanes of the highway, said Trooper Josh Lewis, a state patrol spokesman. </p><p>Investigators believe the crash was weather-related, although  an investigation is ongoing. </p><p>The 42-year-old driver of the  SUV, a 1997 Chevrolet Tahoe,  was not injured but a  passenger, a 69-year-old man,  was taken to St. Anthony Hospital  with injuries. Both men were wearing seat belts. </p><p>The  11-year-old, who was not buckled in and was in the back of the SUV, was pronounced dead at Summit Medical Center. </p><p>All three are from Avon. </p><p>Their identities were  not released. </p><p><i>Kieran Nicholson: 303-954-1822, <a href='mailto:knicholson@denverpost.com'>knicholson@denverpost.com</a> or <a href='http://twitter.com/kierannicholson'>twitter.com/kierannicholson</a></i></p>"
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "Robert H. McWilliams, Jr., retired city, state and federal judge, dies"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_23005002"
+          },
+          "description": {
+            "#cdata-section": "Robert H. McWilliams, Jr., a University of Denver law school graduate who served in World War II before going on to become a judge and rising to the Colorado Supreme Court and then the U."
+          },
+          "author": {
+            "#cdata-section": "By Tom McGhee, The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "Cops and Courts"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_23005002"
+          },
+          "pubDate": "Thu, 11 Apr 2013 13:31:44 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 14:56:25 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "23005002"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": "Cops and Courts Robert H. McWilliams, Jr., retired city, state and federal judge, dies"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "Robert H. McWilliams, Jr., a University of Denver law school graduate who served in World War II before going on to become a judge and rising to the Colorado Supreme Court and then the U."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p>Robert H. McWilliams, Jr., a University of Denver law school graduate who served in World War II before going on to become a judge and rising to the Colorado Supreme Court and then the U.S. Court of Appeals for the Tenth Circuit,  died at 97 on Wednesday. </p><p>McWilliams, who was appointed to the Tenth Circuit by President Richard Nixon in 1970, took senior status on the court in 1984, continuing to  hear cases. </p><p>\"He had only retired from the court about three years ago,\" his brother-in-law, Robert Starzel, said. \"He was an easy guy to know, he was so congenial.\" </p><p>McWilliams' family moved to Denver from Salina, Kansas, when he was a boy and he attended South High School before getting his bachelors and law degree from DU. </p><p><i>Tom McGhee: 303-954-1671, <a href='mailto:tmcghee@denverpost.com'>tmcghee@denverpost.com</a> or <a href='http://twitter.com/dpmcghee'>twitter.com/dpmcghee</a></i></p>"
+            },
+            {
+              "@id": "original-image",
+              "url": "http://extras.mnginteractive.com/live/media/site36/2013/0411/20130411__RobertMcWilliams~p1.jpg",
+              "width": "472",
+              "height": "600",
+              "caption": "Robert H. McWilliams signs his oath of office as a judge of the 10th Circuit Court of Appeals in November 1970.",
+              "credit": " Denver Post file "
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "Denver Health Medical Center off heightened security after threat"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_23004534"
+          },
+          "description": {
+            "#cdata-section": "Denver Health Medical Center was on heightened security after paramedics and the paramedic command staff received threats."
+          },
+          "author": {
+            "#cdata-section": "By Kieran Nicholson, The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "Local News"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_23004534"
+          },
+          "pubDate": "Thu, 11 Apr 2013 12:39:08 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 14:48:33 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "23004534"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": "Local News Denver Health Medical Center off heightened security after threat"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "Denver Health Medical Center was on heightened security after paramedics and the paramedic command staff received threats."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p>Denver Health Medical Center was on  heightened security  after paramedics and the paramedic command staff received threats. </p><p>The hospital, at 777 Bannock St., was placed on a  modified lockdown about  11:30 a.m. Thursday, said Cindy Matthews, a medical center spokeswoman. </p><p>The measure was lifted at about 1 p.m. </p><p>Patients, visitors and staff had to show identification to enter any of the buildings on the medical center's campus, and additional security staff was  brought  in until the situation was  resolved, Matthews said. </p><p>Denver police are working with the medical center on the incident and investigators were  looking for a person of interest, Matthews said. </p><p>The medical center did not disclose the specific nature of the threat but did find it credible enough to take the action.</p><p>Denver police are \"in contact with a former employee\" in regard to the  incident, said Aaron Kafer, a Denver Police Department spokesman, and they're questioning him this afternoon. </p><p><i>Kieran Nicholson: 303-954-1822, <a href='mailto:knicholson@denverpost.com'>knicholson@denverpost.com</a> or <a href='http://twitter.com/kierannicholson'>twitter.com/kierannicholson</a></i></p>"
+            },
+            {
+              "@id": "original-image",
+              "url": "http://extras.mnginteractive.com/live/media/site36/2013/0411/20130411_024716_denver-health-medical-center.jpg",
+              "width": "2350",
+              "height": "1250",
+              "caption": "A Lakota helicopter lands at Denver Health Medical Center during a drill in this May 16, 2012, file photo.",
+              "credit": " RJ Sangosti&#44; The Denver Post "
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "Outraged judge lays into child welfare workers at sentencing in toddler beating death"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_23003429"
+          },
+          "description": {
+            "#cdata-section": "After excoriating Adams County social services for its botched effort to protect the child, a judge on Thursday sentenced Donald Scarlett to 42 years in prison for beating a toddler to death."
+          },
+          "author": {
+            "#cdata-section": "By Karen Aug&eacute;, The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "Local News"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_23003429"
+          },
+          "pubDate": "Thu, 11 Apr 2013 10:05:36 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 14:36:30 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "23003429"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": "Local News Outraged judge lays into child welfare workers at sentencing in toddler beating death"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "After excoriating Adams County social services for its botched effort to protect the child, a judge on Thursday sentenced Donald Scarlett to 42 years in prison for beating a toddler to death."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p>After excoriating Adams County social services for its botched effort to protect the child, a judge on Thursday sentenced Donald  Scarlett to 42 years in prison for beating a toddler to death.</p><p>Scarlett, 33, had initially been charged with murder for killing 22-month-old Michael Ryan Harris, but a jury found him guilty of child abuse resulting in death. He faced up to 48 years in prison.</p><p>Michael, who died Feb. 2, 2011,  was one of 72 children who died between 2007 and 2012 after child welfare officials had been alerted that they were being abused or neglected, the Denver Post and 9News reported in a 2012 series. Michael was one of the children profiled in that series, <a href=\"http://childfatalities.denverpost.com/#id=23&name=HarrisMichael\" title=\"Failed to Death\" target=\"_blank\"> <a href=\"http://childfatalities.denverpost.com/#id=23&name=HarrisMichael\" title=\"one of the children profiled\" target=\"_blank\"> Failed to Death, </a></a>last October.</p><p>Before handing down the sentence, Judge Chris Melonakis lashed out at Adams County Department of Human Services, which he said had returned Michael and his 3-year-old brother to their mother just weeks before Michael's death, then neglected to make sure the boys were safe.</p><p>Melonakis called the county's performance \"extreme malfeasance,\" and said they had received reports three days before Michael's death that his  older brother had a \"suspicious\" injury. Nevertheless, social workers never took that child to a doctor, and didn't examine Michael for injuries at all.</p><p>\"This child was literally failed to death,\" Melonakis said.</p><p>  \"Frankly, I think somebody should take (social workers) in front of a grand jury and find out whether their conduct was criminal.\"</p><p>When Michael was 1-year-old, social workers took him and his two older brothers from their mother, Rosanna Key. The oldest of the boys went to live with his father. Michael and his older brother went to foster care.</p><p>Key admitted smoking marijuana and said her parents and roommate — who often cared for the children — also smoked marijuana and methamphetamine, according to a state Department of Human Services review.</p><p>The two youngest children, including Michael, were returned to Key  four months later, after she completed parenting and substance abuse courses. By that time,  she was living with Scarlett.</p><p>Scarlett's attorney, Harvey Steinberg, also laid blame for the little boy's death at the feet of Adams County social workers. Steinberg, who may be best known for representing professional athletes and high-profile defendants, argued that Scarlett had no prior criminal record and a stable work history. </p><p>Scarlett's mother, Lori Ramirez,  pleaded for a lenient sentence for her son, whom she called \"a loving caring man.\" </p><p>But Melonakis said it  was Scarlett whom a jury convicted of raining down blows so violent they severed Michael's pancreas. The force of the beating ruptured nerve endings in Michael's spine and caused his heart and lungs to stop functioning, the judge said.</p><p>After Michael's death, his mother told investigators that she and Scarlett fought over Michael's crying. Once, Scarlett accused Key of \"babying\"  the 22-month-old.</p><p>Key told authorities she heard her son crying — screaming — from behind a door while Scarlett beat him the night before he died. She said she never opened the door and didn't check on her son all night and left him alone with Scarlett the next morning when she went to work.</p><p>Key is serving 16 years in prison for her role in her son's death.</p><p>On Thursday, Melonakis, who also imposed that sentence, said he would have given Key a longer prison term if the law had allowed.</p><p>\"Michael Harris never had a chance in life,\" Melonakis said.</p><p>His mother failed him, and the agency charged with protecting him \"demonstrated an appalling level of neglect,\" and now will \"hide behind privacy laws\" that might shed light on that negligence, the judge said.</p><p>\"Children die and bureaucrats still have their jobs,\" he said.</p><p>When Melonakis announced Scarlett's 42-year-sentence, his mother broke down, sobbing. No members of Michael Harris' family were in the courtroom.</p><p><i>Karen Aug&eacute;: 303-954-1733, kauge@denverpost.com or twitter.com/karenauge</i></p>"
+            },
+            {
+              "@id": "original-image",
+              "url": "http://extras.mnginteractive.com/live/media/site36/2013/0411/20130411__scarlettDonald~p1.jpg",
+              "width": "600",
+              "height": "594",
+              "caption": "Donald Scarlett",
+              "credit": "HANDOUT"
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "Court records reveal new details in Felix Trujillo's jail escape"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_23002981"
+          },
+          "description": {
+            "#cdata-section": "A sheriff's deputy told co-workers that he helped a felon escape the Denver jail because he had been threatened and told there was a contract out on him and his family, according to court records in the case."
+          },
+          "author": {
+            "#cdata-section": "By Sadie Gurman, The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "Cops and Courts"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_23002981"
+          },
+          "pubDate": "Thu, 11 Apr 2013 08:59:28 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 14:28:42 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "23002981"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": "Cops and Courts Court records reveal new details in Felix Trujillo's jail escape"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "A sheriff's deputy told co-workers that he helped a felon escape the Denver jail because he had been threatened and told there was a contract out on him and his family, according to court records in the case."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p>A sheriff's deputy told co-workers that he helped a felon escape the Denver jail because he had been threatened and told there was a contract out on him and his family, according to court records in the case.</p><p>The escapee, Felix Trujillo, spent three days on the run after walking out of the Downtown Denver Detention Center in a sheriff's deputy's baseball cap and jacket, according to a probable cause statement obtained by The Denver Post. Trujillo was in court Thursday morning where Denver Judge Claudia Jordan ordered him held on $100,000 bond.</p><p>Trujillo, 24, faces charges of escape and also kidnapping stemming from the Sunday night incident, court records show. </p><p>Also facing charges is Deputy Matthew Andrews, 36, who police said helped him walk out of the facility and drove him to Thornton before returning to the jail. </p><p>Video surveillance at 7 p.m. Sunday shows Trujillo standing next to Andrews at the jail, according to the court records. They boarded an elevator together and then were seen leaving the jail and walking on West 14th Avenue.</p><p>Andrews returned to the jail later and told co-workers that he had driven Trujillo to Thornton and fled, the court records said.</p><p> <a href=\"http://www.denverpost.com/breakingnews/ci_22995196/denver-police-arrest-escapee-felix-trujillo\" target=\"_top\">Trujillo was arrested Wednesday </a>afternoon near West 50th Avenue and Federal Boulevard after his family arranged for his surrender. </p><p>Denver Police Major Crimes Cmdr. Ronald Saunier has said others who helped or hid him could face criminal charges as well.</p><p>Already arrested for aiding in his escape is Marilyn Annette Reeves, 47, though police have not described her role in the case.</p><p>Reeves told police that Trujillo arrived at her home at about 11 p.m. Sunday and left around noon on Monday with her cell phone, according to a probable cause statement in her case.</p><p>She said she knew Trujillo was a fugitive, but she said she helped him because he was her son's best friend, the records said. She told police she was up all night on Sunday afraid that officers were going to come looking for Trujillo.</p><p>On Tuesday, she rented a hotel room for Trujillo under her own name, the records said.</p><p><i>Sadie Gurman: 303-954-1661, sgurman@denverpost.com or twitter.com/sgurman</i></p>"
+            },
+            {
+              "@id": "original-image",
+              "url": "http://extras.mnginteractive.com/live/media/site36/2013/0409/20130409__20130410_A4_CD10ESCAPEE~p2.jpg",
+              "width": "507",
+              "height": "600",
+              "caption": "Felix Trujillo",
+              "credit": null
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "Dinosaur National Monument makes plans for sequestration cuts"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_23004280"
+          },
+          "description": {
+            "#cdata-section": "Sequestration, a series of government spending cuts that went into effect last month, has forced the National Parks Service to trim 5 percent of its budget for the remainder of the fiscal year."
+          },
+          "author": {
+            "#cdata-section": "By Joe Moylan, Steamboat Pilot &amp; Today"
+          },
+          "category": {
+            "#cdata-section": "news"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_23004280"
+          },
+          "pubDate": "Thu, 11 Apr 2013 11:52:00 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 14:06:17 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "23004280"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": " Dinosaur National Monument makes plans for sequestration cuts"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "creditline",
+              "#cdata-section": "The Denver Post"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "Sequestration, a series of government spending cuts that went into effect last month, has forced the National Parks Service to trim 5 percent of its budget for the remainder of the fiscal year."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p>CRAIG — Sequestration, a series of government spending cuts that went into effect last month, has forced the National Parks Service to trim 5 percent of its budget for the remainder of the fiscal year.</p><p>For Dinosaur National Monument, in western Moffat County and eastern Utah, that cut equals $170,263, according to Dan Johnson, chief of interpretation and visitor services.</p><p>Dinosaur officials will not fill two full-time positions this year, including one for a journeyman and one for a wildlife biologist. The monument plans to fill all of its seasonal positions, Johnson said. </p><p>Taking benefits into consideration Johnson said cutting the two positions will save Dinosaur about $150,000. Cuts to staff training, travel and supplies will make up the remaining $20,000.</p><p>Read the rest of this report at  <a href=\"http://www.steamboattoday.com/news/2013/apr/10/dinosaur-sites-attractions-wont-be-affected-congre/\" target=\"_top\">SteamboatToday.com</a></p>"
+            },
+            {
+              "@id": "original-image",
+              "url": "http://extras.mnginteractive.com/live/media/site36/2013/0411/20130411_120423_00005781_H316238.jpg",
+              "width": "2208",
+              "height": "1409",
+              "caption": "Boaters meander along a peaceful stretch of the Green River as it runs through Lodore Canyon on the Colorado portion of Dinosaur National Monument.",
+              "credit": " Denver Post file "
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "2013 Doors Open Denver: 5 tips for exploring this year's (free) architectural extravaganza"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_22997774"
+          },
+          "description": {
+            "#cdata-section": "Doors Open Denver is one of the best deals going. More than 60 buildings, old and new, put out the welcome mat for the public over the weekend, and it's all free."
+          },
+          "author": {
+            "#cdata-section": "By Ray Mark Rinaldi, The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "Architecture | Ray Mark Rinaldi"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_22997774"
+          },
+          "pubDate": "Thu, 11 Apr 2013 13:57:57 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 14:00:30 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "22997774"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": "Architecture | Ray Mark Rinaldi 2013 Doors Open Denver: 5 tips for exploring this year's (free) architectural extravaganza"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "Doors Open Denver is one of the best deals going. More than 60 buildings, old and new, put out the welcome mat for the public over the weekend, and it's all free."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p> <a href=\"http://denverarchitecture.org/resources/newsletter/doors-open-denver-2013\">Doors Open Denver </a>is one of the best deals going. More than 60 buildings, old and new, put out the welcome mat for the public over the weekend, and it's all free. In addition, there are scores of expert-guided tours offered at no cost.</p><p>But it can be a lot of work to sort out the list of sites. Do you want to see historic structures or modern rehabs? Do you want to stick to a single neighborhood or cover some geography?</p><p>This year's theme is \"City Beautiful Then & Now,\" harking back to the early 20th-century movement to create elegant, expansive architecture in urban areas. \r\n</p><p> The list includes older, ornate structures around <a href=\"http://www.denverpost.com/art/ci_4881622\" title=\"www.denverpost.com\"> Civic Center</a>, like the just-refurbished  <a href=\"http://www.denverpost.com/entertainment/ci_21951418/nbsp-nbsp-mcnichols-buildings-artful-reopening\">McNichols Building</a>, plus  scattered landmarks, like the Zen Center of Denver, at 3101 W. 31st Ave., as good an example of classical revivalism as you'll see in the West. </p><p>But there are also recent  structures built to serve a civic purpose with the same spirit.</p><p> You can get into the first floor of the  <a href=\"http://blogs.denverpost.com/artmosphere/category/clyfford-still-museum/\">Clyfford Still Museum </a>at 13th and Bannock streets, or see the new Denver Crime Lab, at West 14th Avenue and  Cherokee Street,  one of the guided tours. \"These are the buildings that will be the landmarks of the future,\" said Annie Levinsky, executive director of  <a href=\"http://www.historicdenver.org/\">Historic Denver</a>, a partner in the event.</p><p>Check out the  list  on the website, <a href=\"http://denverarchitecture.org/resources/newsletter/doors-open-denver-2013\" title=\"denverarchitecture.org\">denverarchitecture.org</a>, and match it to your  taste for exploring. Here's   advice if you are willing to dig  deeper into the  possibilities.  </p><p><b>1.</b> Look for deals. Like getting a free tour of the  <a href=\"http://www.mollybrown.org/\">Molly Brown House</a>, which usually charges $8 a person. The 1889 Queen Anne mansion will be open both Saturday and Sunday as part of the guided tour offerings.</p><p><b>2.</b> Look for opportunities. Like seeing the fascinating  <a href=\"http://www.dikeoucollection.org/\">Dikeou Collection </a>of art in the Colorado Building on an actual weekend. The contemporary museum, at 1615 California St.,  is one of Denver's best-kept cultural secrets due to its limited, weekday hours.</p><p><b>3.</b> Look for specials. Like the one offered by the Denver Animal Shelter, which is cutting adoption prices in half    to capitalize on the crowds. The shelter, at 1241 W. Bayaud Ave., is so deluxe you might feel guilty bringing a pet home to your  own ordinary house.</p><p><b>4. </b>Look for line-cutting opportunities. Like the V.I.P. pass. Many of Doors Open Denver's organized tours   fill quickly, and you have to register for them in person. That means showing up at the McNichols Building headquarters at 8:30 a.m. to claim your place, even if your tour doesn't start for hours. </p><p>But you can also buy a V.I.P. pass, which will allow you to score a spot in advance. They cost $100, though the money supports the event's operating expenses. Think of it as your charitable contribution to the Denver Architectural Foundation, the hard-working nonprofit that puts it all together.</p><p><b>5. </b>Look for what's new.  Like  Hogle-Allison Motors  at 1278 Lincoln St. The 1924 structure, designed by Fisher & Fisher Architects, is  home to the Colorado Ballet's studios, but  <a href=\"http://blogs.denverpost.com/artmosphere/tag/colorado-ballet/\">they're moving out soon </a>so the building's fate is up in the air.</p><p>New sites are always Doors Open Denver's big attractions. This year's fresh offerings include the Kittredge Building, at 511 16th St., one of the first elevator buildings in Colorado;  First Baptist Church at 1373 Grant St., with its rooster spire; and the Mathews-Gott-helf Mansion, at 2601 Champa St., the 1880 home built for mining magnate James F Mathews.</p><p>You can get info at  the McNichols Building, or you can simply walk into most of the sites on the list.    </p><p><i>Ray Mark Rinaldi: 303-954-1540, rrinaldi@denverpost.com or twitter.com/rayrinaldi</i></p>\r\n\r\n<p><b>DOORS OPEN DENVER. </b>The annual open house for architectural sites takes place at various locations around the city from 10 a.m.-4 p.m. Saturday and Sunday. Register for guided tours beginning at 8:30 a.m. each day at event headquarters in the  McNichols Building, near Colfax Avenue and Bannock Street in  Civic Center. Free. <b><a href='http://doorsopendenver.org'>doorsopendenver.org</a>.</b></p>"
+            },
+            {
+              "@id": "original-image",
+              "url": "http://extras.mnginteractive.com/live/media/site36/2013/0410/20130410__20130412_C8_AE12FADOORS~p1.JPG",
+              "width": "600",
+              "height": "398",
+              "caption": "The Colorado Building, on California and 16th streets, originally housed a department store. These days it holds offices and the Dikeou Collection of contemporary art.",
+              "credit": " Doors Open Denver "
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "Man accused in deadly RTD bus stabbing claimed to be high on meth"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_23004594"
+          },
+          "description": {
+            "#cdata-section": "A man accused of fatally stabbing another man on an RTD bus this week claimed to be high on methamphetamine and heroin, according to court documents released Thursday."
+          },
+          "author": {
+            "#cdata-section": "By Sadie Gurman, The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "Cops and Courts"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_23004594"
+          },
+          "pubDate": "Thu, 11 Apr 2013 12:50:34 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 12:54:18 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "23004594"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": "Cops and Courts Man accused in deadly RTD bus stabbing claimed to be high on meth"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "A man accused of fatally stabbing another man on an RTD bus this week claimed to be high on methamphetamine and heroin, according to court documents released Thursday."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p>A man accused of fatally stabbing another man on an RTD bus this week claimed to be high on methamphetamine and heroin, according to court documents released Thursday.</p><p>Isaiah Moreno, 20, faces charges that he killed 39-year-old Estevan Ruiz on Tuesday  while aboard a crowded No. 16 bus at Federal Boulevard and West Colfax Avenue.</p><p>Surveillance footage showed Ruiz and Moreno getting on the bus at the same location, but not at the time time, homicide detectives wrote in affidavit of probable cause. Moreno got off at the Federal turn-around, but Ruiz stayed on. Moreno then climbed aboard again, approached Ruiz and stabbed him in the neck. Witnesses told police they saw a man punch or hit Ruiz in the neck and then run from the bus.</p><p>Officers who arrested Moreno in the 1500 block of King Street said they could hear him yell that the victim had stabbed his brother, but he said nothing else, the affidavit says.</p><p>He told detectives who interviewed him later that he was under the influence of meth and heroin and \"he did not know where he was or what was happening.\"</p><p>Moreno is being held without bond at the Downtown Denver Detention Center. RTD has said it is  <a href=\"http://www.denverpost.com/breakingnews/ci_22994147/man-due-court-wednesday-fatal-stabbing-rtd-bus\" target=\"_top\">conducting an internal investigation</a> into the stabbing to see whether employees followed procedure.</p><p><i>Sadie Gurman: 303-954-1661, sgurman@denverpost.com or twitter.com/sgurman</i></p>"
+            },
+            {
+              "@id": "original-image",
+              "url": "http://extras.mnginteractive.com/live/media/site36/2013/0410/20130410__Moreno-Isaiah~p1.jpg",
+              "width": "480",
+              "height": "600",
+              "caption": "Isaiah Moreno, 20",
+              "credit": " &#124; "
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "Child, 6, injured in two-vehicle collision in NE Denver"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_23004024"
+          },
+          "description": {
+            "#cdata-section": "A 6-year-old child was injured in a two-vehicle collision in northeast Denver on Thursday morning."
+          },
+          "author": {
+            "#cdata-section": "By Kieran Nicholson, The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "Local News"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_23004024"
+          },
+          "pubDate": "Thu, 11 Apr 2013 11:32:09 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 12:36:26 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "23004024"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": "Local News Child, 6, injured in two-vehicle collision in NE Denver"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "A 6-year-old child was injured in a two-vehicle collision in northeast Denver on Thursday morning."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p>A 6-year-old child was injured in a two-vehicle collision in northeast  Denver on Thursday morning. </p><p>The collision happened at about 7:35  a.m. at  the intersection of Martin Luther King Jr. Boulevard and Havana Street, according to a Denver Police Department spokesman. </p><p>Details on the child's injuries were not available. There were no other injuries reported. </p><p>The police traffic bureau is investigating the cause of the collision.  </p><p><i>Kieran Nicholson: 303-954-1822, <a href='mailto:knicholson@denverpost.com'>knicholson@denverpost.com</a> or <a href='http://twitter.com/kierannicholson'>twitter.com/kierannicholson</a></i></p>"
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "Colorado charges doctor in problem-plagued robo-surgeries at Porter"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_22998041"
+          },
+          "description": {
+            "#cdata-section": "The Colorado medical board has charged Dr. Warren Kortz with 14 counts of unprofessional conduct after a series of failed procedures with Porter Adventist Hospital's robotic surgery arm, as federal officials launch a wider review of the highly touted procedures."
+          },
+          "author": {
+            "#cdata-section": "By Michael Booth, The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "Health"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_22998041"
+          },
+          "pubDate": "Wed, 10 Apr 2013 17:36:05 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 10:02:28 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "22998041"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": "Health Colorado charges doctor in problem-plagued robo-surgeries at Porter"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "The Colorado medical board has charged Dr. Warren Kortz with 14 counts of unprofessional conduct after a series of failed procedures with Porter Adventist Hospital's robotic surgery arm, as federal officials launch a wider review of the highly touted procedures."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p>The Colorado medical board has charged Dr. Warren Kortz  with 14 counts  of unprofessional conduct after a series of failed  procedures with Porter Adventist Hospital's robotic surgery arm, as federal officials launch a wider review of the highly touted procedures. </p><p>The state alleges that from 2008 to 2010,  Kortz cut and tore blood vessels, left sponges and other instruments inside patients after closing, injured patients through improper padding and positioning, subjected some to overly long surgeries, and had to abort kidney donations because of mistakes.</p><p>Kortz also failed to document the mistakes in patient charts, the medical board alleged in a  <a href=\"http://www.scribd.com/doc/135244452/Warren-Kortz-MD-Formal-Complaint\" target=\"_blank\">complaint filed earlier this month</a>.</p><p>An attorney representing Kortz on the state charges declined comment. Lisanne Leasure, an attorney for Kortz in a negligence suit over one of the kidney patients, said in a statement that Kortz's care was \"reasonable and appropriate.\"</p><p>\"Dr. Kortz is a very experienced and excellent surgeon who has helped many Coloradans over his lengthy career,\" Leasure said in the statement with co-counsel Bruce Montoya. The patient's attorney in the malpractice case \"is seeking to use the Board matter to gain advantage or force a settlement in the civil case,\" they said. \"These tactics are, in our view, inappropriate and will prove to be unsuccessful.\"</p><p>State investigators are asking an administrative judge to \"discipline\"  Kortz's license to practice medicine, although they did not elaborate on what punishment they will pursue. Kortz is still featured prominently in Porter's publicity for its robotic surgery and transplant departments.</p><p>\"I'd really like to see that this never happens again. It never should have,\" said Shanti Lechuga, a patient suing Kortz for negligence.</p><p>The formal complaint comes as federal officials  seek more information on  <a href=\"http://www.cbsnews.com/8301-204_162-57578598/fda-eyes-increase-in-freak-accidents-during-robotic-surgeries/\" title=\"Link to national article on robotic surgery issues\" target=\"_blank\">robotic surgery results and mistakes around the nation</a>.</p><p> The U.S. Food and Drug Administration said it is stepping up interviews of surgeons about the devices after a new series of mishap reports, although the agency said it has not yet identified a trend. Hospitals spend more than $1 million on each of the da Vinci-brand surgery units and are under pressure to keep them busy.</p><p>\"Since it is difficult to know why the reports have increased, the FDA has elected to talk with surgeons to better understand the factors that may be contributing to the rise in report numbers,\" FDA spokeswoman Synim Rivers said in a statement.</p><p>Porter suspended Kortz's robotic-surgery privileges for three months in 2010 and reported to the medical board that he had complications with 11 surgeries using a hospital robot, according to the state complaint. </p><p>Kortz used the robot for complex kidney donor removals in 2008, 2009 and 2010, when using it was not the \"standard of care\" for such procedures, the state said. Many of those procedures went bad and had to be converted on the fly to open surgeries to fix problems, according to the complaint and the malpractice lawsuit.</p><p>The Denver hospital would not say whether it required new training for Kortz before restoring his privileges after the 2010 suspension. \"Under Colorado law, the physician peer-review process is confidential and we are not at liberty to comment on individual cases,\" hospital spokesman Tim Shonsey  said in a statement.</p><p>Kortz is on the Porter medical staff but is not an employee, Shonsey said. Porter, part of the Centura group of hospitals, currently advertises a  relationship with Kortz for both transplants and robotic procedures. Porter undertakes a rigorous review \"anytime there is a clinical quality concern,\" the statement said. </p><p>The state  medical board complaint, filed by the Attorney General, details 11 patient cases  allegedly mishandled by Kortz. The cases include:</p><p> • \"S.L.,\" a 22-year-old woman  who wanted to donate a kidney to her ailing brother. (Patients are identified only by initials in the state complaint.) The state said Kortz  told S.L. that the robot was the \"gold standard\" for kidney removal and transplant, neglecting to say it did not have a long-term track record in such cases, or that open or laparoscopic surgery were also options. </p><p>During surgery, Kortz immediately injured S.L.'s aorta when first inserting a \"trocar,\" or pathway device allowing access to the abdomen. Kortz converted to an open surgery to stop the bleeding, then aborted the kidney removal and closed up. S.L. went into post-operative respiratory distress, and an X-ray found a sponge had been left inside her.</p><p>Kortz also improperly padded S.L. on the table, leading to nerve damage during the surgery, and S.L.  \"was not the first patient\" of Kortz's to suffer such an injury, the state said.</p><p>Lechuga  said she is the patient listed as S.L.; she is named fully in her malpractice lawsuit against Kortz and a radiologist on the case, Dr. Keith Dangleis. Her brother, Christopher, was waiting at Porter to receive her kidney once Kortz removed it, the lawsuit claims. When the transplant had to be aborted, Christopher waited another six months on dialysis before getting a different donor, the lawsuit said.</p><p>Lechuga said she was told soon after the operation that hers was the only such complication. Now that she has read the state's charges, she said, \"it blew my mind there were so many before me, and so many who had aorta injuries, too.\" </p><p>Kortz's attorney, Leasure, said the Lechuga case complications had nothing to do with robotics. Lechuga was advised before the surgery of the possible risks, and consented, Leasure's statement said. </p><p> • \"J.S.,\"  an 86-year-old with metastatic cancer,  with whom Kortz allegedly used a robot when the standard of care in such cases was open surgery. Kortz injured the aorta, then when converting to open surgery as an emergency, the robot arm moved when it shouldn't have, causing another tear, the complaint said.</p><p>J.S. suffered kidney failure after the operation, and the family withdrew life support \"shortly after the surgery,\" the state complaint said.</p><p> •  \"E.W.,\" a  26-year-old female hoping to donate her left kidney. A previous CT scan showed kidney stones developing in the remaining right kidney, and Kortz should have discussed and documented the dangers of retaining only one compromised kidney, the complaint said.</p><p>During the kidney removal, one of E.W.'s veins started bleeding; while working on that, Kortz allegedly injured an aorta with a scalpel held by the robot. E.W. lost blood pressure and had to be resuscitated. The robotic surgery was converted to an open surgery, and harvest of the organ was aborted.</p><p>Transplant centers are under tight scrutiny from regulators and accrediting groups as more hospitals advertise expertise in the complex procedures. Losing a potential donor organ is a blow, as waiting lists for kidneys are years long.</p><p>The 11 cases cited by the state include two where a sponge or another instrument was left inside patients, who then had to be reopened to remove the piece; and two cases where Kortz allegedly used an artery clip that the manufacturer had said years before should not be used in similar surgeries.</p><p>State officials said that in May, a date will be set for a hearing of the medical board complaints before a judge. </p><p><i>Michael Booth: 303-954-1686, mbooth@denverpost.com or twitter.com/mboothdp</i></p>"
+            },
+            {
+              "@id": "original-image",
+              "url": "http://extras.mnginteractive.com/live/media/site36/2013/0410/20130410__warren_kortz~p1.jpg",
+              "width": "487",
+              "height": "600",
+              "caption": "Dr. Warren Kortz",
+              "credit": "HANDOUT &#124; "
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "Misdemeanor convictions in Colorado could call for DNA swab"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_22997958"
+          },
+          "description": {
+            "#cdata-section": "Whether it's an assault or a relatively minor offense such as destroying a library book, Coloradans convicted of a misdemeanor would have to open wide and say \"aaagh,\" should lawmakers pass a requirement that the state collect from them an oral DNA sample."
+          },
+          "author": {
+            "#cdata-section": "By Kurtis Lee, The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "Local News"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_22997958"
+          },
+          "pubDate": "Wed, 10 Apr 2013 17:23:49 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 10:00:22 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "22997958"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": "Local News Misdemeanor convictions in Colorado could call for DNA swab"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "Whether it's an assault or a relatively minor offense such as destroying a library book, Coloradans convicted of a misdemeanor would have to open wide and say \"aaagh,\" should lawmakers pass a requirement that the state collect from them an oral DNA sample."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p>Whether it's an assault or a relatively minor offense such as destroying a library book, Coloradans convicted of a misdemeanor would have to open wide and say \"aaagh,\" should lawmakers pass a requirement that the state    collect from them an oral DNA sample.</p><p>In what's billed as an ambitious effort to solve cold cases, exonerate those wrongfully convicted and quell future crimes, a Democratic state lawmaker wants to require that individuals convicted of  Class 1, Class 2 or Class 3 misdemeanors must   submit a DNA sample to be stored in a statewide database system. </p><p>But this effort to expand DNA  collection to misdemeanor convictions  has raised concerns about privacy issues and the rationale behind such a requirement. </p><p>\"DNA is the 21st century fingerprint,\" said Rep. Dan Pabon, a Denver Democrat, who is the sponsor of the legislation that's set to be heard  before a House committee Thursday. \" We have become so sophisticated in our technology and science, we can without a shadow of a doubt link someone physically to a crime.\" </p><p>Already in Colorado, individuals arrested on a felony charge  and some misdemeanors involving unlawful sexual conduct are required to provide the state with a DNA sample. And those convicted of a misdemeanor under the proposed legislation would have to pay a $128 fee  to cover the costs of the sample. </p><p>Late Wednesday afternoon, after The Denver Post reported about Pabon's bill online, the sponsor said he would offer an amendment to the measure that would only require Class 1 misdemeanors be swabbed. </p><p>However,  though Pabon is targeting most misdemeanor offenses, his legislation does not require those convicted of misdemeanor traffic offenses — such as DUIs —  to submit oral samples. </p><p>\"We don't have the statistics that demonstrate just because you're drinking and driving that you have a propensity to commit more serious crimes,\" Pabon said. \"With respect to theft crimes, assault crimes, those involving the objectification of a person ... those types of crimes indicate that you're going to commit more serious crimes.\" </p><p>Denise Maes, public policy director at the American Civil Liberties  Union of Colorado, said it's a false assumption to conclude that any person who commits a low-level misdemeanor will commit more serious crimes in the future. </p><p>\"This encroaches on an individual's privacy,\" said Maes, who will offer testimony on Thursday in opposition to the bill.  \"Further, listen carefully to the rationale supporting this bill: 'Collecting DNA helps solve crime.' There is no end to this mission. One may facetiously say 'just chip us at birth,' but in reality this is precisely where the rationale of the proponents naturally leads us to.\" </p><p>Colorado, were the measure to pass,  would join only New York — which passed a similar measure expanding DNA samples for all misdemeanors in  2012 —  as states that call for DNA submissions with misdemeanor convictions.</p><p>In 2006, New York legislation allowed for DNA samples to be collected for some misdemeanors that range from petit larceny — such as shoplifting — to assault and criminal trespassing. </p><p>Of the more than 3,300 hits resulting from DNA expansion since then, 32 percent came from petit larcenies and were connected to other, more dangerous felony offenses, according to New York's Division of Criminal Justice Services.</p><p> Denver District Attorney Mitch Morrissey, a staunch proponent of the measure, said expansion will lead to more hits related to felonies in Colorado and around the nation. </p><p>Morrissey's office points to  DNA sampling involved in the arrest of  Eddie Simon  last month. Simon was arrested on a felony drug charge. After his DNA was taken, a match was made in connection to the cold-case  rape of a Denver woman in 2001. Simon has since been charged by Morrissey's office with second-degree kidnapping, two counts of sexual assault  and third-degree assault. </p><p>Pabon said Wednesday the measure has bipartisan support, though some members of his own party assail the legislation as a severe overreach and question storage of the DNA. </p><p>\"When you take DNA evidence from somebody that is completely unrelated to a crime, you're basically creating a database that can be searched at will and  without warrant into the future,\" said Senate Majority Leader Morgan Carroll, a Democrat from Aurora. \"It's a serious intrusion into to privacy to keep a government-run database ... this is a slippery slope, and we don't have the oversights in place to do it responsibly.\" </p><p><i>Kurtis Lee: 303-954-1655, <a href='mailto:klee@denverpost.com'>klee@denverpost.com</a> or <a href='http://twitter.com/kurtisalee'>twitter.com/kurtisalee</a></i></p><p><b>Some of the misdemeanor convictions that would require a dna sample to be submitted</b></p><p></p><p><b>Class 1 misdemeanor </b></p><p>Gun Shows</p><p> Violating any of the provisions of section 12-26.1-101 regarding</p><p>background checks at gun shows is a class 1 misdemeanor.</p><p>Liquor code</p><p>Selling, serving, giving away, disposing of,</p><p>exchanging, or delivering, or permitting the sale, serving, giving, or</p><p>procurement of any alcohol beverage to or for anyone who is less than</p><p>21 years old is a class 1 misdemeanor.</p><p></p><p><b>Class 2 misdemeanor </b></p><p>Barbers and Cosmetologists</p><p>The first violation of practicing or attempting to practice barbering, hairstyling, esthetics, manicuring, or cosmetology without a license is a class 2 misdemeanor. </p><p>Athletic Trainer Practice Act</p><p>The first violation of practicing or attempting to</p><p>practice athletic training without an active registration is a class 2</p><p>misdemeanor.</p><p><b>Class 3 misdemeanor</b></p><p>Driver's Licenses</p><p>Unlawful possession or use of a license. Photographing, photostating, duplicating,</p><p>or in any other way reproducing any driver's license or facsimile of one for the</p><p>purpose of distributing, reselling, reusing, or manipulating the license is a class 3</p><p>misdemeanor.</p><p>Libraries</p><p>Library property. Theft or mutilation of library property is a class 3 misdemeanor.</p><p></p>"
+            },
+            {
+              "@id": "original-image",
+              "url": "http://extras.mnginteractive.com/live/media/site36/2013/0411/20130411__rep-dan-pabon~p1.jpg",
+              "width": "400",
+              "height": "600",
+              "caption": "Rep. Dan Pabon, the bill's sponsor",
+              "credit": "Provided by the Colorado General Assembly"
+            }
+          ]
+        },
+        {
+          "title": {
+            "#cdata-section": "Denver police arrest jail escapee Felix Trujillo"
+          },
+          "link": {
+            "#cdata-section": "http://www.denverpost.com/news/ci_22995196"
+          },
+          "description": {
+            "#cdata-section": "A felon who escaped the Downtown Denver Detention Center in a sheriff's deputy's uniform surrendered Wednesday to Denver police, who are now investigating whether anyone helped him during his three days on the run."
+          },
+          "author": {
+            "#cdata-section": "By Sadie Gurman, The Denver Post"
+          },
+          "category": {
+            "#cdata-section": "Local News"
+          },
+          "guid": {
+            "@isPermaLink": "true",
+            "#text": "http://www.denverpost.com/news/ci_22995196"
+          },
+          "pubDate": "Wed, 10 Apr 2013 11:18:49 -0600",
+          "lastUpdated": "Thu, 11 Apr 2013 08:24:33 -0600",
+          "meta": [
+            {
+              "@id": "articleId",
+              "#cdata-section": "22995196"
+            },
+            {
+              "@id": "keywords",
+              "#cdata-section": "Local News Denver police arrest jail escapee Felix Trujillo"
+            },
+            {
+              "@id": "placeline"
+            },
+            {
+              "@id": "summary",
+              "#cdata-section": "A felon who escaped the Downtown Denver Detention Center in a sheriff's deputy's uniform surrendered Wednesday to Denver police, who are now investigating whether anyone helped him during his three days on the run."
+            },
+            {
+              "@id": "fulltext",
+              "#cdata-section": "<p>A felon who escaped the Downtown Denver Detention Center in a sheriff's deputy's uniform surrendered Wednesday to Denver police, who are now investigating whether anyone helped him during his three days on the run.</p><p>Felix Trujillo, 24, was arrested about 2 p.m. near Federal Boulevard and West 50th Avenue after his relatives arranged for his capture, his attorney Wayne Cole said. Officials said he will be held at a different detention facility.</p><p>Major Crimes Cmdr. Ronald Saunier called the arrest \"a great relief to us\" but said detectives have many unanswered questions, including whether others assisted in Trujillo's escape. </p><p>Denver police late Tuesday arrested Marilyn Annette Reeves, 47, on suspicion that she helped Trujillo, though officials would not describe her role in the case. </p><p>Police had surrounded her apartment in Thornton at least once this week.</p><p>Also facing felony charges is Denver Sheriff's deputy Matthew Andrews, 36, who police sources have said helped Trujillo walk out of the jail about 7 p.m. Sunday and drove him to Thornton before returning to the jail, where he worked in general security.</p><p>\"We continue to review our policies, procedures and training to make sure this problem will never happen again,\" Denver Undersheriff Gary Wilson said at a news conference. He added that he was \"very disturbed by this issue.\"</p><p>He did not take reporters' questions, and officials have offered few details about the escape. Saunier would not say whether detectives have recovered the deputy's uniform.</p><p>\"We still have a lot of work to do,\" he said.</p><p>Andrews'  <a href=\"http://www.denverpost.com/breakingnews/ci_22989586/attorney-deputy-accused-escape-felt-his-life-family?source=rss&utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+dp-news-local-crime+%28Denver+Post%3A+News%3A+Local%3A+Crime%29\" title=\"link to DP story\" target=\"_blank\">attorney Donald Sisson has said the deputy</a> felt his life and family were in danger after an incident on Saturday in which a motorist flashed a gun at him and demanded he get Trujillo out of the jail. Andrews apparently did not report it to police or his supervisors.</p><p>Andrews, a two-year veteran of the sheriff's department, told officers Trujillo had threatened him with violence before the escape, sources have said.</p><p>Trujillo had been awaiting sentencing after pleading guilty to lesser charges in an August 2012 robbery.</p><p><i>Sadie Gurman: 303-954-1661, sgurman@denverpost.com or twitter.com/sgurman</i></p>"
+            },
+            {
+              "@id": "original-image",
+              "url": "http://extras.mnginteractive.com/live/media/site36/2013/0410/20130410__fugitive-escapee-composite~p1.jpg",
+              "width": "600",
+              "height": "244",
+              "caption": "Escapee Felix Trujillo, Denver sheriff's deputy Matthew Andrews, Marilyn Annette Reeves",
+              "credit": "Provided by the Denver Police Department"
+            }
+          ]
+        }
+      ]
+    }
+  }
+})
