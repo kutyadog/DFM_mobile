@@ -1,28 +1,162 @@
 
+//--------------------------------------------
+//				Section Functions
+//--------------------------------------------
 
-
-
-function addAdToDiv( xDiv, xWidth, xHeight ) {
-	console.debug( 'addAdToDiv: '+ xDiv);
+function DrawSectionFromJson( xjson ) {
+	console.debug( 'DrawSectionFromJson: ' );
 	
-	var xRandom = Math.floor((Math.random()*1000000)+1);
-	var xString = '<a href="https://pubads.g.doubleclick.net/gampad/jump?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'" target="_blank">';
-	xString += '<img src="https://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'"></a>';
 	
-	document.getElementById( xDiv ).innerHTML = xString;
-	//'<img src="http://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ Math.floor((Math.random()*1000000)+1) +'" alt="Smiley face" height="'+ xHeight+'" width="'+ xWidth+'"> ';
+	//----------------------------processing the convergencePublisher response
+	//StoryList.item.length
+	//StoryList.title['#cdata-section']
+	//StoryList.lastBuildDate
+	//------article data
+	//StoryList.item[0].pubDate
+	//StoryList.item[0].title['#cdata-section']
+	//StoryList.item[0].link['#cdata-section']
+	//------media
+	//StoryList.item[1]['media:content']['@url']
+	//StoryList.item[1]['media:content']['@fileSize']
+	
+	var xString = '';
+	
+	if ( fetchJsonLocally ) {
+		//--------------------------------------------------------local convergence tool
+		StoryList = xjson.rss.channel;
+		
+		xString +=	'<div class="list_header " style="">'+ xFeedList[activeSection].title +'</div>';
+		xString +=	'<ul class="list Xul">';
+		for (var i=0; i<StoryList.item.length;i++) {
+			//console.debug( StoryList.item[i].meta[0]['#cdata-section'] );
+			xString +=	'	<li class="Xli" onclick="clickStory('+ StoryList.item[i].meta[0]['#cdata-section'] +');" style="">';
+			xString +=	'		<div class="list_story_title">'+ StoryList.item[i].title['#cdata-section'] +'</div>';
+			xString +=	'		<div class="list_story_time">'+ StoryList.item[i].pubDate +'</div>';
+			xString +=	'	</li>';
+		}
+	} else {
+		//--------------------------------------------------------yahoo yql
+		
+		
+		//----------------------------JSON RESULTS FROM YAHOO YQL
+		//StoryList.query.count
+		//StoryList.query.results.feed.feedInformation.totalArticles
+		//StoryList.query.results.feed.feedInformation.title
+		//StoryList.query.results.feed.feedInformation.id
+		//StoryList.query.results.feed.siteInformation.siteName
+		//StoryList.query.results.feed.siteInformation.siteId
+		//StoryList.query.results.feed.articles.article.length
+		//StoryList.query.results.feed.articles.article[0].id
+		//StoryList.query.results.feed.articles.article[0].byline
+		//StoryList.query.results.feed.articles.article[0].launchDate
+		//StoryList.query.results.feed.articles.article[0].updateDate
+		//StoryList.query.results.feed.articles.article[0].headlineEncoded
+		//StoryList.query.results.feed.articles.article[0].bodyEncoded
+		//StoryList.query.results.feed.articles.article[0].overline
+		//StoryList.query.results.feed.articles.article[0].headline, subHead, blurb, body
+		//StoryList.query.results.feed.articles.article[0].images == null (no images)
+		//StoryList.query.results.feed.articles.article[1].images.image.length
+		//StoryList.query.results.feed.articles.article[1].images.image[0].caption , credit, id (several objects in array), url
+		//StoryList.query.results.feed.articles.article[1].images.image[0].url[0].content
+		//StoryList.query.results.feed.articles.article[1].images.image[0].width[0].content
+		//StoryList.query.results.feed.articles.article[1].images.image[0].height[0].content
+		//StoryList.query.results.feed.articles.article[1].images.image[0].filesize[0].content
+		
+		
+		StoryList = xjson.query.results.feed.articles;
+
+		//using yahoo YQL to process JSON so getting to content is different
+		xString +=	'<div class="list_header " style="">'+ xjson.query.results.feed.feedInformation.title+'</div>';
+		xString +=	'<ul class="list Xul">';
+		
+		for (var i=0; i<StoryList.article.length;i++) {
+			
+			xString +=	'	<li class="Xli" onclick="clickStory('+ StoryList.article[i].id +');" style="overflow:hidden;">';
+			if ( StoryList.article[i].images !== null ) {
+				//console.debug( "Images: "+ StoryList.article[i].headline );
+				//StoryList.article[i].images.image.length > 0 )
+				//-----there are two different result structures for images, so I need to find out which one it is and return the appropriate format
+				//xString +=	'		<div class="list_story_image" style="background-image:url(' + StoryList.article[i].images.image.url[0].content +');background-size: cover;" ></div>';
+				xString +=	'		<div class="list_story_image" style="background-image:url(';
+				if ( StoryList.article[i].images.image.length === undefined ) {
+					console.debug( StoryList.article[i].images.image.url[0].content );
+					xString +=	getSmallerNgpsImage( StoryList.article[i].images.image.url[0].content, 100 );
+				} else {
+					console.debug( StoryList.article[i].images.image[0].url[0].content );
+					xString +=	getSmallerNgpsImage( StoryList.article[i].images.image[0].url[0].content, 100 );
+				}
+				xString +=	');background-size: cover;" ></div>';
+			} else {
+				//console.debug( "NO Images: "+ StoryList.article[i].headline );
+			}
+			
+			xString +=	'		<div class="list_story_title">'+ StoryList.article[i].headline +'</div>';
+			xString +=	'		<div class="list_story_time">'+ StoryList.article[i].launchDate +'</div>';
+			xString +=	'	</li>';
+		}
+		
+		/*
+		//from MMC
+		y.prototype.showGall
+		//background-size: contain;background-repeat:no-repeat;
+		
+		xString = xString + '	<div class="scroller_li_mid" style="position:relative;background-image:url(' + indexArray.photos[i].url +');">';
+		xString = xString + '			<div class="list_image_title_container">';
+		xString = xString + '				<div class="list_image_title">'+ processTitle( indexArray.photos[i].title ) +'</div>';
+		xString = xString + '				<div class="list_image_date">'+ indexArray.photos[i].date.toUpperCase() +' | PHOTO</div>';
+		xString = xString + '			</div>';
+		xString = xString + '	</div>';
+		*/
+	}
+	
+	
+	xString +=	'</ul>';
+	xString +=	'	<footer><img class="dfm-logo" src="assets/dfm_logo.png" />';
+	
+	var d = new Date().getUTCFullYear();
+	xString +=	'		<div style="display: block;margin: 0px auto;width:90%;color:white;font-family:Arial;font-size:10px;color:#FFF;text-align:center;line-height:100%;padding-bottom:20px;">';
+	xString +=	'		All contents © '+ d +' Digital First Media or other copyright holders. All rights reserved. This material may not be published, broadcast, rewritten or redistributed for any commercial purpose.</div>';
+	
+	xString +=	'</div>';
+	
+	document.getElementById( 'home_section_list' ).innerHTML = xString;
+	
+	if ( xInterface.doesWindowExist( 'home' ) ) {
+		//console.debug( 'it exists!: ');
+		setTimeout(function() { xInterface.resizeScrollers(); }, 10);
+		setTimeout(function() { xInterface.removeLoaderInWindow('home'); }, 500);
+		xInterface.currentWindow.WindowScrollerArray[0].scrollTo(0,0,0);
+		//setTimeout(function() { xInterface.refreshWindow('home'); }, 10);
+	} else {
+		//console.debug( 'create new: ');
+		setTimeout(function() { xInterface.showWindow( 'home', {transition: 'fade'} ); }, 1000);
+	}
+	
+	setTimeout(function() { xInterface.removeLoaderInWindow('home'); }, 500);
+	//need to scroll to the top just in case user has already scrolled down on a previous story list
+	//xInterface.WindowScrollerArray[0].scrollTo(0,0,0);
 }
 
-
+function getSmallerNgpsImage( xURL, xSize ) {
+	//lets user give original NGPS image (without any crop on it) and this will return image at width xSize
+	//		keep in mind that orig image is max width, so if orig width is 480, there will not be a 500
+	//		we could always check the image.width[0].content to see what orig width is
+	if ( "100,200,300,400,500,VIEWER,GALLERY".indexOf(xSize) !== -1 ) {
+		var toReplace = '.jpg';
+		var replaceWith = '_'+ xSize +'.jpg';
+		xURL = xURL.replace(toReplace, replaceWith);
+		return xURL;
+	} else {
+		alert('error in size for getSmallerNgpsImage');
+		return false;
+	}
+}
 
 function clickNewSection( xnum ) {
 	//called when a user clicks a new section in the sections window
 	var xBackWindow = xInterface.currentWindow.backToWindowObject.id;
 	
 	//do i need to add a 'whendoneDoThisOnce' option on closeActiveWindow?
-	
-	
-	
 	if ( xBackWindow != 'home' ) {
 		xInterface.putLoaderInWindow( xBackWindow );
 		
@@ -53,115 +187,6 @@ function clickNewSection( xnum ) {
 
 function loadNewSection() {
 	fetchExternalJSON(xFeedList[activeSection].url, 'DrawSectionFromJson' );
-	
-	//url = 'temp/test.json';
-	//console.debug( 'fetchExternalJSON: '+ url );
-	//putExternalJsIntoHeader(url, '');
-	
-	return 1;
-	
-	//--------------code below is the Old WAY OF DOING IT... Pulled the xml feed from temp/feed.php which processed it into json
-	xURL = 'temp/feed.php?x='+ xFeedList[activeSection].url;
-	//console.debug( 'loadNewSection: '+ xURL);
-	request(
-		xURL, null,function() {
-			if ( this.readyState == 4) {
-				var xdata = this.responseText;
-				if ( xdata == '' ) {
-					//alert( 'Error loading URL!' );
-				} else {
-					//ok we have loaded the luck data, now we convert they JSON into a javascript array and then do something with it
-					//alert( xdata.length );	//before decompression
-					xdata = JXG.decompress(xdata);
-					//alert( xdata.length );	//after decompression
-					//alert( xdata );
-					StoryList = eval ("(" + xdata + ")");
-					DrawStoryList();
-					setTimeout(function() { xInterface.removeLoaderInWindow('home'); }, 500);
-				}
-			}
-		}, 'GET'
-	);
-}
-
-function DrawSectionFromJson( xjson ) {
-	console.debug( 'DrawSectionFromJson: '+ xjson.rss.channel.title["#cdata-section"] );
-	//dumpProps(xjson);
-	
-	//----------processing the convergencePublisher response
-	//StoryList.item.length
-	//StoryList.title['#cdata-section']
-	//StoryList.lastBuildDate
-	//------article data
-	//StoryList.item[0].pubDate
-	//StoryList.item[0].title['#cdata-section']
-	//StoryList.item[0].link['#cdata-section']
-	//------media
-	//StoryList.item[1]['media:content']['@url']
-	//StoryList.item[1]['media:content']['@fileSize']
-	//----------processing the convergencePublisher response (end)
-	
-	//dumpProps(xjson.rss.item.0.title);
-	
-	StoryList = xjson.rss.channel;
-	
-	var xString = '';//<div class="scroller">';
-	xString +=	'<div class="list_header " style="">'+ xFeedList[activeSection].title +'</div>';
-	xString +=	'<ul class="list Xul">';
-	for (var i=0; i<StoryList.item.length;i++) {
-		//console.debug( StoryList.item[i].meta[0]['#cdata-section'] );
-		xString +=	'	<li class="Xli" onclick="clickStory('+ StoryList.item[i].meta[0]['#cdata-section'] +');" style="">';
-		xString +=	'		<div class="story_title">'+ StoryList.item[i].title['#cdata-section'] +'</div>';
-		xString +=	'		<div class="story_time">'+ StoryList.item[i].pubDate +'</div>';
-		xString +=	'	</li>';
-	}
-	
-	xString +=	'</ul>';
-	//xString +=	'</div>';
-	xString +=	'	<footer><img class="dfm-logo" src="assets/dfm_logo.png" />';
-	
-	var d = new Date().getUTCFullYear();
-	xString +=	'		<div style="display: block;margin: 0px auto;width:90%;color:white;font-family:Arial;font-size:10px;color:#FFF;text-align:center;line-height:100%;padding-bottom:20px;">';
-	xString +=	'		All contents © '+ d +' Digital First Media or other copyright holders. All rights reserved. This material may not be published, broadcast, rewritten or redistributed for any commercial purpose.</div>';
-	
-	xString +=	'</div>';
-	
-	document.getElementById( 'home_section_list' ).innerHTML = xString;
-	
-	if ( xInterface.doesWindowExist( 'home' ) ) {
-		console.debug( 'it exists!: ');
-		setTimeout(function() { xInterface.resizeScrollers(); }, 10);
-		setTimeout(function() { xInterface.removeLoaderInWindow('home'); }, 500);
-		//setTimeout(function() { xInterface.refreshWindow('home'); }, 10);
-	} else {
-		console.debug( 'create new: ');
-		setTimeout(function() { xInterface.showWindow( 'home', {transition: 'fade'} ); }, 1000);
-	}
-	
-	setTimeout(function() { xInterface.removeLoaderInWindow('home'); }, 500);
-	//need to scroll to the top just in case user has already scrolled down on a previous story list
-	//xInterface.WindowScrollerArray[0].scrollTo(0,0,0);
-}
-
-
-
-
-function dumpProps(obj, parent) {
-   // Go through all the properties of the passed-in object
-   for (var i in obj) {
-      // if a parent (2nd parameter) was passed in, then use that to
-      // build the message. Message includes i (the object's property name)
-      // then the object's property value on a new line
-      if (parent) { var msg = parent + "." + i + "\n" + obj[i]; } else { var msg = i + "\n" + obj[i]; }
-      // Display the message. If the user clicks "OK", then continue. If they
-      // click "CANCEL" then quit this level of recursion
-      //if (!confirm(msg)) { return; }
-		console.debug( msg );
-      // If this property (i) is an object, then recursively process the object
-      if (typeof obj[i] == "object") {
-         if (parent) { dumpProps(obj[i], parent + "." + i); } else { dumpProps(obj[i], i); }
-      }
-   }
 }
 
 function showSectionsWindow() {
@@ -171,6 +196,166 @@ function showSectionsWindow() {
 	}
 	 });
 }
+
+function renderSectionsWindow() {
+	//renders the window that lists all of the sections
+	console.debug( 'renderSectionsWindow: ');
+	var xString = '<div class="list_header ">'+ propertyTitle +':</div>';
+	xString += '<ul class="list " >';
+	for (var i=0; i<xFeedList.length;i++) {
+		xString += '<li  class="Xli" onclick="clickNewSection('+i+');">'+ xFeedList[i].title +'</li>';
+	}
+	xString +=	'</ul>';
+	xString +=	'</div>';
+	
+	document.getElementById( 'sections_container' ).innerHTML = xString;
+}
+
+function clickStory( xID ) {
+	//when you are viewing a list of stories and click a story to view it
+	//setURLBarTo( 'http://www.google.com/', 0 );
+	
+	
+	
+	document.getElementById( 'story_container' ).innerHTML = '';
+	//xInterface.putLoaderInWindow( 'story_window' );
+	
+	//loadNgpsStoryContentByID( getStoryIdFromURL( StoryList[xnum].link[0]) );
+	loadNgpsStoryContentByID( xID );
+	
+	setTimeout(function() { xInterface.showWindow( 'story_window', {
+		onSwipeRight: function () {
+			xInterface.closeActiveWindow();
+		} }); }, 100);
+	
+	//calling xtory url works these two ways
+	//var xStoryURL = StoryList[xnum].link;
+	//console.debug( "story URL: "+ xStoryURL[0] );
+	//or
+	//console.debug( "story URL: "+ StoryList[xnum].link[0] );
+}
+
+//--------------------------------------------
+//				Article Functions
+//--------------------------------------------
+
+function loadNgpsStoryContentByID( xID, showLoader ) {
+	console.debug( "loading NGPS story with id: "+ xID );
+	var xURL = 'temp/jsonServLet.php?x=' + xID +'&p='+ topDomain;
+	
+	if (showLoader) xInterface.putLoaderInWindow( 'story_window' );	//if we want loader in story_window, set this true
+	
+	//console.debug( xURL );
+	request(
+		xURL, null,function() {
+			if ( this.readyState == 4) {
+				var xdata = this.responseText;
+				//console.debug( 'data loaded' );
+				if ( xdata == '' ) {
+					alert( 'Error loading URL!' );
+				} else {
+					//ok we have loaded the data, now we convert they JSON into a javascript array and then do something with it
+					StoryContent = eval ("(" + xdata + ")");
+					StoryContent = StoryContent['article'][0];
+					//xInterface.currentWindow.WindowScrollerArray[0].scrollTo(0,0,0);
+					if ( xInterface.doesWindowExist('story_window') ) xInterface.doesWindowExist('story_window').WindowScrollerArray[0].scrollTo(0,0,0);
+					drawStory();
+					setTimeout(function() { xInterface.removeLoaderInWindow('story_window'); }, 10);
+					
+				}
+			}
+		}, 'GET'
+	);
+}
+
+function drawStory() {
+		//----------------------------------------------build story view div string
+		var xString = '';
+		xString += '<div class="toolbar lightGray">';
+		xString += '<div class="sm_but_icon close" onclick="xInterface.closeActiveWindow();">×</div>'
+		// xString += '<h4>Section Here</h4>';
+		xString += '<h4><img src="props/'+ topDomain +'/logo_b.png" width="180" alt="Logo" style="margin-top:12px;margin-left:-2px;"/></h4>'
+		xString += '<div class="sm_but_icon share right"></div>'
+		xString += '</div>';
+		//http://blog.stevenlevithan.com/archives/faster-than-innerhtml
+		//http://ejohn.org/blog/javascript-micro-templating/
+		
+		xString += '<div id="story_ad_top" class="centered_ad"></div>';
+		xString += '<ul class="breadcrumb">';
+		xString += '<li><a href="#" onclick="clickNewSection(1);">Home</a></li><li><a href="#" onclick="clickNewSection(1);">News</a></li><li class="active">Story</li>';
+		xString += '</ul>';
+
+		xString += '<div id="story_wrapper" class="story_wrapper"><h1 class="story_headline">' + StoryContent['headline'] + '</h1>';
+		xString += '<p class="meta">';
+		xString += '<span class="story_author">'+ StoryContent['bylineEncoded'] +'</span>';
+		xString += '<span class="story_pubdate">Published: ' + StoryContent['startDate'] + '</span>';
+		if(StoryContent['updateDate'] != '') {
+			xString += '<span class="story_update">Updated: '+ StoryContent['updateDate'] +'</span>';
+		}
+		xString += '</p><!-- .meta -->';
+		
+		/*
+		"images":{
+			"mediaCount":"2",
+			"image":[
+				{
+					"width":"600", "height":"349", "credit":"Provided by The Denver Police Department",
+					"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath-hit-run~p1.jpg",
+					"caption":"An elderly man was killed in a wreck at W. 13th Avenue and Kalamath Street on Wednesday, March 27, 2013.",
+					"filesize":"38405", "id":"30636745"
+				},{
+					"width":"600", "height":"349", "credit":"Provided by The Denver Police Department",
+					"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath~p1.jpg",
+					"caption":"Denver police made an arrest in a fatal crash on W. 13th Avenue and Kalamath Street that occurred Wednesday, March 27, 2013.",
+					"filesize":"30358", "id":"30636637"
+				}
+			]
+		},
+		*/
+		
+		if ( StoryContent['images'].mediaCount ) {
+			//there are stories with the article
+			console.debug('article images: '+ StoryContent['images'].mediaCount );
+			xURL = StoryContent['images'].image[0].url;
+			xString += '<div class="main_image"><img src="'+ xURL +'" /></div><!-- .main-image -->';
+			if ( StoryContent['images'].mediaCount > 1 ) {
+				//add show additional images link
+				xString += '<div class="more_images" ontouchstart="xActiveTouch = 1;" ontouchmove="xActiveTouch = 0;" ontouchend="if (xActiveTouch) { showArticlePhotoGallery(); }">View additional images</div>';
+			}
+		}
+		
+		var xTempTestLink = '<P>Peyton is funny and stuff, <a href="http://www.denverpost.com/broncos/ci_23032711/">See the proof here on denverpost.com</a>';
+		xString += '<div class="story_content">' + StoryContent['body'] + xTempTestLink+ ' </div><!-- #story_content -->';
+		
+		xString += '<div id="story_related_content">';
+		xString += '<h3 class="page-header">Related stories</h3>';
+		
+		xString += '</div><!-- #story_related_content -->';
+		xString += '</div> <!-- story_wrapper -->';
+		
+		xString += '<div id="story_ad_bottom" class="centered_ad"></div>';
+		xString += '<div class="ng-recommender" id="ng-recommender" style="height:350px;width:100%;display:block;padding:0px;margin-top:10px;"></div>';
+		
+		document.getElementById( 'story_container' ).innerHTML = xString;
+		
+		//----------------------structure for article NGPS Json output in temp/ngps_article.js file **********
+		//http://www.denverpost.com/mngi/servletDispatch/JsonArticleServlet.dyn?ci=22872574
+		
+		setTimeout(function() { xInterface.resizeScrollers(); }, 100);
+		
+		setTimeout(function() { hijackHref( 'story_wrapper' );  }, 500 );
+		
+		//---now that the divs are there, we need to dynamically add the ads
+		setTimeout(function() { 
+			addAdToDiv( 'story_ad_top', '300', '50' );
+			addAdToDiv( 'story_ad_bottom', '300', '250' );
+			//addAdToDiv( 'story_ad_bottom' );
+			//will need to add a 320x50 ad size here!!!
+			//addAdToDiv( '300x250', 'story_ad_bottom' );
+			//newsToGram();
+		}, 1000);
+}
+
 
 function newsToGram() {
 	//http://sandbox.dailyme.com/rmv2/docs/recommender-3.html
@@ -188,49 +373,6 @@ function newsToGram() {
 	ngRec.init();
 }
 
-function openStoryFromStory(xnum) {
-	//user is reading a story and clicks to view another story
-	//console.debug('------dfm_mobile: onCloseDone for story_window' );
-	var xBackWindowId = xInterface.currentWindow.backToWindowObject.id;
-	
-	if ( xBackWindowId ) {
-		xInterface.putLoaderInWindow( xBackWindowId );
-		xInterface.closeActiveWindow();
-		setTimeout(function() { 
-			xInterface.currentWindow.WindowScrollerArray[0].scrollTo(0,0,0);
-			viewStory(xnum);
-			setTimeout(function() {
-				xInterface.removeLoaderInWindow(xBackWindowId);		//should this eventually be automatically removed in viewStory ?
-			}, 1000);
-			
-		}, 1000);
-	} else {
-		
-	}
-	
-	
-	
-	//xInterface.closeActiveWindow();
-	
-}
-
-
-
-function renderSectionsWindow() {
-	console.debug( 'renderSectionsWindow: ');
-	var xString = '<div class="list_header ">'+ propertyTitle +':</div>';
-	xString += '<ul class="list " >';
-	for (var i=0; i<xFeedList.length;i++) {
-		xString += '<li  class="Xli" onclick="clickNewSection('+i+');">'+ xFeedList[i].title +'</li>';
-	}
-	xString +=	'</ul>';
-	xString +=	'</div>';
-	
-	document.getElementById( 'sections_container' ).innerHTML = xString;
-}
-
-
-//showPhotoGallery();
 
 function showArticlePhotoGallery() {
 	//render the contents for a gallery and put it in gallery_window div
@@ -400,157 +542,6 @@ function getStoryIdFromURL( xURL ) {
 }
 
 
-function loadNgpsStoryContentByID( xID ) {
-	console.debug( "loading NGPS story with id: "+ xID );
-	//var xURL = 'jsonServLet.php?x=http://www.'+ topDomain + '/mngi/servletDispatch/JsonArticleServlet.dyn?ci=' + xID +'&includeBody=true;
-	var xURL = 'temp/jsonServLet.php?x=' + xID +'&p='+ topDomain;
-	//http://www.denverpost.com/mngi/servletDispatch/JsonArticleServlet.dyn?ci=22872574
-	//return xURL;
-	console.debug( xURL );
-	
-	//console.debug( 'loadNewSection: '+ xURL);
-	request(
-		xURL, null,function() {
-			if ( this.readyState == 4) {
-				var xdata = this.responseText;
-				//console.debug( 'data loaded' );
-				if ( xdata == '' ) {
-					alert( 'Error loading URL!' );
-				} else {
-					//ok we have loaded the luck data, now we convert they JSON into a javascript array and then do something with it
-					//alert( xdata );	//before decompression
-					
-					StoryContent = eval ("(" + xdata + ")");
-					StoryContent = StoryContent['article'][0];
-					viewStory();
-					//console.debug( "item: "+ StoryList['article'][0]);
-					
-					/*
-					xdata = JXG.decompress(xdata);
-					//alert( xdata.length );	//after decompression
-					//alert( xdata );
-					StoryList = eval ("(" + xdata + ")");
-					DrawStoryList();
-					setTimeout(function() { xInterface.removeLoaderInWindow('home'); }, 500);
-					*/
-				}
-			}
-		}, 'GET'
-	);
-	
-	//http://www.denverpost.com/mngi/servletDispatch/JsonArticleServlet.dyn?ci=22872574
-	/*
-	
-	console.debug( "item: "+ StoryList['article'][0]['abstract']);
-	
-	{"article":[
-		{"startDate":"Thu Mar 28 05:34:05 MDT 2013",
-		"isExportable":true,"
-		articleAssociations":{
-			"articleAssociation":[
-				{
-					"type":"image",
-					"data":{
-						"associationCaption":"Latoya Nelson, 29, was arrested on suspicion of vehicular homicide/reckless driving and leaving the scene of an accident involving death.",
-						"associationCredit":"Provided by the Denver Police Department",
-						"associationURL":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__latoya-nelson~p1.jpg"
-						},
-						"priority":1,
-						"id":"22890319"
-						},
-					{
-					"type":"freeform",
-					"data":{},
-					"priority":2,
-					"id":"22889184"
-				}
-				]
-			},
-		"previousRevision":50,
-		"title":"Denver police name suspect, victim in fatal hit-and-run",
-		"keepIndefinitely":"false",
-		"byline":"<b>By Kieran Nicholson<\/b><br><i>The Denver Post<\/i>",
-		"bodyEncoded":"<\/apxh:p>\n<apxh:p>&#160;Denver   police announced Thursday  they have arrested a woman suspected to be the driver in a fatal hit&#45;and&#45;run crash Wednesday at West 13th Avenue and Kalamath Street&#46; <\/apxh:p>\n<apxh:p>Latoya Nelson&#44; 29&#44; is scheduled to make an appearance in Denver Court on Thursday morning on suspicion of vehicular homicide&#47;reckless driving and leaving the scene of an accident involving death&#46; Members of her family gathered in the courtroom in advance of the hearing&#46; <\/apxh:p>\n<apxh:p>Police spokesman   Sonny Jackson previously said    a female driver  in a red Pontiac Grand Am was traveling south on Kalamath about 4&#58;30 p&#46;m&#46; Wednesday when she ran a red light and T&#45;boned a white sedan&#44; killing its elderly male driver&#46; A passenger stayed in the Grand Am&#44; but the driver got out and ran away from the scene&#46; <\/apxh:p>\n<apxh:p>Shortly before the crash Wednesday&#44; Jackson said&#44; the same female driver had backed into a parked car in the parking lot of the Burger King two blocks north at Kalamath and West Colfax Avenue&#46; When a security guard tried to stop her&#44; she almost ran him down&#44; then she sped south on Kalamath&#46; <\/apxh:p>\n<apxh:p>The deceased driver has been identified as Charlie Herrera&#44; 85&#44; of Denver&#46; <\/apxh:p>\n<apxh:p>Denver police traffic investigator Sgt&#46; Mike Farr said Nelson was taken into custody at 11 p&#46;m&#46; after a routine traffic stop&#46; A car was pulled over at 31st   and California streets&#44; and Nelson &#8212; who was in the car with someone else &#8212;  was identified as a wanted person&#46; <\/apxh:p>\n<apxh:p>Nelson has an  arrest history  in Colorado dating  to 2001&#44; according to Colorado Bureau of Investigation records&#46;   <\/apxh:p>\n<apxh:p>Most recently&#44; in February&#44; a failure to appear warrant was issued for Nelson in a misdemeanor police interference case from November 2012&#46;  <\/apxh:p>\n<apxh:p>In April 2012&#44; Nelson was arrested in Denver on a felony weapons offense and in October of 2011 she was arrested on suspicion of aggravated vehicle theft&#46;  ",
-		"originatingSite":"36",
-		"keyword":"Reference=82399390-979a-11e2-a9c2-7a75088f0193",
-		"endDateISO8601":"2023-03-28T10:54:23-06:00",
-		"slug":"BNCD28KALAMATH",
-		"isShareable":true,
-		"seoDescriptiveText":"http://www.denverpost.com/ci_22889442/denver-police-arrest-woman-who-fled-fatal-crash",
-		"launchDateISO8601":"20130328T113635-0600",
-		"body":"<p>&nbsp;Denver  <a href=\"https://twitter.com/DenverPolice/status/317232012941471744\" target=\"_top\">police announced Thursday<\/a> they have arrested a woman suspected to be the driver in a fatal hit-and-run crash Wednesday at West 13th Avenue and Kalamath Street.<\/p><p>Latoya Nelson, 29, is scheduled to make an appearance in Denver Court on Thursday morning on suspicion of vehicular homicide/reckless driving and leaving the scene of an accident involving death. Members of her family gathered in the courtroom in advance of the hearing.<\/p><p>Police spokesman  <a href=\"http://www.denverpost.com/breakingnews/ci_22885286/fatal-hit-and-run-reported-near-13th-and\" title=\"Driver flees after crash that kills man in Denver\" target=\"_blank\">Sonny Jackson previously said <\/a>  a female driver  in a red Pontiac Grand Am was traveling south on Kalamath about 4:30 p.m. Wednesday when she ran a red light and T-boned a white sedan, killing its elderly male driver. A passenger stayed in the Grand Am, but the driver got out and ran away from the scene.<\/p><p>Shortly before the crash Wednesday, Jackson said, the same female driver had backed into a parked car in the parking lot of the Burger King two blocks north at Kalamath and West Colfax Avenue. When a security guard tried to stop her, she almost ran him down, then she sped south on Kalamath.<\/p><p>The deceased driver has been identified as Charlie Herrera, 85, of Denver.<\/p><p>Denver police traffic investigator Sgt. Mike Farr said Nelson was taken into custody at 11 p.m. after a routine traffic stop. A car was pulled over at 31st   and California streets, and Nelson &mdash; who was in the car with someone else &mdash;  was identified as a wanted person.<\/p><p>Nelson has an  arrest history  in Colorado dating  to 2001, according to Colorado Bureau of Investigation records.  <\/p><p>Most recently, in February, a failure to appear warrant was issued for Nelson in a misdemeanor police interference case from November 2012. <\/p><p>In April 2012, Nelson was arrested in Denver on a felony weapons offense and in October of 2011 she was arrested on suspicion of aggravated vehicle theft. <\/p>",
-		"blurb":"&nbsp;Denver  police announced Thursday they have arrested a woman suspected to be the driver in a fatal hit-and-run crash Wednesday at West 13th Avenue and Kalamath Street.",
-		"headline":"Denver police name suspect, victim in fatal hit-and-run",
-		"images":{
-			"mediaCount":"3",
-			"image":[
-				{
-					"width":"600",
-					"height":"349",
-					"credit":"Provided by The Denver Police Department",
-					"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath-hit-run~p1.jpg",
-					"caption":"An elderly man was killed in a wreck at W. 13th Avenue and Kalamath Street on Wednesday, March 27, 2013.",
-					"filesize":"38405",
-					"id":"30636745"
-				},{
-					"width":"600",
-					"height":"349",
-					"credit":"Provided by The Denver Police Department",
-					"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath~p1.jpg",
-					"caption":"Denver police made an arrest in a fatal crash on W. 13th Avenue and Kalamath Street that occurred Wednesday, March 27, 2013.",
-					"filesize":"30358",
-					"id":"30636637"
-				},{
-					"width":"480",
-					"height":"600",
-					"credit":"Provided by the Denver Police Department",
-					"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__latoya-nelson~p1.jpg",
-					"caption":"Latoya Nelson, 29, was arrested on suspicion of vehicular homicide/reckless driving and leaving the scene of an accident involving death.",
-					"filesize":"26098",
-					"id":"30638054"
-				}
-			]
-		},
-		"contentItemVersion":51,
-		"dateLine":"03/28/2013",
-		"dateId":"20130328",
-		"firstPubDateISO8601":"2013-03-28T05:34:34-06:00",
-		"isUpdate":"Y",
-		"siteInformation":{
-			"siteUrl":"http://www.denverpost.com",
-			"logoURL":"",
-			"siteId":"36",
-			"siteProductionUrl":"www.denverpost.com",
-			"siteProductionRssUrl":"rss.denverpost.com",
-			"siteName":"The Denver Post"
-		},
-		"headlineEncoded":"Denver Police Name Suspect&#44; Victim in Fatal Hit&#45;and&#45;run","updateDate":"2013-03-28 11:36:00.696",
-		"revision":51,
-		"updateDateISO8601":"20130328T113600-0600",
-		"createDateISO8601":"2013-03-28T05:34:04-06:00",
-		"launchDate":"2013-03-28 11:36:35.515",
-		"abstract":"&nbsp;Denver  police announced Thursday they have arrested a woman suspected to be the driver in a fatal hit-and-run crash Wednesday at West 13th Avenue and Kalamath Street.",
-		"bylineEncoded":" By Kieran Nicholson   The Denver Post ",
-		"sectionAnchor":"http://www.denverpost.com/breakingnews/ci_22889442",
-		"daysToLive":"3651",
-		"endDate":"Tue, 28 Mar 2023 10:54:23 MDT",
-		"createDate":"Thu Mar 28 05:34:04 MDT 2013",
-		"authorEmail":"knicholson@denverpost.com",
-		"cId":"22889442"
-		}
-	]}
-	
-	*/
-	
-
-	
-}
-
-
-
-
-
-
 
 
 //---------------Eventually all code below should be moved to property specific prop.js in each props folder
@@ -617,374 +608,25 @@ function loadPropertyData() {
 //---------------Eventually all code below should be moved to property specific prop.js in each props folder (end)
 
 
-function clickStory( xID ) {
-	//viewStory(xnum);
-	//console.debug( "clicked story with id: "+ xnum + ', '+ getStoryIdFromURL( StoryList[xnum].link[0]) );
+
+
+
+
+
+function addAdToDiv( xDiv, xWidth, xHeight ) {
+	console.debug( 'addAdToDiv: '+ xDiv);
 	
-	/*
-	var xString = '';
-	//------------------------------------------------------toolbar created so that something is there while the page loads
-	//-------NOTE THAT THE CODE BELOW IS NOT SET FOR THIS STYLE AND WILL CAUSE A RED FLASH!!!!!!!! FIX IT BEFORE MAKING IT LIVE AGAIN
-	xString += '<div class="toolbar movable white">';
-	xString += '	<div class="sm_but_icon section_sm_w left" onclick="showSectionsWindow();"></div>';
-	xString += '	<div class="sm_but_icon closeb "  onclick="xInterface.closeActiveWindow();"></div>';
-	xString += '<h1><img src="props/'+ topDomain +'/logo_b.png" width="200" alt="Logo" style="margin-top:5px;margin-left:-5px;"/></h1></div>';
-	document.getElementById( 'story_container' ).innerHTML = xString;
-	*/
+	var xRandom = Math.floor((Math.random()*1000000)+1);
+	var xString = '<a href="https://pubads.g.doubleclick.net/gampad/jump?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'" target="_blank">';
+	xString += '<img src="https://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'"></a>';
 	
-	document.getElementById( 'story_container' ).innerHTML = '';
-	
-	//xInterface.putLoaderInWindow( 'story_window' );
-	
-	//loadNgpsStoryContentByID( getStoryIdFromURL( StoryList[xnum].link[0]) );
-	loadNgpsStoryContentByID( xID );
-	
-	setTimeout(function() { xInterface.showWindow( 'story_window' ); }, 100);
-	
-	
-	//calling xtory url works these two ways
-	//var xStoryURL = StoryList[xnum].link;
-	//console.debug( "story URL: "+ xStoryURL[0] );
-	//or
-	//console.debug( "story URL: "+ StoryList[xnum].link[0] );
-	
-	
+	document.getElementById( xDiv ).innerHTML = xString;
+	//'<img src="http://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ Math.floor((Math.random()*1000000)+1) +'" alt="Smiley face" height="'+ xHeight+'" width="'+ xWidth+'"> ';
 }
-
-function viewStory() {
-	//if ( xInterface.allowUserEvent() ) {
-
-		//dumpProps( StoryContent );
-		
-		//----------------------------------------------build story view div string
-		var xString = '';
-		//var xURL = 0;
-		
-		/*
-		if ( StoryList[ activeStory ].media['@attributes'] ) {
-			xURL = StoryList[ activeStory ].media['@attributes'].url;
-		}
-		*/
-		
-		
-		xString += '<div class="toolbar lightGray">';
-		
-		xString += '<div class="sm_but_icon close" onclick="xInterface.closeActiveWindow();">×</div>'
-		// xString += '<h4>Section Here</h4>';
-		xString += '<h4><img src="props/'+ topDomain +'/logo_b.png" width="180" alt="Logo" style="margin-top:12px;margin-left:-2px;"/></h4>'
-		xString += '<div class="sm_but_icon share right"></div>'
-		xString += '</div>';
-		//http://blog.stevenlevithan.com/archives/faster-than-innerhtml
-		//http://ejohn.org/blog/javascript-micro-templating/
-		
-		//xString += '<div class="story_breadCrumbs side_margin" onclick="xInterface.closeActiveWindow();">View Section Front</div>';
-		
-		xString += '<div id="story_ad_top" class="centered_ad"></div>';
-		xString += '<ul class="breadcrumb">';
-		xString += '<li><a href="#" onclick="clickNewSection(1);">Home</a></li><li><a href="#" onclick="clickNewSection(1);">News</a></li><li class="active">Story</li>';
-		xString += '</ul>';
-
-		xString += '<div class="story_wrapper"><h1 class="story_headline">' + StoryContent['headline'] + '</h1>';
-		xString += '<p class="meta">';
-		xString += '<span class="story_author">'+ StoryContent['bylineEncoded'] +'</span>';
-		xString += '<span class="story_pubdate">Published: ' + StoryContent['startDate'] + '</span>';
-		if(StoryContent['updateDate'] != '') {
-			xString += '<span class="story_update">Updated: '+ StoryContent['updateDate'] +'</span>';
-		}
-		xString += '</p><!-- .meta -->';
-		
-		/*
-		"images":{
-			"mediaCount":"3",
-			"image":[
-				{
-					"width":"600",
-					"height":"349",
-					"credit":"Provided by The Denver Police Department",
-					"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath-hit-run~p1.jpg",
-					"caption":"An elderly man was killed in a wreck at W. 13th Avenue and Kalamath Street on Wednesday, March 27, 2013.",
-					"filesize":"38405",
-					"id":"30636745"
-				},{
-					"width":"600",
-					"height":"349",
-					"credit":"Provided by The Denver Police Department",
-					"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath~p1.jpg",
-					"caption":"Denver police made an arrest in a fatal crash on W. 13th Avenue and Kalamath Street that occurred Wednesday, March 27, 2013.",
-					"filesize":"30358",
-					"id":"30636637"
-				},{
-					"width":"480",
-					"height":"600",
-					"credit":"Provided by the Denver Police Department",
-					"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__latoya-nelson~p1.jpg",
-					"caption":"Latoya Nelson, 29, was arrested on suspicion of vehicular homicide/reckless driving and leaving the scene of an accident involving death.",
-					"filesize":"26098",
-					"id":"30638054"
-				}
-			]
-		},
-		*/
-		
-		if ( StoryContent['images'].mediaCount ) {
-			//there are stories with the article
-			console.debug('article images: '+ StoryContent['images'].mediaCount );
-			xURL = StoryContent['images'].image[0].url;
-			
-			xString += '<div class="main_image"><img src="'+ xURL +'" /></div><!-- .main-image -->';
-			
-			if ( StoryContent['images'].mediaCount > 1 ) {
-				//add show additional images link
-				xString += '<div class="more_images" ontouchstart="xActiveTouch = 1;" ontouchmove="xActiveTouch = 0;" ontouchend="if (xActiveTouch) { showArticlePhotoGallery(); }">View additional images</div>';
-			}
-		}
-		
-		//if ( xURL ) xString += '<div class="main_image"><img src="'+ xURL +'" /></div><!-- .main-image -->';
-		
-		xString += '<div class="story_content">' + StoryContent['body'] + '</div><!-- #story_content -->';
-		
-		xString += '<div id="story_related_content">';
-		xString += '<h3 class="page-header">Related stories</h3>';
-		
-		//xString += '<ul class="link-list">';
-		//for (var i=0; i<3;i++) {
-		//	xString += '<li onclick="openStoryFromStory('+i+');">'+ StoryList[ i ].title +'</li>';
-		//}
-		//xString += '</ul>';
-		xString += '</div><!-- #story_related_content -->';
-		xString += '</div> <!-- story_wrapper -->';
-		
-		xString += '<div id="story_ad_bottom" class="centered_ad"></div>';
-		xString += '<div class="ng-recommender" id="ng-recommender" style="height:350px;width:100%;display:block;padding:0px;margin-top:10px;"></div>';
-		
-		document.getElementById( 'story_container' ).innerHTML = xString;
-		
-		
-		//http://www.denverpost.com/mngi/servletDispatch/JsonArticleServlet.dyn?ci=22872574
-		/*
-
-		console.debug( "item: "+ StoryList['article'][0]['abstract']);
-
-		{"article":[
-			{"startDate":"Thu Mar 28 05:34:05 MDT 2013",
-			"isExportable":true,"
-			articleAssociations":{
-				"articleAssociation":[
-					{
-						"type":"image",
-						"data":{
-							"associationCaption":"Latoya Nelson, 29, was arrested on suspicion of vehicular homicide/reckless driving and leaving the scene of an accident involving death.",
-							"associationCredit":"Provided by the Denver Police Department",
-							"associationURL":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__latoya-nelson~p1.jpg"
-							},
-							"priority":1,
-							"id":"22890319"
-							},
-						{
-						"type":"freeform",
-						"data":{},
-						"priority":2,
-						"id":"22889184"
-					}
-					]
-				},
-			"previousRevision":50,
-			"title":"Denver police name suspect, victim in fatal hit-and-run",
-			"keepIndefinitely":"false",
-			"byline":"<b>By Kieran Nicholson<\/b><br><i>The Denver Post<\/i>",
-			"bodyEncoded":"<\/apxh:p>\n<apxh:p>&#160;Denver   police announced Thursday  they have arrested a woman suspected to be the driver in a fatal hit&#45;and&#45;run crash Wednesday at West 13th Avenue and Kalamath Street&#46; <\/apxh:p>\n<apxh:p>Latoya Nelson&#44; 29&#44; is scheduled to make an appearance in Denver Court on Thursday morning on suspicion of vehicular homicide&#47;reckless driving and leaving the scene of an accident involving death&#46; Members of her family gathered in the courtroom in advance of the hearing&#46; <\/apxh:p>\n<apxh:p>Police spokesman   Sonny Jackson previously said    a female driver  in a red Pontiac Grand Am was traveling south on Kalamath about 4&#58;30 p&#46;m&#46; Wednesday when she ran a red light and T&#45;boned a white sedan&#44; killing its elderly male driver&#46; A passenger stayed in the Grand Am&#44; but the driver got out and ran away from the scene&#46; <\/apxh:p>\n<apxh:p>Shortly before the crash Wednesday&#44; Jackson said&#44; the same female driver had backed into a parked car in the parking lot of the Burger King two blocks north at Kalamath and West Colfax Avenue&#46; When a security guard tried to stop her&#44; she almost ran him down&#44; then she sped south on Kalamath&#46; <\/apxh:p>\n<apxh:p>The deceased driver has been identified as Charlie Herrera&#44; 85&#44; of Denver&#46; <\/apxh:p>\n<apxh:p>Denver police traffic investigator Sgt&#46; Mike Farr said Nelson was taken into custody at 11 p&#46;m&#46; after a routine traffic stop&#46; A car was pulled over at 31st   and California streets&#44; and Nelson &#8212; who was in the car with someone else &#8212;  was identified as a wanted person&#46; <\/apxh:p>\n<apxh:p>Nelson has an  arrest history  in Colorado dating  to 2001&#44; according to Colorado Bureau of Investigation records&#46;   <\/apxh:p>\n<apxh:p>Most recently&#44; in February&#44; a failure to appear warrant was issued for Nelson in a misdemeanor police interference case from November 2012&#46;  <\/apxh:p>\n<apxh:p>In April 2012&#44; Nelson was arrested in Denver on a felony weapons offense and in October of 2011 she was arrested on suspicion of aggravated vehicle theft&#46;  ",
-			"originatingSite":"36",
-			"keyword":"Reference=82399390-979a-11e2-a9c2-7a75088f0193",
-			"endDateISO8601":"2023-03-28T10:54:23-06:00",
-			"slug":"BNCD28KALAMATH",
-			"isShareable":true,
-			"seoDescriptiveText":"http://www.denverpost.com/ci_22889442/denver-police-arrest-woman-who-fled-fatal-crash",
-			"launchDateISO8601":"20130328T113635-0600",
-			"body":"<p>&nbsp;Denver  <a href=\"https://twitter.com/DenverPolice/status/317232012941471744\" target=\"_top\">police announced Thursday<\/a> they have arrested a woman suspected to be the driver in a fatal hit-and-run crash Wednesday at West 13th Avenue and Kalamath Street.<\/p><p>Latoya Nelson, 29, is scheduled to make an appearance in Denver Court on Thursday morning on suspicion of vehicular homicide/reckless driving and leaving the scene of an accident involving death. Members of her family gathered in the courtroom in advance of the hearing.<\/p><p>Police spokesman  <a href=\"http://www.denverpost.com/breakingnews/ci_22885286/fatal-hit-and-run-reported-near-13th-and\" title=\"Driver flees after crash that kills man in Denver\" target=\"_blank\">Sonny Jackson previously said <\/a>  a female driver  in a red Pontiac Grand Am was traveling south on Kalamath about 4:30 p.m. Wednesday when she ran a red light and T-boned a white sedan, killing its elderly male driver. A passenger stayed in the Grand Am, but the driver got out and ran away from the scene.<\/p><p>Shortly before the crash Wednesday, Jackson said, the same female driver had backed into a parked car in the parking lot of the Burger King two blocks north at Kalamath and West Colfax Avenue. When a security guard tried to stop her, she almost ran him down, then she sped south on Kalamath.<\/p><p>The deceased driver has been identified as Charlie Herrera, 85, of Denver.<\/p><p>Denver police traffic investigator Sgt. Mike Farr said Nelson was taken into custody at 11 p.m. after a routine traffic stop. A car was pulled over at 31st   and California streets, and Nelson &mdash; who was in the car with someone else &mdash;  was identified as a wanted person.<\/p><p>Nelson has an  arrest history  in Colorado dating  to 2001, according to Colorado Bureau of Investigation records.  <\/p><p>Most recently, in February, a failure to appear warrant was issued for Nelson in a misdemeanor police interference case from November 2012. <\/p><p>In April 2012, Nelson was arrested in Denver on a felony weapons offense and in October of 2011 she was arrested on suspicion of aggravated vehicle theft. <\/p>",
-			"blurb":"&nbsp;Denver  police announced Thursday they have arrested a woman suspected to be the driver in a fatal hit-and-run crash Wednesday at West 13th Avenue and Kalamath Street.",
-			"headline":"Denver police name suspect, victim in fatal hit-and-run",
-			"images":{
-				"mediaCount":"3",
-				"image":[
-					{
-						"width":"600",
-						"height":"349",
-						"credit":"Provided by The Denver Police Department",
-						"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath-hit-run~p1.jpg",
-						"caption":"An elderly man was killed in a wreck at W. 13th Avenue and Kalamath Street on Wednesday, March 27, 2013.",
-						"filesize":"38405",
-						"id":"30636745"
-					},{
-						"width":"600",
-						"height":"349",
-						"credit":"Provided by The Denver Police Department",
-						"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath~p1.jpg",
-						"caption":"Denver police made an arrest in a fatal crash on W. 13th Avenue and Kalamath Street that occurred Wednesday, March 27, 2013.",
-						"filesize":"30358",
-						"id":"30636637"
-					},{
-						"width":"480",
-						"height":"600",
-						"credit":"Provided by the Denver Police Department",
-						"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__latoya-nelson~p1.jpg",
-						"caption":"Latoya Nelson, 29, was arrested on suspicion of vehicular homicide/reckless driving and leaving the scene of an accident involving death.",
-						"filesize":"26098",
-						"id":"30638054"
-					}
-				]
-			},
-			"contentItemVersion":51,
-			"dateLine":"03/28/2013",
-			"dateId":"20130328",
-			"firstPubDateISO8601":"2013-03-28T05:34:34-06:00",
-			"isUpdate":"Y",
-			"siteInformation":{
-				"siteUrl":"http://www.denverpost.com",
-				"logoURL":"",
-				"siteId":"36",
-				"siteProductionUrl":"www.denverpost.com",
-				"siteProductionRssUrl":"rss.denverpost.com",
-				"siteName":"The Denver Post"
-			},
-			"headlineEncoded":"Denver Police Name Suspect&#44; Victim in Fatal Hit&#45;and&#45;run","updateDate":"2013-03-28 11:36:00.696",
-			"revision":51,
-			"updateDateISO8601":"20130328T113600-0600",
-			"createDateISO8601":"2013-03-28T05:34:04-06:00",
-			"launchDate":"2013-03-28 11:36:35.515",
-			"abstract":"&nbsp;Denver  police announced Thursday they have arrested a woman suspected to be the driver in a fatal hit-and-run crash Wednesday at West 13th Avenue and Kalamath Street.",
-			"bylineEncoded":" By Kieran Nicholson   The Denver Post ",
-			"sectionAnchor":"http://www.denverpost.com/breakingnews/ci_22889442",
-			"daysToLive":"3651",
-			"endDate":"Tue, 28 Mar 2023 10:54:23 MDT",
-			"createDate":"Thu Mar 28 05:34:04 MDT 2013",
-			"authorEmail":"knicholson@denverpost.com",
-			"cId":"22889442"
-			}
-		]}
-
-		*/
-		
-		/*
-		xInterface.showWindow( 'story_window', {
-			onCloseDone: function () {
-				//alert('onCloseDone function called!');
-				console.debug('------dfm_mobile: onCloseDone for story_window' );
-				this.WindowScrollerArray[0].scrollTo(0,0,0);
-			},
-			onSwipeLeft: function () {
-				//alert('onSwipeLeft');
-				console.log( 'onSwipeLeft' );
-			},
-			onTouchTap: function () {
-				//alert('onTouchTap');
-				console.log( 'onTouchTap' );
-			}
-		} );
-		*/
-		
-		//xInterface.removeLoaderInWindow('story_window');
-		//setTimeout(function() { xInterface.removeLoaderInWindow( 'story_window' ); }, 200);
-		//---now that the divs are there, we need to dynamically add the ads
-		setTimeout(function() { 
-			addAdToDiv( 'story_ad_top', '300', '50' );
-			addAdToDiv( 'story_ad_bottom', '300', '250' );
-			//addAdToDiv( 'story_ad_bottom' );
-			//will need to add a 320x50 ad size here!!!
-			//addAdToDiv( '300x250', 'story_ad_bottom' );
-			//newsToGram();
-		}, 1000);
-		/*
-		if ( xURL ) {
-			//-------there is an image, so create listener to resize 'story_window' after image is loaded (since we dont know its size ahead of time)
-			xInterface.putLoaderInWindow( 'story_window' );
-			preloadimages([ xURL ]).done(function(images){
-				console.debug('story image loaded' );
-				//when images are done loading:
-				xInterface.removeLoaderInWindow('story_window');
-				setTimeout(function() { xInterface.resizeScrollers(); }, 100);
-			})
-
-		} else {
-			//-------no images, just a story
-			setTimeout(function() { xInterface.resizeScrollers(); }, 10);
-
-		}
-		*/
-		setTimeout(function() { xInterface.resizeScrollers(); }, 10);
-
-		
-	//} else {
-	//	alert( 'error 292342 in universal.js');
-	//}
-}
-
-
-
-function DrawStoryList() {
-	//THIS IS AN OLD FUNCTION
-	alert( "DrawStoryList is a depreciated function... remove it.");
-	//console.debug( 'DrawStoryList: ');
-	var xString = '';//<div class="scroller">';
-	xString +=	'<div class="list_header " style="">'+ xFeedList[activeSection].title +'</div>';
-	xString +=	'<ul class="list Xul">';
-	for (var i=0; i<StoryList.length;i++) {
-		xString +=	'	<li class="Xli" onclick="clickStory('+ i +');" style="">';
-		xString +=	'		<div class="story_title">'+ StoryList[i].title +'</div>';
-		xString +=	'		<div class="story_time">'+ StoryList[i].pubDate +'</div>';
-		xString +=	'	</li>';
-	}
-	
-	xString +=	'</ul>';
-	//xString +=	'</div>';
-	xString +=	'	<footer><img class="dfm-logo" src="assets/dfm_logo.png" />';
-	
-	var d = new Date().getUTCFullYear();
-	xString +=	'		<p class="credits">All contents © '+ d +' Digital First Media or other copyright holders. All rights reserved. This material may not be published, broadcast, rewritten or redistributed for any commercial purpose.</p>';
-	
-	xString +=	'</footer>';
-	
-	/*
-	xString +=	'<div class="list_header " style="">'+ xFeedList[activeSection].title +'</div>';
-	xString +=	'<ul class="list Xul">';
-	for (var i=0; i<StoryList.length;i++) {
-		xString +=	'	<li class="Xli" onclick="clickStory('+ i +');" style="">';
-		xString +=	'		<div class="story_title">'+ StoryList[i].title +'</div>';
-		xString +=	'		<div class="" style="font: bold 12px/12px Helvetica, Sans-serif;color:#464646;margin-top:-4px;width:100%;">'+ StoryList[i].pubDate +'</div>';
-		xString +=	'	</li>';
-	}
-	
-	xString +=	'</ul>';
-	//xString +=	'</div>';
-	xString +=	'	<div style="background-color:none;"><img src="dfm_logo.png" style="max-width:100px;display:block;margin:auto;margin-top:12px;margin-bottom:5px;" />';
-	
-	var d = new Date().getUTCFullYear();
-	xString +=	'		<div style="display: block;margin: 0px auto;width:90%;color:white;font-family:Arial;font-size:10px;color:#FFF;text-align:center;line-height:100%;padding-bottom:20px;">';
-	xString +=	'		All contents © '+ d +' Digital First Media or other copyright holders. All rights reserved. This material may not be published, broadcast, rewritten or redistributed for any commercial purpose.</div>';
-	
-	xString +=	'</div>';
-	*/
-	
-	document.getElementById( 'home_section_list' ).innerHTML = xString;
-	
-	if ( xInterface.doesWindowExist( 'home' ) ) {
-		console.debug( 'it exists!: ');
-		setTimeout(function() { xInterface.resizeScrollers(); }, 10);
-		//setTimeout(function() { xInterface.refreshWindow('home'); }, 10);
-	} else {
-		console.debug( 'create new: ');
-		setTimeout(function() { xInterface.showWindow( 'home', {transition: 'fade'} ); }, 1000);
-	}
-	
-	//need to scroll to the top just in case user has already scrolled down on a previous story list
-	//xInterface.WindowScrollerArray[0].scrollTo(0,0,0);
-}
-
-
 
 
 
 //---------------------------Experimenting with loading external js by adding it to header
-
 function putExternalJsIntoHeader(url) {  //quick and dirty, just meant for quick proof of concept, no jquery needed
 	console.debug( 'putExternalJsIntoHeader: '+ url );
 	
@@ -1001,134 +643,159 @@ function putExternalJsIntoHeader(url) {  //quick and dirty, just meant for quick
 }
 
 //fetchExternalJSON('http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml');
-
-//http://ca1media.mobi/content/tests/t1/simple.php
 function fetchExternalJSON(url, callback){
-	
-	//older way
-	//http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=json&uri=http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml&paramname=site&param=Denver+Post
+	console.debug( 'fetchExternalJSON: ' );
+	//older way //http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=json&uri=http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml&paramname=site&param=Denver+Post
 	
 	//newest recommended way to call Spreed to Json
 	//http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2spreed&uri=http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230605.xml&json=true
 	
-	//url = 'http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=json&uri='+ url +'&jsoncallback='+ callback;
-	url = 'http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2spreed&uri='+ url +'&json=true&jsoncallback='+ callback;
-	console.debug( 'fetchExternalJSON: '+ url );
-	putExternalJsIntoHeader( url );
+	//----for testing on yahoos site
+	//select * from xml where url= 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230605.xml'
+	//http://developer.yahoo.com/yql/console/?q=select%20*%20from%20json%20where%20url%3D%27http%3A%2F%2Fwww.denverpost.com%2Fmngi%2FservletDispatch%2FJsonArticleServlet.dyn%3Fci%3D22872574%27#h=select%20*%20from%20xml%20where%20url%3D%20%27http%3A//rss.denverpost.com/mngi/rss/CustomRssServlet/36/230605.xml%27
 	
-	
-	
-	/*
-	var yql="select * from xml where url='" + url + "'";
-	yql="http://query.yahooapis.com/v1/public/yql?q=" +
-		encodeURIComponent(yql) +
-		"&format=json" +
-		"&callback=cbfunc";
-	//alert(yql);
-	getJSON(yql);
-	*/
-}
-
-
-function cbfunc(xjson){
-	console.debug( xjson.rss.channel.lastBuildDate );
-	
-	//----------processing the convergencePublisher response
-	//xjson.rss.channel.item.length
-	//xjson.rss.channel.title['#cdata-section']
-	//xjson.rss.channel.lastBuildDate
-	//------article data
-	//xjson.rss.channel.item[0].pubDate
-	//xjson.rss.channel.item[0].title['#cdata-section']
-	//xjson.rss.channel.item[0].link['#cdata-section']
-	//------media
-	//xjson.rss.channel.item[1]['media:content']['@url']
-	//xjson.rss.channel.item[1]['media:content']['@fileSize']
-	//----------processing the convergencePublisher response (end)
-	
-	
-	
-	
-	
-	//dumpProps(xjson.rss.item.0.title);
-	//alert( json.query.results.json.data[0].aliasid );
-	//dumpProps(xjson);
-	//var xData = xjson.query.results;
-	//console.debug( xData );
-	//alert( xData.startDate );
-	/*
-   if(json.query.count){
-      var data=json.query.results.div;
-      var i=0, l=data.length, htm='';
-      for(;i<l;i++){
-         htm+='<a href="'+data[i].a.href+'">' +
-                 '<img title="'+data[i].a.img.title+'"' +
-                       ' src="'+data[i].a.img.src+'">' +
-              '</a>\n';
-      }
-      document.getElementById('output').innerHTML=htm;
-   } else {
-      alert('Error: nothing found'); return false;
-   }
-*/
-}
-
-
-
-//------------code for loading external json directly into header WITHOUT YAHOO YQL
-//---------------------------Experimenting with loading external js by adding it to header
-/*
-function fetchExternalJSON(url) {  //quick and dirty, just meant for quick proof of concept, no jquery needed
-	console.debug( 'getJSON' );
-	
-	var xObject = document.getElementById('jsonScript');
-	if ( xObject ) {
-		xObject.parentNode.removeChild(xObject)
+	if ( fetchJsonLocally ) {
+		//get xml using our in-house ConvergencePublisher
+		url = 'http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2spreed&uri='+ url +'&json=true&jsoncallback='+ callback;
+	} else {
+		//get xml using yahoo yql
+		url="select * from xml where url='" + url + "'";
+		url="http://query.yahooapis.com/v1/public/yql?q=" +
+			encodeURIComponent(url) +
+			"&format=json" +
+			"&callback="+ callback;
 	}
-	var script = document.createElement('script');
-	script.setAttribute('src', url);
-	script.setAttribute('id', 'jsonScript');
-	script.setAttribute('type', 'text/javascript');
-	document.getElementsByTagName('head')[0].appendChild(script);
-	//document.getElementById('dynamic_code').setAttribute("src", url);
+	
+	putExternalJsIntoHeader( url );
 }
 
-
-//http://ca1media.mobi/content/tests/t1/simple.php
-function fetchExternalJSON(url){
-	console.debug( 'fetchExternalJSON' );
-	var yql="select * from json where url='" + url + "'";
-	yql="http://query.yahooapis.com/v1/public/yql?q=" +
-		encodeURIComponent(yql) +
-		"&format=json" +
-		"&callback=cbfunc";
-	//alert(yql);
-	getJSON(url);
-}
-
-
-function cbfunc(xjson){
-	console.debug( 'cbfunc' );
-	//alert( json.query.results.json.data[0].aliasid );
-	dumpProps(xjson);
-	//var xData = xjson.query.results;
-	//console.debug( xData );
-	//alert( xData.startDate );
-	return 0;
-   if(json.query.count){
-      var data=json.query.results.div;
-      var i=0, l=data.length, htm='';
-      for(;i<l;i++){
-         htm+='<a href="'+data[i].a.href+'">' +
-                 '<img title="'+data[i].a.img.title+'"' +
-                       ' src="'+data[i].a.img.src+'">' +
-              '</a>\n';
+function dumpProps(obj, parent) {
+   // Go through all the properties of the passed-in object
+   for (var i in obj) {
+      // if a parent (2nd parameter) was passed in, then use that to
+      // build the message. Message includes i (the object's property name)
+      // then the object's property value on a new line
+      if (parent) { var msg = parent + "." + i + "\n" + obj[i]; } else { var msg = i + "\n" + obj[i]; }
+      // Display the message. If the user clicks "OK", then continue. If they
+      // click "CANCEL" then quit this level of recursion
+      //if (!confirm(msg)) { return; }
+		console.debug( msg );
+      // If this property (i) is an object, then recursively process the object
+      if (typeof obj[i] == "object") {
+         if (parent) { dumpProps(obj[i], parent + "." + i); } else { dumpProps(obj[i], i); }
       }
-      document.getElementById('output').innerHTML=htm;
-   } else {
-      alert('Error: nothing found'); return false;
    }
-
 }
 
+
+function hijackHref( xDiv ) {
+    //var links = document.getElementsByTagName('a');
+	var links = document.getElementById( xDiv ).getElementsByTagName('a');
+	console.debug('found links in article: '+ links.length );
+	for (var i = 0; i < links.length; i++) {
+		//console.debug(links[i].href );
+		//links[i].href = "http://google.com";
+		//links[i].onclick = bingdong('hi');
+		
+	    links[i].onclick = function() {
+			if ( basedomain != get_base_domain( this.href ) ) {
+				alert( 'not our site');
+				this.target = "_blank";
+				return true;
+			} else {
+				//alert( 'Link on our site!!!: '+ this.href);
+				
+				
+				loadNgpsStoryContentByID( getStoryIdFromURL( this.href ), true );
+				
+				//bingdong('hiw');
+				//
+		        //this.href = "http://google.com";
+				return false;
+			}
+			
+	    };
+	}
+}
+
+
+
+/*
+//--------------OMNITURE CODE SUPPLIED BY JOSHUA D
+function eventHandler() {
+    this.events = [];
+    this.calls = [];
+    this.params = [];
+    this.registerEvent = function registerEvent(eventName) {
+        if (!this.events[eventName]) {
+            this.events[eventName] = [];
+            this.params[eventName] = []
+        }
+    }
+    this.raiseEvent = function(eventName) {
+        if (this.events[eventName]) {
+            for (var ct = 0; ct <= this.events[eventName].length - 1; ct++) {
+                this.events[eventName][ct](this.params[eventName][ct]);
+            }
+        }
+    }
+    this.attachEvent = function(eventName, funcCall, params) {
+        if (!this.events[eventName]) {
+            this.registerEvent(eventName)
+        }
+        this.events[eventName].push(funcCall);
+        this.params[eventName].push(params);
+    }
+    this.removeEvent = function(eventName, funcCall) {
+        if (this.events[eventName]) {
+            if (this.events[eventName]) {
+                var a = [];
+                var b = [];
+                for (var ct = 0; ct <= this.events[eventName].length - 1; ct++) {
+                    if (this.events[eventName][ct] != funcCall) {
+                        a.push(this.events[eventName][ct])
+                        b.push(this.params[eventName][ct])
+                    }
+                }
+            }
+            this.events[eventName] = a;
+            this.params[eventName] = b;
+        }
+    }
+}
+//var handler = new eventHandler();
+*/
+
+/*
+Example1: register and trigger an event once all adds are loaded (some pseudocode)
+//init
+var handler = new eventHandler();
+handler.registerEvent(“Ads Loaded”);
+
+//analytics function
+function trackAdsLoaded(){
+	alert(“hello world!”)
+}
+
+//Attach function to event
+handler.attachEvent(“Ads Loaded”, trackAdsLoaded, null)
+
+//code for ads triggers event once all are loaded
+function finishedLoading(){
+	Handler.raiseEvent(“Ads Loaded”)
+}
+//---Output: hello world!
+
+
+//-----------Example2: embed emitter in javascript object:
+
+var foo = [];
+foo.handler = new eventHandler();
+foo.handler.helloWorld = function(){alert(“hello world!”)}
+foo.handler.registerEvent(“doSomething called”)
+foo.handler.attachEvent(“doSomething called”, foo.helloWorld, null)
+foo.doSomething = function(){foo.handler.raiseEvent(“doSomething called”)}
+foo.doSomething();
+
+//---Output: hello world!
 */

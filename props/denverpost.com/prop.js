@@ -23,6 +23,8 @@
 		);
 	
 	
+	//propertyDataObject.title = 'The Denver Post';
+	
 	
 	//alert( xFeedList[0].title );
 	//alert( xFeedList[0].url );

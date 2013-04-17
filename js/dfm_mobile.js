@@ -1369,17 +1369,29 @@ function preloadimages(arr){
 //might also have to keep track of where we are currently at in the URLarray, there can be urls in the back and forward
 
 
+
+
 function setURLBarTo( xURL, xForward ) {
+	//note that pushState ONLY works on the same domain... 
+	//if ( history.pushState ) history.pushState( {}, document.title, '/fun/' );
 	//xForward : 1 = true (new URL or forward button), 0 = false (back button)
+	
 	//alert( xURL );
-	window.history.pushState({"html":'<BR>FUNFUN<BR>',"pageTitle":"CJs title"},"", xURL);
+	
+	if ( history.pushState ) {
+		history.pushState( {}, document.title, xURL );
+	} else {
+		alert( 'history.pushState is not TRUE! dfm_mobile setURLBarTo');
+		
+	}
+	//window.history.pushState({"html":'<BR>FUNFUN<BR>',"pageTitle":"CJs title"},"", xURL);
 	
 	if ( xForward ) {
-		URLarray.push( xURL );
-		historyLoc = URLarray.length - 1;
+		//URLarray.push( xURL );
+		//historyLoc = URLarray.length - 1;
 	} else {
 		
-		historyLoc = historyLoc - 1;
+		//historyLoc = historyLoc - 1;
 	}
 }
 

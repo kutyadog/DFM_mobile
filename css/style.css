@@ -653,14 +653,18 @@ background: linear-gradient(to bottom,  transparent 0%,rgba(0,0,0,0.5) 100%); /*
 
 
 /*HOME*/
-.story_title {
+.list_story_title {
 	font-size:1.1em;
 	line-height:1.2em;
 }
-.story_time {
+.list_story_time {
 	font-size:0.75em;
 	font-weight:500;
 	line-height:2em;
+}
+.list_story_image {
+	width:60px;height:60px;border:1px solid #333;margin:4px 10px 10px 0px;float:left;
+	background-repeat:no-repeat;background-position:center;background-color:none;overflow:hidden;
 }
 .flag {
 	text-indent:-9999px;
