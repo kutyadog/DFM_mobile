@@ -30,12 +30,15 @@
 			var AppleAppID;
 			var topDomain, basedomain;
 			
-			var fetchJsonLocally = 0;				//we have two sources to pull our XML from, 1= convergence tool (in-house), 0= yahoo yql service
-			
-			var adunit = '/8013/digital.first.media.test.site/Mobile';		//this will probably need to be moved to property.js
+			var fetchJsonLocally = 1;				//we have two sources to pull our XML from, 1= convergence tool (in-house), 0= yahoo yql service
 			
 			var propertyDataObject = new Array();
 			var contentDataObject = new Array();
+			
+			//------------these variables will need to be moved to the property.js eventually
+			var adunit = '/8013/digital.first.media.test.site/Mobile';
+			
+			
 			
 			
 			function pageloaded() {
@@ -104,7 +107,8 @@
 					//background: url('assets/dpflag.svg') no-repeat 50%;
 					
 					//-----------------load sections
-					setTimeout(function() { loadNewSection(); }, 1500);
+					DetermineWhatToDoNextFromURL();
+					//setTimeout(function() { loadNewSection(); }, 1500);
 					
 					//alert(images.length) //alerts 3//alert(images[0].src+" "+images[0].width) //alerts '1.gif 220'
 				});

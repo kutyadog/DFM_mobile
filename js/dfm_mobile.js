@@ -890,7 +890,9 @@ function Interface (main, options) {
 				backWindow.object.className = 'active';		//sets appropriate class (z-index) for backwindow
 			}
 			
-			
+			if (newElement.WindowScrollerArray == 0 ) {
+				newElement.WindowScrollerArray = xObject.initScrollers( newElement.object );	//any scrollers in this div?
+			}
 			
 			
 			//---------------------------------------------------------------------- WhenTransitionIsDone
@@ -907,22 +909,26 @@ function Interface (main, options) {
 					//if ( backWindow ) backWindow.object.className = 'active hidden';							//hides the back window
 					//var overlay = '';
 				//}
-				if ( backWindow ) {
-					backWindow.object.className = 'active'+ background_overlay;
-					//backWindow.object.className = '';
-					xObject.possiblyDeleteWindow( backWindow );
-				}
+				
 				
 				
 				newElement.object.className = 'active front '+ newElement_overlay;										//main window is front and ready
 				//---------prep back window (end)
 				if (newElement.options.onOpenDone) newElement.options.onOpenDone.call(newElement, newElement.options.onOpenDone);	//check to see if there is a function to run
+				
 				xObject.currentWindow = newElement;
 				xObject.busy = 0;
 				xObject.showLoadingScreenFull(0);
-				if (newElement.WindowScrollerArray == 0 ) {
-					newElement.WindowScrollerArray = xObject.initScrollers( newElement.object );	//any scrollers in this div?
+				
+				//this should be after currentWindow is set
+				if ( backWindow ) {
+					backWindow.object.className = 'active'+ background_overlay;
+					if (backWindow.options.onCloseDone) backWindow.options.onCloseDone.call(backWindow, backWindow.options.onCloseDone);
+					//backWindow.object.className = '';
+					xObject.possiblyDeleteWindow( backWindow );
+					
 				}
+				
 			}
 			//---------------------------------------------------------------------- WhenTransitionIsDone (end)
 			
@@ -1230,24 +1236,7 @@ function Window ( id, xback, options ) {
 		//this.object.appendChild(xbackground);
 	}
 	
-	/*
-	//-----------------EXAMPLES
-	xInterface.showWindow( 'story_window', {
-		onCloseDone: function () {
-			//alert('onCloseDone function called!');
-			console.debug('------dfm_mobile: onCloseDone for story_window' );
-			this.WindowScrollerArray[0].scrollTo(0,0,0);
-		},
-		onSwipeLeft: function () {
-			//alert('onSwipeLeft');
-			console.log( 'onSwipeLeft' );
-		},
-		onTouchTap: function () {
-			//alert('onTouchTap');
-			console.log( 'onTouchTap' );
-		}
-	} );
-	*/
+
 	
 	//this.zindex = 1;
 	//this.id = id;
@@ -1255,15 +1244,6 @@ function Window ( id, xback, options ) {
 	return this;
 }
 
-
-function Layer ( id, xtrans ) {
-	console.debug('------dfm_mobile: Layer created------: '+ id +', '+ xtrans );
-	alert( 'we dont use layer objects any more');
-	//this.zindex = 1;
-	this.id = id;
-	this.transType = xtrans;
-	return this;
-}
 
 
 //----------------------------------------------------------functions outside the object

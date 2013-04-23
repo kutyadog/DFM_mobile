@@ -6,109 +6,119 @@
 function DrawSectionFromJson( xjson ) {
 	console.debug( 'DrawSectionFromJson: ' );
 	
-	
-	//----------------------------processing the convergencePublisher response
-	//StoryList.item.length
-	//StoryList.title['#cdata-section']
-	//StoryList.lastBuildDate
-	//------article data
-	//StoryList.item[0].pubDate
-	//StoryList.item[0].title['#cdata-section']
-	//StoryList.item[0].link['#cdata-section']
-	//------media
-	//StoryList.item[1]['media:content']['@url']
-	//StoryList.item[1]['media:content']['@fileSize']
-	
 	var xString = '';
+	StoryList = new Array();
+	
+	//  -----------------------------------------------------------------------------
+	//			there are two ways JSON Section info can be pulled 
+	//			in determined by var fetchJsonLocally set in index.html
+	//  -----------------------------------------------------------------------------
 	
 	if ( fetchJsonLocally ) {
 		//--------------------------------------------------------local convergence tool
-		StoryList = xjson.rss.channel;
+		(function() {
+			//----------------------------processing the convergencePublisher response
+			//StoryList.item.length
+			//StoryList.title['#cdata-section']
+			//StoryList.lastBuildDate
+			//------article data
+			//StoryList.item[0].pubDate
+			//StoryList.item[0].title['#cdata-section']
+			//StoryList.item[0].link['#cdata-section']
+			//------media
+			//StoryList.item[1]['media:content']['@url']
+			//StoryList.item[1]['media:content']['@fileSize']
+		});
 		
-		xString +=	'<div class="list_header " style="">'+ xFeedList[activeSection].title +'</div>';
-		xString +=	'<ul class="list Xul">';
-		for (var i=0; i<StoryList.item.length;i++) {
-			//console.debug( StoryList.item[i].meta[0]['#cdata-section'] );
-			xString +=	'	<li class="Xli" onclick="clickStory('+ StoryList.item[i].meta[0]['#cdata-section'] +');" style="">';
-			xString +=	'		<div class="list_story_title">'+ StoryList.item[i].title['#cdata-section'] +'</div>';
-			xString +=	'		<div class="list_story_time">'+ StoryList.item[i].pubDate +'</div>';
-			xString +=	'	</li>';
+		xjson = xjson.rss.channel;
+		for (var i=0; i<xjson.item.length;i++) {
+			StoryList[i] = new Array();
+			StoryList[i].id = xjson.item[i].meta[0]['#cdata-section'];
+			StoryList[i].headline = xjson.item[i].title['#cdata-section'];
+			StoryList[i].launchDate = xjson.item[i].pubDate;
+			StoryList[i].image = 0;
+			if ( xjson.item[i].meta.length > 5 ) {
+				//meta data is inconsistent on length, but if an images exists, it is above 5 (verify?)
+				xjson.item[i].meta.filter(function( obj ) {
+					if ( obj['@id'] === "original-image" ) {
+						StoryList[i].image = getSmallerNgpsImage( obj['url'], 100 );
+					}
+				});
+			}
 		}
+		
 	} else {
 		//--------------------------------------------------------yahoo yql
+		(function() {
+			//----------------------------JSON RESULTS FROM YAHOO YQL
+			//StoryList.query.count
+			//StoryList.query.results.feed.feedInformation.totalArticles
+			//StoryList.query.results.feed.feedInformation.title
+			//StoryList.query.results.feed.feedInformation.id
+			//StoryList.query.results.feed.siteInformation.siteName
+			//StoryList.query.results.feed.siteInformation.siteId
+			//StoryList.query.results.feed.articles.article.length
+			//StoryList.query.results.feed.articles.article[0].id
+			//StoryList.query.results.feed.articles.article[0].byline
+			//StoryList.query.results.feed.articles.article[0].launchDate
+			//StoryList.query.results.feed.articles.article[0].updateDate
+			//StoryList.query.results.feed.articles.article[0].headlineEncoded
+			//StoryList.query.results.feed.articles.article[0].bodyEncoded
+			//StoryList.query.results.feed.articles.article[0].overline
+			//StoryList.query.results.feed.articles.article[0].headline, subHead, blurb, body
+			//StoryList.query.results.feed.articles.article[0].images == null (no images)
+			//StoryList.query.results.feed.articles.article[1].images.image.length
+			//StoryList.query.results.feed.articles.article[1].images.image[0].caption , credit, id (several objects in array), url
+			//StoryList.query.results.feed.articles.article[1].images.image[0].url[0].content
+			//StoryList.query.results.feed.articles.article[1].images.image[0].width[0].content
+			//StoryList.query.results.feed.articles.article[1].images.image[0].height[0].content
+			//StoryList.query.results.feed.articles.article[1].images.image[0].filesize[0].content
+		});
 		
-		
-		//----------------------------JSON RESULTS FROM YAHOO YQL
-		//StoryList.query.count
-		//StoryList.query.results.feed.feedInformation.totalArticles
-		//StoryList.query.results.feed.feedInformation.title
-		//StoryList.query.results.feed.feedInformation.id
-		//StoryList.query.results.feed.siteInformation.siteName
-		//StoryList.query.results.feed.siteInformation.siteId
-		//StoryList.query.results.feed.articles.article.length
-		//StoryList.query.results.feed.articles.article[0].id
-		//StoryList.query.results.feed.articles.article[0].byline
-		//StoryList.query.results.feed.articles.article[0].launchDate
-		//StoryList.query.results.feed.articles.article[0].updateDate
-		//StoryList.query.results.feed.articles.article[0].headlineEncoded
-		//StoryList.query.results.feed.articles.article[0].bodyEncoded
-		//StoryList.query.results.feed.articles.article[0].overline
-		//StoryList.query.results.feed.articles.article[0].headline, subHead, blurb, body
-		//StoryList.query.results.feed.articles.article[0].images == null (no images)
-		//StoryList.query.results.feed.articles.article[1].images.image.length
-		//StoryList.query.results.feed.articles.article[1].images.image[0].caption , credit, id (several objects in array), url
-		//StoryList.query.results.feed.articles.article[1].images.image[0].url[0].content
-		//StoryList.query.results.feed.articles.article[1].images.image[0].width[0].content
-		//StoryList.query.results.feed.articles.article[1].images.image[0].height[0].content
-		//StoryList.query.results.feed.articles.article[1].images.image[0].filesize[0].content
-		
-		
-		StoryList = xjson.query.results.feed.articles;
-
+		xjson = xjson.query.results.feed.articles;
 		//using yahoo YQL to process JSON so getting to content is different
-		xString +=	'<div class="list_header " style="">'+ xjson.query.results.feed.feedInformation.title+'</div>';
-		xString +=	'<ul class="list Xul">';
-		
-		for (var i=0; i<StoryList.article.length;i++) {
-			
-			xString +=	'	<li class="Xli" onclick="clickStory('+ StoryList.article[i].id +');" style="overflow:hidden;">';
-			if ( StoryList.article[i].images !== null ) {
-				//console.debug( "Images: "+ StoryList.article[i].headline );
-				//StoryList.article[i].images.image.length > 0 )
-				//-----there are two different result structures for images, so I need to find out which one it is and return the appropriate format
-				//xString +=	'		<div class="list_story_image" style="background-image:url(' + StoryList.article[i].images.image.url[0].content +');background-size: cover;" ></div>';
-				xString +=	'		<div class="list_story_image" style="background-image:url(';
-				if ( StoryList.article[i].images.image.length === undefined ) {
-					console.debug( StoryList.article[i].images.image.url[0].content );
-					xString +=	getSmallerNgpsImage( StoryList.article[i].images.image.url[0].content, 100 );
+		for (var i=0; i<xjson.article.length;i++) {
+			StoryList[i] = new Array();
+			StoryList[i].id = xjson.article[i].id;
+			StoryList[i].headline = xjson.article[i].headline;
+			StoryList[i].launchDate = xjson.article[i].launchDate;
+			StoryList[i].image = 0;
+			if ( xjson.article[i].images !== null ) {
+				//-----there are two different result structures for images, 
+				//		so I need to find out which one it is and return the appropriate format
+				if ( xjson.article[i].images.image.length === undefined ) {
+					StoryList[i].image = getSmallerNgpsImage( xjson.article[i].images.image.url[0].content, 100 );
 				} else {
-					console.debug( StoryList.article[i].images.image[0].url[0].content );
-					xString +=	getSmallerNgpsImage( StoryList.article[i].images.image[0].url[0].content, 100 );
+					StoryList[i].image = getSmallerNgpsImage( xjson.article[i].images.image[0].url[0].content, 100 );
 				}
-				xString +=	');background-size: cover;" ></div>';
-			} else {
-				//console.debug( "NO Images: "+ StoryList.article[i].headline );
 			}
-			
-			xString +=	'		<div class="list_story_title">'+ StoryList.article[i].headline +'</div>';
-			xString +=	'		<div class="list_story_time">'+ StoryList.article[i].launchDate +'</div>';
-			xString +=	'	</li>';
 		}
-		
-		/*
-		//from MMC
-		y.prototype.showGall
-		//background-size: contain;background-repeat:no-repeat;
-		
-		xString = xString + '	<div class="scroller_li_mid" style="position:relative;background-image:url(' + indexArray.photos[i].url +');">';
-		xString = xString + '			<div class="list_image_title_container">';
-		xString = xString + '				<div class="list_image_title">'+ processTitle( indexArray.photos[i].title ) +'</div>';
-		xString = xString + '				<div class="list_image_date">'+ indexArray.photos[i].date.toUpperCase() +' | PHOTO</div>';
-		xString = xString + '			</div>';
-		xString = xString + '	</div>';
-		*/
 	}
 	
+	/*
+	//one suggested way (from MMC) to render out list items with image on left
+	xString = xString + '	<div class="scroller_li_mid" style="position:relative;background-image:url(' + indexArray.photos[i].url +');">';
+	xString = xString + '			<div class="list_image_title_container">';
+	xString = xString + '				<div class="list_image_title">'+ processTitle( indexArray.photos[i].title ) +'</div>';
+	xString = xString + '				<div class="list_image_date">'+ indexArray.photos[i].date.toUpperCase() +' | PHOTO</div>';
+	xString = xString + '			</div>';
+	xString = xString + '	</div>';
+	*/
+	
+	//--------------------------------------------------------------------------------------------
+	//now we have a standardized data set for the article lists --- draw them
+	xString +=	'<div class="list_header " style="">'+ xFeedList[activeSection].title +'</div>';
+	xString +=	'<ul class="list Xul">';
+	
+	for (var i=0; i<StoryList.length;i++) {
+		xString +=	'	<li class="Xli" onclick="clickStory('+ StoryList[i].id +');" style="overflow:hidden;">';
+		if ( StoryList[i].image ) {
+			xString +=	'		<div class="list_story_image" style="background-image:url('+ StoryList[i].image +');background-size: cover;" ></div>';
+		}
+		xString +=	'		<div class="list_story_title">'+ StoryList[i].headline +'</div>';
+		xString +=	'		<div class="list_story_time">'+ StoryList[i].launchDate +'</div>';
+		xString +=	'	</li>';
+	}
 	
 	xString +=	'</ul>';
 	xString +=	'	<footer><img class="dfm-logo" src="assets/dfm_logo.png" />';
@@ -116,10 +126,10 @@ function DrawSectionFromJson( xjson ) {
 	var d = new Date().getUTCFullYear();
 	xString +=	'		<div style="display: block;margin: 0px auto;width:90%;color:white;font-family:Arial;font-size:10px;color:#FFF;text-align:center;line-height:100%;padding-bottom:20px;">';
 	xString +=	'		All contents © '+ d +' Digital First Media or other copyright holders. All rights reserved. This material may not be published, broadcast, rewritten or redistributed for any commercial purpose.</div>';
-	
-	xString +=	'</div>';
+	xString +=	'		</div>';
 	
 	document.getElementById( 'home_section_list' ).innerHTML = xString;
+	//-------------------------------------------------------------------------------------------- (end of drawing)
 	
 	if ( xInterface.doesWindowExist( 'home' ) ) {
 		//console.debug( 'it exists!: ');
@@ -186,6 +196,7 @@ function clickNewSection( xnum ) {
 }
 
 function loadNewSection() {
+	StoryList = new Array();	//set here so that later we can confirm data was loaded correctly in putExternalJsIntoHeader()
 	fetchExternalJSON(xFeedList[activeSection].url, 'DrawSectionFromJson' );
 }
 
@@ -211,22 +222,36 @@ function renderSectionsWindow() {
 	document.getElementById( 'sections_container' ).innerHTML = xString;
 }
 
+
+
+//--------------------------------------------
+//				Article Functions
+//--------------------------------------------
+
 function clickStory( xID ) {
 	//when you are viewing a list of stories and click a story to view it
 	//setURLBarTo( 'http://www.google.com/', 0 );
 	
 	
 	
-	document.getElementById( 'story_container' ).innerHTML = '';
+	//document.getElementById( 'story_container' ).innerHTML = '';
 	//xInterface.putLoaderInWindow( 'story_window' );
 	
-	//loadNgpsStoryContentByID( getStoryIdFromURL( StoryList[xnum].link[0]) );
-	loadNgpsStoryContentByID( xID );
+	
 	
 	setTimeout(function() { xInterface.showWindow( 'story_window', {
+		onOpenDone: function () {
+			//loadNgpsStoryContentByID( getStoryIdFromURL( StoryList[xnum].link[0]) );
+			loadNgpsStoryContentByID( xID );
+		},
 		onSwipeRight: function () {
-			xInterface.closeActiveWindow();
-		} }); }, 100);
+			closeArticleWindow();
+		},
+		onCloseDone: function () {
+			console.debug( "onCloseDone: "+ xInterface.currentWindow.id );
+			prepareArticleWindowForLoader();
+		}
+	}); }, 100);
 	
 	//calling xtory url works these two ways
 	//var xStoryURL = StoryList[xnum].link;
@@ -235,9 +260,10 @@ function clickStory( xID ) {
 	//console.debug( "story URL: "+ StoryList[xnum].link[0] );
 }
 
-//--------------------------------------------
-//				Article Functions
-//--------------------------------------------
+function prepareArticleWindowForLoader() {
+	//--------this is where we should draw the 'loading' article window
+	if ( xInterface.currentWindow.id != 'gallery_window') document.getElementById( 'story_container' ).innerHTML = 'boom!';
+}
 
 function loadNgpsStoryContentByID( xID, showLoader ) {
 	console.debug( "loading NGPS story with id: "+ xID );
@@ -268,11 +294,23 @@ function loadNgpsStoryContentByID( xID, showLoader ) {
 	);
 }
 
+function closeArticleWindow() {
+	//use this function anytime you close an article window
+	console.debug( "closeArticleWindow: "+ xInterface.currentWindow.backToWindowObject.id );
+	if ( xInterface.currentWindow.backToWindowObject.id == 'splash' ) {
+		xInterface.putLoaderInWindow( 'story_window' );
+		loadNewSection();
+	} else {
+		xInterface.closeActiveWindow();
+	}
+	//document.getElementById( 'story_container' ).innerHTML = '';
+}
+
 function drawStory() {
 		//----------------------------------------------build story view div string
 		var xString = '';
 		xString += '<div class="toolbar lightGray">';
-		xString += '<div class="sm_but_icon close" onclick="xInterface.closeActiveWindow();">×</div>'
+		xString += '<div class="sm_but_icon close" onclick="closeArticleWindow();">×</div>'
 		// xString += '<h4>Section Here</h4>';
 		xString += '<h4><img src="props/'+ topDomain +'/logo_b.png" width="180" alt="Logo" style="margin-top:12px;margin-left:-2px;"/></h4>'
 		xString += '<div class="sm_but_icon share right"></div>'
@@ -294,24 +332,28 @@ function drawStory() {
 		}
 		xString += '</p><!-- .meta -->';
 		
-		/*
-		"images":{
-			"mediaCount":"2",
-			"image":[
-				{
-					"width":"600", "height":"349", "credit":"Provided by The Denver Police Department",
-					"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath-hit-run~p1.jpg",
-					"caption":"An elderly man was killed in a wreck at W. 13th Avenue and Kalamath Street on Wednesday, March 27, 2013.",
-					"filesize":"38405", "id":"30636745"
-				},{
-					"width":"600", "height":"349", "credit":"Provided by The Denver Police Department",
-					"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath~p1.jpg",
-					"caption":"Denver police made an arrest in a fatal crash on W. 13th Avenue and Kalamath Street that occurred Wednesday, March 27, 2013.",
-					"filesize":"30358", "id":"30636637"
-				}
-			]
-		},
-		*/
+		(function() {
+			/*
+			"images":{
+				"mediaCount":"2",
+				"image":[
+					{
+						"width":"600", "height":"349", "credit":"Provided by The Denver Police Department",
+						"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath-hit-run~p1.jpg",
+						"caption":"An elderly man was killed in a wreck at W. 13th Avenue and Kalamath Street on Wednesday, March 27, 2013.",
+						"filesize":"38405", "id":"30636745"
+					},{
+						"width":"600", "height":"349", "credit":"Provided by The Denver Police Department",
+						"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath~p1.jpg",
+						"caption":"Denver police made an arrest in a fatal crash on W. 13th Avenue and Kalamath Street that occurred Wednesday, March 27, 2013.",
+						"filesize":"30358", "id":"30636637"
+					}
+				]
+			},
+			*/
+		});
+		
+		
 		
 		if ( StoryContent['images'].mediaCount ) {
 			//there are stories with the article
@@ -354,6 +396,8 @@ function drawStory() {
 			//addAdToDiv( '300x250', 'story_ad_bottom' );
 			//newsToGram();
 		}, 1000);
+		
+		//if ( xInterface.doesWindowExist('story_window') ) 
 }
 
 
@@ -619,8 +663,7 @@ function addAdToDiv( xDiv, xWidth, xHeight ) {
 	var xRandom = Math.floor((Math.random()*1000000)+1);
 	var xString = '<a href="https://pubads.g.doubleclick.net/gampad/jump?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'" target="_blank">';
 	xString += '<img src="https://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'"></a>';
-	
-	document.getElementById( xDiv ).innerHTML = xString;
+	if ( document.getElementById( xDiv ) ) document.getElementById( xDiv ).innerHTML = xString;
 	//'<img src="http://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ Math.floor((Math.random()*1000000)+1) +'" alt="Smiley face" height="'+ xHeight+'" width="'+ xWidth+'"> ';
 }
 
@@ -638,6 +681,23 @@ function putExternalJsIntoHeader(url) {  //quick and dirty, just meant for quick
 	script.setAttribute('src', url);
 	script.setAttribute('id', 'jsonScript');
 	script.setAttribute('type', 'text/javascript');
+	
+	function headFileHasLoaded() {
+		//console.debug( 'External code has loaded, story count: '+ StoryList.length );
+		if ( StoryList.length == 0 ) {
+			console.debug( '----Error loading content' );
+			//error loading content
+			
+			if ( fetchJsonLocally ) {
+				console.debug( '----changing source!' );
+				fetchJsonLocally = 0;
+			}
+			setTimeout(function() { loadNewSection(); }, 100);
+		}
+	}
+	
+	script.addEventListener('load',headFileHasLoaded,false);
+	
 	document.getElementsByTagName('head')[0].appendChild(script);
 	//document.getElementById('dynamic_code').setAttribute("src", url);
 }
@@ -666,27 +726,11 @@ function fetchExternalJSON(url, callback){
 			"&callback="+ callback;
 	}
 	
+	//for testing locally!!!
+	//url = 'temp/test.json';
+	
 	putExternalJsIntoHeader( url );
 }
-
-function dumpProps(obj, parent) {
-   // Go through all the properties of the passed-in object
-   for (var i in obj) {
-      // if a parent (2nd parameter) was passed in, then use that to
-      // build the message. Message includes i (the object's property name)
-      // then the object's property value on a new line
-      if (parent) { var msg = parent + "." + i + "\n" + obj[i]; } else { var msg = i + "\n" + obj[i]; }
-      // Display the message. If the user clicks "OK", then continue. If they
-      // click "CANCEL" then quit this level of recursion
-      //if (!confirm(msg)) { return; }
-		console.debug( msg );
-      // If this property (i) is an object, then recursively process the object
-      if (typeof obj[i] == "object") {
-         if (parent) { dumpProps(obj[i], parent + "." + i); } else { dumpProps(obj[i], i); }
-      }
-   }
-}
-
 
 function hijackHref( xDiv ) {
     //var links = document.getElementsByTagName('a');
@@ -718,7 +762,23 @@ function hijackHref( xDiv ) {
 	}
 }
 
-
+function dumpProps(obj, parent) {
+   // Go through all the properties of the passed-in object
+   for (var i in obj) {
+      // if a parent (2nd parameter) was passed in, then use that to
+      // build the message. Message includes i (the object's property name)
+      // then the object's property value on a new line
+      if (parent) { var msg = parent + "." + i + "\n" + obj[i]; } else { var msg = i + "\n" + obj[i]; }
+      // Display the message. If the user clicks "OK", then continue. If they
+      // click "CANCEL" then quit this level of recursion
+      //if (!confirm(msg)) { return; }
+		console.debug( msg );
+      // If this property (i) is an object, then recursively process the object
+      if (typeof obj[i] == "object") {
+         if (parent) { dumpProps(obj[i], parent + "." + i); } else { dumpProps(obj[i], i); }
+      }
+   }
+}
 
 /*
 //--------------OMNITURE CODE SUPPLIED BY JOSHUA D
@@ -799,3 +859,20 @@ foo.doSomething();
 
 //---Output: hello world!
 */
+
+
+function DetermineWhatToDoNextFromURL() {
+	//called only once after app has loaded
+	//	anaylzes URL to see if we now load a section front or story
+	
+	var TempSectionFront 	= 0;
+	var TempStoryID			= 0;	//23062993;
+	
+	if ( !TempSectionFront && !TempStoryID ) {
+		setTimeout(function() { loadNewSection(); }, 1500);
+	} else if ( TempStoryID ) {
+		setTimeout(function() { clickStory( TempStoryID ); }, 1500);
+	}
+	
+	//23062993
+}
