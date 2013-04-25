@@ -6,6 +6,13 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		
+		<script type='text/javascript'>
+			(function() {
+				var useSSL = 'https:' == document.location.protocol;
+				var src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt_mobile.js';
+				document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+			})();
+		</script>
 		
 		<link rel="stylesheet" type="text/css" media="all" href="css/style.css">										<!-- dfm_mobile css -->
 		
@@ -30,16 +37,25 @@
 			var AppleAppID;
 			var topDomain, basedomain;
 			
-			var fetchJsonLocally = 1;				//we have two sources to pull our XML from, 1= convergence tool (in-house), 0= yahoo yql service
+			var fetchJsonLocally = 0;				//we have two sources to pull our XML from, 1= convergence tool (in-house), 0= yahoo yql service
 			
 			var propertyDataObject = new Array();
 			var contentDataObject = new Array();
 			
 			//------------these variables will need to be moved to the property.js eventually
 			var adunit = '/8013/digital.first.media.test.site/Mobile';
+			var ad1, ad2;
 			
-			
-			
+			//-------on init of page, prepare ad units for later rendering
+			googletag.cmd.push(function() {
+				//----all ads here
+				ad1 = googletag.defineSlot( adunit, [300, 50],  'story_ad_top').addService(googletag.pubads());
+				ad2 = googletag.defineSlot( adunit, [300, 250], 'story_ad_bottom').addService(googletag.pubads());
+				
+				googletag.pubads().enableAsyncRendering();
+				googletag.pubads().disableInitialLoad();		//turns off rendering on initial load
+				googletag.enableServices();
+			});
 			
 			function pageloaded() {
 				//-------everything has loaded, now we need to get property specific js and css before we do anything
@@ -74,6 +90,8 @@
 				//---------------------------------------------load property specific external files (end)
 			}
 			
+
+			
 			function showInterface() {
 				//property data has now also loaded, we are ready to rock and roll
 				
@@ -91,7 +109,14 @@
 				renderSectionsWindow();
 				
 				//prepareAds();
-
+				
+				if ( 0 ) {
+					//
+					setTimeout(function() { xInterface.showWindow( 'testWindow', {transition: 'fade'} ); }, 100);
+					setTimeout(function() { prepareAllIframes('testWindow'); }, 1500);
+					return;
+				}
+				
 				//-----------------------------------------------------launch environment
 				preloadimages([ 'props/'+ topDomain +'/'+ propertySplashImage ]).done(function(images){
 					//when images are done loading:
@@ -101,6 +126,10 @@
 					document.getElementById( 'splash' ).innerHTML = xString;
 					setTimeout(function() { xInterface.showWindow( 'splash', {transition: 'fade'} ); }, 100);
 					
+					
+					
+					
+					
 					//-----------------set home logo on section front
 					//document.getElementById( 'home_logo' ).innerHTML = '<img src="props/'+ topDomain +'/dpflag.svg" width="200" alt="Denver Logo" style="margin-top:5px;margin-left:-5px;"/>';
 					ChangeStyleSheet('.flag', 'background', "url('../props/"+ topDomain +"/flag.svg') no-repeat 50%", 0);
@@ -108,6 +137,11 @@
 					
 					//-----------------load sections
 					DetermineWhatToDoNextFromURL();
+					
+					
+					
+					
+					
 					//setTimeout(function() { loadNewSection(); }, 1500);
 					
 					//alert(images.length) //alerts 3//alert(images[0].src+" "+images[0].width) //alerts '1.gif 220'
@@ -160,7 +194,6 @@
 				}
 				//console.debug('get_base_domain: '+ xURL );
 				return xURL;
-				
 			}
 			
 			//--------------OMNITURE EVENT HANDLER CODE JOSH D WROTE
@@ -212,6 +245,127 @@
 			// call using handler.raiseEvent("page view");
 			//--------------OMNITURE EVENT HANDLER CODE JOSH D WROTE (end)
 			
+			function prepareAllIframes(xDiv) {
+				console.debug('prepareAllIframes' );
+				var xcover = document.getElementById( 'iframeCover' );
+				xcover.ontouchstart = function() {
+					console.debug('ontouchstart');
+					xActiveTouch = 1;
+			    };
+				xcover.ontouchmove = function(event) {
+					//console.debug('ontouchmove: '+ event.touches[0].pageX);
+					xActiveTouch = 0;
+			    };
+				xcover.ontouchend = function(event) {
+					if (xActiveTouch) {
+						if (event == null) { event = window.event }
+						//this.style['pointer-events'] = "none";
+						// Find click position (coordinates)
+						var rect = document.getElementById( 'xwrapper' ).getBoundingClientRect();
+						console.log(rect.top, rect.right, rect.bottom, rect.left);
+						
+						var x = event.changedTouches[0].pageX - rect.left;
+						var y = event.changedTouches[0].pageY - rect.top;
+						console.debug('its a click through!!! '+ x +', '+ y);
+						
+						//setTimeout(function() { fakeClick(event, document.getElementById('iframeX')) }, 500);
+						
+						
+						//var touches = event.changedTouches, first = touches[0];
+						
+						//var iframe = document.getElementById( 'iframeX' );
+						//document.getElementById( 'iframeX' ).dispatchEvent(event);
+						
+						/*
+						//http://stackoverflow.com/questions/8058699/drag-drop-on-mobile-devices-using-some-code-that-translates-event-code-included
+						var simulatedEvent = document.createEvent("MouseEvent");
+						simulatedEvent.initMouseEvent("mouseup", true, true, window, 1, first.screenX, first.screenY, first.clientX, first.clientY, false, false, false, false, 0, null);
+						first.target.dispatchEvent(simulatedEvent);
+						*/
+						
+						//var evObj = document.createEvent('cClick');
+						//evObj.initEvent(etype, true, false);
+						//el.dispatchEvent(evObj);
+						
+						//return true;
+						//pointer-events: none;
+						
+						
+						var iframes = document.getElementById( 'xwrapper' ).getElementsByTagName('iframe');
+						var iframe = iframes[0];
+						var iframeDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
+						//console.debug('its a click through!!! '+ event.target.id);
+						
+						// Trigger click inside iframe
+						var link = iframeDoc.elementFromPoint(x, y);
+						var newEvent = iframeDoc.createEvent('HTMLEvents');
+						newEvent.initEvent('click', true, true);
+						link.dispatchEvent(newEvent);
+						
+					}
+			    };
+			}
+			function fakeClick(event, anchorObj) {
+			  if (anchorObj.click) {
+			    anchorObj.click()
+			  } else if(document.createEvent) {
+			    if(event.target !== anchorObj) {
+			      var evt = document.createEvent("MouseEvents"); 
+			      evt.initMouseEvent("click", true, true, window, 
+			          0, 0, 0, 0, 0, false, false, false, false, 0, null); 
+			      var allowDefault = anchorObj.dispatchEvent(evt);
+			      // you can check allowDefault for false to see if
+			      // any handler called evt.preventDefault().
+			      // Firefox will *not* redirect to anchorObj.href
+			      // for you. However every other browser will.
+			    }
+			  }
+			}
+			
+			
+			function viewportCoordinateToDocumentCoordinate(x,y) {
+			    var coord = new Object();
+			    coord.x = x + window.pageXOffset;
+			    coord.y = y + window.pageYOffset;
+			    return coord;
+			}
+			function elementFromPointIsUsingViewPortCoordinates() {
+			    if (window.pageYOffset > 0) {     // page scrolled down
+			        return (window.document.elementFromPoint(0, window.pageYOffset + window.innerHeight -1) == null);
+			    } else if (window.pageXOffset > 0) {   // page scrolled to the right
+			        return (window.document.elementFromPoint(window.pageXOffset + window.innerWidth -1, 0) == null);
+			    }
+			    return false; // no scrolling, don't care
+			}
+			function elementFromDocumentPoint(x,y) {
+			  if (elementFromPointIsUsingViewPortCoordinates()) {
+			    var coord = documentCoordinateToViewportCoordinate(x,y);
+			    return window.document.elementFromPoint(coord.x,coord.y);
+			  } else {
+			    return window.document.elementFromPoint(x,y);
+			  }
+			}
+			function documentCoordinateToViewportCoordinate(x,y) {
+			    var coord = new Object();
+			    coord.x = x - window.pageXOffset;
+			    coord.y = y - window.pageYOffset;
+			    return coord;
+			}
+			function documentCoordinateToViewportCoordinate(x,y) {
+			    var coord = new Object();
+			    coord.x = x - window.pageXOffset;
+			    coord.y = y - window.pageYOffset;
+			    return coord;
+			}
+			function elementFromViewportPoint(x,y) {
+			  if (elementFromPointIsUsingViewPortCoordinates()) {
+			    return window.document.elementFromPoint(x,y);
+			  } else {
+			    var coord = viewportCoordinateToDocumentCoordinate(x,y);
+			    return window.document.elementFromPoint(coord.x,coord.y);
+			  }
+			}
+			
 		</script>
 		
 		<!-- 
@@ -228,6 +382,18 @@
 <body>
 
 <div id="dfm_mobile" >
+	
+	<div id="testWindow" >
+		<div class="content " style="background-color:#FFF;">
+			<div  class="scroller " style="padding-top:60px;padding:0 1.5em;">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				<div id="xwrapper" style="width:180px;height:150px;overflow:hidden;">
+					<div id="iframeCover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>
+					<iframe id="iframeX" src="temp/iframe.html" style="width:180px;height:150px;margin:0px;padding:0px;"></iframe>
+				</div>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.	
+			</div>
+		</div>
+	</div><!-- /splash -->
 	
 	<div id="splash" >
 		<div class="content" >
@@ -256,7 +422,18 @@
 	
 	<div id="story_window" >
 		<div class="content " style="background-color:#FFF;">
-			<div id="story_container" class="scroller "></div>
+			<div id="story_container" class="scroller ">
+				<div id="story_ad_top" >
+					<script type='text/javascript'>
+						googletag.cmd.push(function() { googletag.display('story_ad_top')});
+					</script>
+				</div>
+				<div id="story_ad_bottom" >
+					<script type='text/javascript'>
+						googletag.cmd.push(function() { googletag.display('story_ad_bottom')});
+					</script>
+				</div>
+			</div>
 		</div>
 	</div><!-- /story_window -->
 	

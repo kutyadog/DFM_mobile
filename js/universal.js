@@ -318,7 +318,12 @@ function drawStory() {
 		//http://blog.stevenlevithan.com/archives/faster-than-innerhtml
 		//http://ejohn.org/blog/javascript-micro-templating/
 		
-		xString += '<div id="story_ad_top" class="centered_ad"></div>';
+		//----------------------build top ad and cover (cover helps control touch issues)
+		xString += '<div id="story_ad_top_wrapper" style="width:300px;height:50px;overflow:hidden;display:block;margin:auto;">';
+		xString += '	<div id="story_ad_top_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>';
+		xString += '	<div id="story_ad_top" ></div>';
+		xString += '</div>';
+		
 		xString += '<ul class="breadcrumb">';
 		xString += '<li><a href="#" onclick="clickNewSection(1);">Home</a></li><li><a href="#" onclick="clickNewSection(1);">News</a></li><li class="active">Story</li>';
 		xString += '</ul>';
@@ -375,7 +380,12 @@ function drawStory() {
 		xString += '</div><!-- #story_related_content -->';
 		xString += '</div> <!-- story_wrapper -->';
 		
-		xString += '<div id="story_ad_bottom" class="centered_ad"></div>';
+		//----------------------build bottom ad and cover (cover helps control touch issues)
+		xString += '<div id="story_ad_bottom_wrapper" style="width:300px;height:250px;overflow:hidden;display:block;margin:auto;">';
+		xString += '	<div id="story_ad_bottom_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>';
+		xString += '<div id="story_ad_bottom" ></div>';
+		xString += '</div>';
+		
 		xString += '<div class="ng-recommender" id="ng-recommender" style="height:350px;width:100%;display:block;padding:0px;margin-top:10px;"></div>';
 		
 		document.getElementById( 'story_container' ).innerHTML = xString;
@@ -391,6 +401,9 @@ function drawStory() {
 		setTimeout(function() { 
 			addAdToDiv( 'story_ad_top', '300', '50' );
 			addAdToDiv( 'story_ad_bottom', '300', '250' );
+			
+			//addJivoxAdToDiv( 'story_ad_bottom', '300', '250' );
+			
 			//addAdToDiv( 'story_ad_bottom' );
 			//will need to add a 320x50 ad size here!!!
 			//addAdToDiv( '300x250', 'story_ad_bottom' );
@@ -654,19 +667,258 @@ function loadPropertyData() {
 
 
 
+function prepareIframes(xDiv) {
+	alert('prepareAllIframes' );
+	console.debug('prepareAllIframes' );
+	var xcover = document.getElementById( 'iframeCover' );
+	xcover.ontouchstart = function() {
+		console.debug('ontouchstart');
+		xActiveTouch = 1;
+    };
+	xcover.ontouchmove = function() {
+		console.debug('ontouchmove');
+		xActiveTouch = 0;
+    };
+	xcover.ontouchend = function() {
+		if (xActiveTouch) {
+			console.debug('its a click through!!!');
+			var iframe = document.getElementById( 'iframeX' );
+			var iframeDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
+			
+			//console.debug('its a click through!!! '+ iframeDoc.id);
+			
+			// Find click position (coordinates)
+			var x = event.offsetX;
+			var y = event.offsetY;
 
+			// Trigger click inside iframe
+			var link = iframeDoc.elementFromPoint(x, y);
+			var newEvent = iframeDoc.createEvent('HTMLEvents');
+			newEvent.initEvent('click', true, true);
+			link.dispatchEvent(newEvent);
+		}
+    };
+}
 
 
 function addAdToDiv( xDiv, xWidth, xHeight ) {
 	console.debug( 'addAdToDiv: '+ xDiv);
 	
+	if ( xDiv =='story_ad_top') {
+		googletag.pubads().refresh([ad1]);
+	} else if ( xDiv =='story_ad_bottom') {
+		googletag.pubads().refresh([ad2]);
+	} else {
+		alert('error bad ad div in addAdToDiv: '+ xDiv );
+	}
+	
+	//prepare coverDiv
+	var xcover = document.getElementById( xDiv + '_cover' );
+	xcover.ontouchstart = function() {
+		console.debug('ontouchstart');
+		xActiveTouch = 1;
+    };
+	xcover.ontouchmove = function() {
+		console.debug('ontouchmove');
+		xActiveTouch = 0;
+    };
+	xcover.ontouchend = function(e) {
+		if (xActiveTouch) {
+			console.debug('its a click through!!!');
+			
+			/*
+			var x = e.offsetX, y = e.offsetY;
+			    var res = [];
+
+			    var ele = document.elementFromPoint(x,y);
+			    while(ele && ele.tagName != "BODY" && ele.tagName != "HTML"){
+			        res.push(ele);
+			        ele.style.display = "none";
+			        ele = document.elementFromPoint(x,y);
+			    }
+				
+			    for(var i = 0; i < res.length; i++){
+					console.debug(res[i].id);
+			        res[i].style.visibility = "hidden";
+			    }
+			
+			return;
+			*/
+			
+			//----------------------build top ad and cover (cover helps control touch issues)
+			//xString += '<div id="story_ad_top_wrapper" style="width:300px;height:50px;overflow:hidden;display:block;margin:auto;">';
+			//xString += '	<div id="story_ad_top_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>';
+			//xString += '	<div id="story_ad_top" ></div>';
+			
+			//--------------
+			if (event == null) { alert('ouch');event = window.event }
+			//this.style['pointer-events'] = "none";
+			// Find click position (coordinates)
+			var rect = document.getElementById( xDiv ).getBoundingClientRect();
+			//console.log(rect.top, rect.right, rect.bottom, rect.left);
+			
+			var x = e.changedTouches[0].pageX - rect.left;
+			var y = e.changedTouches[0].pageY - rect.top;
+			console.debug('its a click through!!! '+ x +', '+ y);
+			
+			//setTimeout(function() { fakeClick(event, document.getElementById('iframeX')) }, 500);
+			
+			var iframes = document.getElementById( xDiv ).getElementsByTagName('iframe');
+			console.debug('iframe count: '+ iframes[0]);
+			
+			var iframe = iframes[0];
+			var iframeDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
+			//console.debug('its a click through!!! '+ event.target.id);
+			
+			// Trigger click inside iframe
+			var link = iframeDoc.elementFromPoint(x, y);
+			console.debug('link: '+ link.id);
+			var newEvent = iframeDoc.createEvent('HTMLEvents');
+			newEvent.initEvent('click', true, true);
+			if ( link !== null ) {
+				link.dispatchEvent(newEvent);
+			} else {
+				alert('error! link is null');
+			}
+			//--------------
+			
+			
+			
+			//var touches = event.changedTouches, first = touches[0];
+			
+			//var iframe = document.getElementById( 'iframeX' );
+			//document.getElementById( 'story_ad_top' ).dispatchEvent(e);
+			return;
+			
+			
+			var iframeDoc = document.getElementById( 'story_ad_top' );
+			//var iframeDoc = iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
+			
+		
+			
+			// Find click position (coordinates)
+			var x = e.changedTouches[0].pageX;
+			var y = e.changedTouches[0].pageY;
+			
+			var mouse = getRelativeMousePosition(e);
+				console.debug('its a click through!!! '+ x +', '+ y);
+			// Trigger click inside iframe
+			var link = iframeDoc.elementFromPoint(x, y);
+			var newEvent = iframeDoc.createEvent('HTMLEvents');
+			newEvent.initEvent('click', true, true);
+			link.dispatchEvent(newEvent);
+			
+			//if(!isRelative) {
+			//      x += $(document).scrollLeft();
+			//      y += $(document).scrollTop();
+		}
+    };
+	
+	/*
+	//----------------------image ads (OLD STYLE)
 	var xRandom = Math.floor((Math.random()*1000000)+1);
 	var xString = '<a href="https://pubads.g.doubleclick.net/gampad/jump?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'" target="_blank">';
 	xString += '<img src="https://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'"></a>';
 	if ( document.getElementById( xDiv ) ) document.getElementById( xDiv ).innerHTML = xString;
 	//'<img src="http://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ Math.floor((Math.random()*1000000)+1) +'" alt="Smiley face" height="'+ xHeight+'" width="'+ xWidth+'"> ';
+	*/
 }
 
+
+function getScreenPosition (doc) {
+    var X = 0,
+    Y = 0,
+    compat = doc.compatMode && doc.compatMode !== "BackCompat" ? true : false;
+ 
+ 
+    if (doc.pageXOffset !== undefined && doc.pageYOffset !== undefined) {
+        X = doc.pageXOffset;
+        Y = doc.pageXOffset;
+    } else {
+        if (compat) {
+            X = doc.documentElement.scrollLeft;
+            Y = doc.documentElement.scrollTop;
+        } else {
+            X = doc.body.scrollLeft;
+            Y = doc.body.scrollTop;
+        }
+    }
+ 
+    return {
+        'X' : X,
+        'Y' : Y
+    };
+}
+function getDocumentFromElement (elm) {
+    var doc;
+    if (elm.nodeType === 9) {
+        doc = elm;
+    } else {
+        doc = elm.ownerDocument;
+    }
+    return doc;
+}
+function getElementFromEvent (e) {
+    var target;
+    if (e.target) {
+        target = e.target;
+    } else if (e.srcElement) {
+        target = e.srcElement;
+    }
+    if (target.nodeType === 3) {
+        /* defeat Safari bug */
+        target = target.parentNode;
+    }
+    return target;
+}
+function getRelativeMousePosition (e) {
+    var doc, win, screen, mouse;
+    if (e.pageX !== undefined && e.pageY !== undefined) {
+        doc = getDocumentFromElement(getElementFromEvent(e));
+        screen = getScreenPosition(doc);
+        mouse = {
+            'X' : e.pageX - screen.X,
+            'Y' : e.pageY - screen.Y
+        };
+    } else {
+        win = API.getWindowFromEvent(e);
+        mouse = {
+            'X' : win.event.clientX,
+            'Y' : win.event.clientY
+        };
+    }
+    return mouse;
+}
+
+
+
+function addJivoxAdToDiv( xDiv, xWidth, xHeight ) {
+	console.debug( 'addJivoxAdToDiv: '+ xDiv);
+	
+	var jvxRandomNumber = Math.random();
+	var jvxTimeStamp = new Date();
+	//document.write(unescape("%3Cscript src='http://as.jivox.com/player/getMobileBanner.php?t="+jvxTimeStamp.getTime() +"&r=" + jvxRandomNumber + "&campaignId=40885&siteId=44c2b897b3ca9b&adTagType=genJS&" + escape("clickTagURL=http://coloradodriver.com/index.html")+"' type='text/javascript'%3E%3C/script%3E"));
+	
+	/*
+	<img src="http://evs.jivox.com/jivox/serverAPIs/vastSaveImpression.php?siteId=44c2b897b3ca9b&campaignId=40885&eventType=40" border="0" width="0" height="0" style="display:none"/>
+	<a href="http://as.jivox.com/player/mobileUnit.php?campaignId=40885&siteId=44c2b897b3ca9b&clickTagURL=http://coloradodriver.com/index.html" target="_blank">
+		<img src="http://jivoxuploads.s3.amazonaws.com/40885/1/21864-53736-pro-511981135396a.png" border="0" width="180" height="150"/>
+	</a>
+	*/
+	
+	var tempSiteID = '44c2b897b3ca9b';
+	var tempCampID = '40885';
+	var xString = '<img src="http://evs.jivox.com/jivox/serverAPIs/vastSaveImpression.php?siteId='+ tempSiteID +'&campaignId='+ tempCampID +'&eventType=40" border="0" width="0" height="0" style="display:none"/>';
+	xString += '<a href="http://as.jivox.com/player/mobileUnit.php?campaignId='+ tempCampID +'&siteId='+ tempSiteID +'&clickTagURL=http://coloradodriver.com/index.html" target="_blank">';
+	xString += '	<img src="http://jivoxuploads.s3.amazonaws.com/'+ tempCampID +'/1/21864-53736-pro-511981135396a.png" border="0" width="180" height="150"/>';
+	xString += '</a>';
+	
+	if ( document.getElementById( xDiv ) ) document.getElementById( xDiv ).innerHTML = xString;
+	//'<img src="http://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ Math.floor((Math.random()*1000000)+1) +'" alt="Smiley face" height="'+ xHeight+'" width="'+ xWidth+'"> ';
+}
+
+//http://as.jivox.com/player/expandedUnit.php?campaignId=40886&siteId=44c2b897b3ca9b&volume=1&adUnitWidth=728&adUnitHeight=90&adUnit=8&clickTagURL=http://coloradodriver.com/index.html
+//http://cdn.jivox.com/40886/1/21864-53736-pro-51199426e2b97.png
 
 
 //---------------------------Experimenting with loading external js by adding it to header
@@ -866,7 +1118,7 @@ function DetermineWhatToDoNextFromURL() {
 	//	anaylzes URL to see if we now load a section front or story
 	
 	var TempSectionFront 	= 0;
-	var TempStoryID			= 0;	//23062993;
+	var TempStoryID			= 23062993;	//23062993;
 	
 	if ( !TempSectionFront && !TempStoryID ) {
 		setTimeout(function() { loadNewSection(); }, 1500);
