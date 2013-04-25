@@ -1,12 +1,6 @@
-//function customPropertyData() {
-	//----Eventually I will pull each properties data from the server
-	//		So, for example, this property (denver) would call to server passing unique property id
-	//		The server would then send back a JSON array with all the properties data,
-	//		including property title, activeSection and an array of all the sections and their corresponding feeds (below)
+	//---------------custom property code
 	
-	
-	
-	xFeedList = new Array(
+	propData.xFeedList = new Array(
 			{ 'title' : 'Business', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230614.xml' },
 			{ 'title' : 'Breaking News', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230605.xml' },
 			{ 'title' : 'Broncos', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230613.xml' },
@@ -22,19 +16,12 @@
 			{ 'title' : 'Rockies', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230619.xml' }
 		);
 	
+	propData.propertyTitle = 'The Denver Post';
+	propData.activeSection = 1;		//breaking news
+	propData.propertySplashImage = 'splash.gif';
+	propData.backgroundsplash = '0079c2';				//el paso 'f2f8fe'
 	
-	//propertyDataObject.title = 'The Denver Post';
-	
-	
-	//alert( xFeedList[0].title );
-	//alert( xFeedList[0].url );
-	
-	propertyTitle = 'The Denver Post';
-	activeSection = 1;		//breaking news
-	propertySplashImage = 'splash.gif';
-	backgroundsplash = '0079c2';				//el paso 'f2f8fe'
-	
-	AppleAppID = "375264133";
+	propData.AppleAppID = "375264133";
 	//topDomain = get_top_domain();
 	//if (topDomain == 'localhost') topDomain = 'denverpost.com';	//added only for dev, delete before live
 	

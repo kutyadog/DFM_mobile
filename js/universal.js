@@ -7,7 +7,7 @@ function DrawSectionFromJson( xjson ) {
 	console.debug( 'DrawSectionFromJson: ' );
 	
 	var xString = '';
-	StoryList = new Array();
+	contentData.StoryList = new Array();
 	
 	//  -----------------------------------------------------------------------------
 	//			there are two ways JSON Section info can be pulled 
@@ -32,16 +32,16 @@ function DrawSectionFromJson( xjson ) {
 		
 		xjson = xjson.rss.channel;
 		for (var i=0; i<xjson.item.length;i++) {
-			StoryList[i] = new Array();
-			StoryList[i].id = xjson.item[i].meta[0]['#cdata-section'];
-			StoryList[i].headline = xjson.item[i].title['#cdata-section'];
-			StoryList[i].launchDate = xjson.item[i].pubDate;
-			StoryList[i].image = 0;
+			contentData.StoryList[i] = new Array();
+			contentData.StoryList[i].id = xjson.item[i].meta[0]['#cdata-section'];
+			contentData.StoryList[i].headline = xjson.item[i].title['#cdata-section'];
+			contentData.StoryList[i].launchDate = xjson.item[i].pubDate;
+			contentData.StoryList[i].image = 0;
 			if ( xjson.item[i].meta.length > 5 ) {
 				//meta data is inconsistent on length, but if an images exists, it is above 5 (verify?)
 				xjson.item[i].meta.filter(function( obj ) {
 					if ( obj['@id'] === "original-image" ) {
-						StoryList[i].image = getSmallerNgpsImage( obj['url'], 100 );
+						contentData.StoryList[i].image = getSmallerNgpsImage( obj['url'], 100 );
 					}
 				});
 			}
@@ -78,18 +78,18 @@ function DrawSectionFromJson( xjson ) {
 		xjson = xjson.query.results.feed.articles;
 		//using yahoo YQL to process JSON so getting to content is different
 		for (var i=0; i<xjson.article.length;i++) {
-			StoryList[i] = new Array();
-			StoryList[i].id = xjson.article[i].id;
-			StoryList[i].headline = xjson.article[i].headline;
-			StoryList[i].launchDate = xjson.article[i].launchDate;
-			StoryList[i].image = 0;
+			contentData.StoryList[i] = new Array();
+			contentData.StoryList[i].id = xjson.article[i].id;
+			contentData.StoryList[i].headline = xjson.article[i].headline;
+			contentData.StoryList[i].launchDate = xjson.article[i].launchDate;
+			contentData.StoryList[i].image = 0;
 			if ( xjson.article[i].images !== null ) {
 				//-----there are two different result structures for images, 
 				//		so I need to find out which one it is and return the appropriate format
 				if ( xjson.article[i].images.image.length === undefined ) {
-					StoryList[i].image = getSmallerNgpsImage( xjson.article[i].images.image.url[0].content, 100 );
+					contentData.StoryList[i].image = getSmallerNgpsImage( xjson.article[i].images.image.url[0].content, 100 );
 				} else {
-					StoryList[i].image = getSmallerNgpsImage( xjson.article[i].images.image[0].url[0].content, 100 );
+					contentData.StoryList[i].image = getSmallerNgpsImage( xjson.article[i].images.image[0].url[0].content, 100 );
 				}
 			}
 		}
@@ -105,22 +105,34 @@ function DrawSectionFromJson( xjson ) {
 	xString = xString + '	</div>';
 	*/
 	
+	//----------------------build top ad and cover (cover helps control touch issues)
+	xString += '<div id="section_ad_1_wrapper" style="width:100%;height:50px;overflow:hidden;display:block;margin:auto;background-color:#333;">';
+	xString += '	<div id="section_ad_1_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>';
+	xString += '	<div id="section_ad_1" ></div>';
+	xString += '</div>';
+	
 	//--------------------------------------------------------------------------------------------
 	//now we have a standardized data set for the article lists --- draw them
-	xString +=	'<div class="list_header " style="">'+ xFeedList[activeSection].title +'</div>';
+	xString +=	'<div class="list_header " style="">'+ propData.xFeedList[ propData.activeSection ].title +'</div>';
+
 	xString +=	'<ul class="list Xul">';
-	
-	for (var i=0; i<StoryList.length;i++) {
-		xString +=	'	<li class="Xli" onclick="clickStory('+ StoryList[i].id +');" style="overflow:hidden;">';
-		if ( StoryList[i].image ) {
-			xString +=	'		<div class="list_story_image" style="background-image:url('+ StoryList[i].image +');background-size: cover;" ></div>';
+	for (var i=0; i<contentData.StoryList.length;i++) {
+		xString +=	'	<li class="Xli" onclick="clickStory('+ contentData.StoryList[i].id +');" style="overflow:hidden;">';
+		if ( contentData.StoryList[i].image ) {
+			xString +=	'		<div class="list_story_image" style="background-image:url(\''+ contentData.StoryList[i].image +'\');background-size: cover;" ></div>';
 		}
-		xString +=	'		<div class="list_story_title">'+ StoryList[i].headline +'</div>';
-		xString +=	'		<div class="list_story_time">'+ StoryList[i].launchDate +'</div>';
+		xString +=	'		<div class="list_story_title">'+ contentData.StoryList[i].headline +'</div>';
+		xString +=	'		<div class="list_story_time">'+ contentData.StoryList[i].launchDate +'</div>';
 		xString +=	'	</li>';
 	}
-	
 	xString +=	'</ul>';
+	
+	//----------------------build bottom ad and cover (cover helps control touch issues)
+	xString += '<div id="section_ad_2_wrapper" style="width:100%;height:250px;overflow:hidden;display:block;margin:auto;background-color:#333;margin-top:12px;">';
+	xString += '	<div id="section_ad_2_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>';
+	xString += '	<div id="section_ad_2" ></div>';
+	xString += '</div>';
+	
 	xString +=	'	<footer><img class="dfm-logo" src="assets/dfm_logo.png" />';
 	
 	var d = new Date().getUTCFullYear();
@@ -142,9 +154,14 @@ function DrawSectionFromJson( xjson ) {
 		setTimeout(function() { xInterface.showWindow( 'home', {transition: 'fade'} ); }, 1000);
 	}
 	
+	setTimeout(function() { 
+		addAdToDiv( 'section_ad_1', '300', '50' );
+		addAdToDiv( 'section_ad_2', '300', '250' );
+		//newsToGram();
+		//addJivoxAdToDiv( 'story_ad_bottom', '300', '250' );
+	}, 1000);
+	
 	setTimeout(function() { xInterface.removeLoaderInWindow('home'); }, 500);
-	//need to scroll to the top just in case user has already scrolled down on a previous story list
-	//xInterface.WindowScrollerArray[0].scrollTo(0,0,0);
 }
 
 function getSmallerNgpsImage( xURL, xSize ) {
@@ -155,6 +172,7 @@ function getSmallerNgpsImage( xURL, xSize ) {
 		var toReplace = '.jpg';
 		var replaceWith = '_'+ xSize +'.jpg';
 		xURL = xURL.replace(toReplace, replaceWith);
+		//console.debug( xURL);
 		return xURL;
 	} else {
 		alert('error in size for getSmallerNgpsImage');
@@ -191,13 +209,13 @@ function clickNewSection( xnum ) {
 	
 	//xInterface.closeActiveWindow();
 	//alert( xnum);
-	activeSection = xnum;
+	propData.activeSection = xnum;
 	setTimeout(function() { loadNewSection(); }, 10);
 }
 
 function loadNewSection() {
-	StoryList = new Array();	//set here so that later we can confirm data was loaded correctly in putExternalJsIntoHeader()
-	fetchExternalJSON(xFeedList[activeSection].url, 'DrawSectionFromJson' );
+	contentData.StoryList = new Array();	//set here so that later we can confirm data was loaded correctly in putExternalJsIntoHeader()
+	fetchExternalJSON(propData.xFeedList[ propData.activeSection ].url, 'DrawSectionFromJson' );
 }
 
 function showSectionsWindow() {
@@ -211,10 +229,10 @@ function showSectionsWindow() {
 function renderSectionsWindow() {
 	//renders the window that lists all of the sections
 	console.debug( 'renderSectionsWindow: ');
-	var xString = '<div class="list_header ">'+ propertyTitle +':</div>';
+	var xString = '<div class="list_header ">'+ propData.propertyTitle +':</div>';
 	xString += '<ul class="list " >';
-	for (var i=0; i<xFeedList.length;i++) {
-		xString += '<li  class="Xli" onclick="clickNewSection('+i+');">'+ xFeedList[i].title +'</li>';
+	for (var i=0; i<propData.xFeedList.length;i++) {
+		xString += '<li  class="Xli" onclick="clickNewSection('+i+');">'+ propData.xFeedList[i].title +'</li>';
 	}
 	xString +=	'</ul>';
 	xString +=	'</div>';
@@ -237,6 +255,7 @@ function clickStory( xID ) {
 	//document.getElementById( 'story_container' ).innerHTML = '';
 	//xInterface.putLoaderInWindow( 'story_window' );
 	
+	if ( !xInterface.doesWindowExist('story_window') ) xInterface.putLoaderInWindow( 'story_window' );
 	
 	
 	setTimeout(function() { xInterface.showWindow( 'story_window', {
@@ -262,7 +281,9 @@ function clickStory( xID ) {
 
 function prepareArticleWindowForLoader() {
 	//--------this is where we should draw the 'loading' article window
-	if ( xInterface.currentWindow.id != 'gallery_window') document.getElementById( 'story_container' ).innerHTML = 'boom!';
+	if ( xInterface.currentWindow.id != 'gallery_window') document.getElementById( 'story_container' ).innerHTML = '';
+	//setTimeout(function() { xInterface.putLoaderInWindow( 'testWindow' ); }, 100);
+	xInterface.putLoaderInWindow( 'story_window' );
 }
 
 function loadNgpsStoryContentByID( xID, showLoader ) {
@@ -271,7 +292,7 @@ function loadNgpsStoryContentByID( xID, showLoader ) {
 	
 	if (showLoader) xInterface.putLoaderInWindow( 'story_window' );	//if we want loader in story_window, set this true
 	
-	//console.debug( xURL );
+	console.debug( xURL );
 	request(
 		xURL, null,function() {
 			if ( this.readyState == 4) {
@@ -281,12 +302,13 @@ function loadNgpsStoryContentByID( xID, showLoader ) {
 					alert( 'Error loading URL!' );
 				} else {
 					//ok we have loaded the data, now we convert they JSON into a javascript array and then do something with it
-					StoryContent = eval ("(" + xdata + ")");
-					StoryContent = StoryContent['article'][0];
+					contentData.StoryContent = eval ("(" + xdata + ")");
+					contentData.StoryContent = contentData.StoryContent['article'][0];
 					//xInterface.currentWindow.WindowScrollerArray[0].scrollTo(0,0,0);
+					//dumpProps(contentData.StoryContent);
 					if ( xInterface.doesWindowExist('story_window') ) xInterface.doesWindowExist('story_window').WindowScrollerArray[0].scrollTo(0,0,0);
 					drawStory();
-					setTimeout(function() { xInterface.removeLoaderInWindow('story_window'); }, 10);
+					setTimeout(function() { xInterface.removeLoaderInWindow('story_window'); }, 400);
 					
 				}
 			}
@@ -328,12 +350,12 @@ function drawStory() {
 		xString += '<li><a href="#" onclick="clickNewSection(1);">Home</a></li><li><a href="#" onclick="clickNewSection(1);">News</a></li><li class="active">Story</li>';
 		xString += '</ul>';
 
-		xString += '<div id="story_wrapper" class="story_wrapper"><h1 class="story_headline">' + StoryContent['headline'] + '</h1>';
+		xString += '<div id="story_wrapper" class="story_wrapper"><h1 class="story_headline">' + contentData.StoryContent['headline'] + '</h1>';
 		xString += '<p class="meta">';
-		xString += '<span class="story_author">'+ StoryContent['bylineEncoded'] +'</span>';
-		xString += '<span class="story_pubdate">Published: ' + StoryContent['startDate'] + '</span>';
-		if(StoryContent['updateDate'] != '') {
-			xString += '<span class="story_update">Updated: '+ StoryContent['updateDate'] +'</span>';
+		xString += '<span class="story_author">'+ contentData.StoryContent['bylineEncoded'] +'</span>';
+		xString += '<span class="story_pubdate">Published: ' + contentData.StoryContent['startDate'] + '</span>';
+		if(contentData.StoryContent['updateDate'] != '') {
+			xString += '<span class="story_update">Updated: '+ contentData.StoryContent['updateDate'] +'</span>';
 		}
 		xString += '</p><!-- .meta -->';
 		
@@ -358,21 +380,29 @@ function drawStory() {
 			*/
 		});
 		
+		(function() {
+			/*
+			http://localhost/projects/t1/DFM_mobile/temp/jsonServLet.php?x=23104820&p=denverpost.com
+			contentData.StoryContent.siteInformation.siteId = 36
+			contentData.StoryContent.cId					= 2309964 (story id)
+			contentData.StoryContent.blurb					= "A Denver city councilman is questioning why organizers of last weekend's 4/20 celebration were given a free permit to use Civic Center Park when other large-scale events pay nearly $4,000 a day for festivals."
+			
+			*/
+		});
 		
-		
-		if ( StoryContent['images'].mediaCount ) {
+		if ( contentData.StoryContent['images'].mediaCount ) {
 			//there are stories with the article
-			console.debug('article images: '+ StoryContent['images'].mediaCount );
-			xURL = StoryContent['images'].image[0].url;
+			console.debug('article images: '+ contentData.StoryContent['images'].mediaCount );
+			xURL = contentData.StoryContent['images'].image[0].url;
 			xString += '<div class="main_image"><img src="'+ xURL +'" /></div><!-- .main-image -->';
-			if ( StoryContent['images'].mediaCount > 1 ) {
+			if ( contentData.StoryContent['images'].mediaCount > 1 ) {
 				//add show additional images link
 				xString += '<div class="more_images" ontouchstart="xActiveTouch = 1;" ontouchmove="xActiveTouch = 0;" ontouchend="if (xActiveTouch) { showArticlePhotoGallery(); }">View additional images</div>';
 			}
 		}
 		
 		var xTempTestLink = '<P>Peyton is funny and stuff, <a href="http://www.denverpost.com/broncos/ci_23032711/">See the proof here on denverpost.com</a>';
-		xString += '<div class="story_content">' + StoryContent['body'] + xTempTestLink+ ' </div><!-- #story_content -->';
+		xString += '<div class="story_content">' + contentData.StoryContent['body'] + xTempTestLink+ ' </div><!-- #story_content -->';
 		
 		xString += '<div id="story_related_content">';
 		xString += '<h3 class="page-header">Related stories</h3>';
@@ -506,8 +536,8 @@ function showArticlePhotoGallery() {
 	},
 	*/
 	
-	StoryContent['images'].image[0].url
-	//StoryContent['images'].mediaCount
+	contentData.StoryContent['images'].image[0].url
+	//contentData.StoryContent['images'].mediaCount
 	
 	if ( xInterface.allowUserEvent() ) {
 		//----------------------------------------------build gallery string
@@ -516,8 +546,8 @@ function showArticlePhotoGallery() {
 		xString += '	<div class="carousel "><!-- /scroller width will have to be set by javascript-->';
 		xString += '		<ul class="list" style=""><!-- /thelist -->';
 		
-		for (var i=0; i<StoryContent['images'].mediaCount;i++) {
-			xString += '<li class="Xli" id="photoframe_'+ (i+1) +'" style="position:relative;" ontouchstart="xActiveTouch = 1;" ontouchmove="xActiveTouch = 0;" ontouchend="if (xActiveTouch) { xGallery.toggleTopLayer(); }">		<div class="gallery_bigImage" style="background-image:url('+ StoryContent['images'].image[i].url +');background-size: contain;"></div>	</li>';
+		for (var i=0; i<contentData.StoryContent['images'].mediaCount;i++) {
+			xString += '<li class="Xli" id="photoframe_'+ (i+1) +'" style="position:relative;" ontouchstart="xActiveTouch = 1;" ontouchmove="xActiveTouch = 0;" ontouchend="if (xActiveTouch) { xGallery.toggleTopLayer(); }">		<div class="gallery_bigImage" style="background-image:url(\''+ contentData.StoryContent['images'].image[i].url +'\');background-size: contain;"></div>	</li>';
 		}
 		xString += '</ul></div></div>';
 		//----------------------------------------------build gallery string (end)
@@ -609,36 +639,6 @@ function loadPropertyData() {
 	//		The server would then send back a JSON array with all the properties data,
 	//		including property title, activeSection and an array of all the sections and their corresponding feeds (below)
 	
-	
-	/*
-	xFeedList = new Array(
-			{ 'title' : 'Business', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230614.xml' },
-			{ 'title' : 'Breaking News', 'url' : 'rss.denverpost.com/mngi/rss/CustomRssServlet/36/230605.xml' },
-			{ 'title' : 'Broncos', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230613.xml' },
-			{ 'title' : 'Sports', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/247701.xml' },
-			{ 'title' : 'Entertainment', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230611.xml' },
-			{ 'title' : 'Featured', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/237705.xml' },
-			{ 'title' : 'Nuggets', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230616.xml' },
-			{ 'title' : 'Nation / World', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230615.xml' },
-			{ 'title' : 'Lifestyle', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230610.xml' },
-			{ 'title' : 'Opinion', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230609.xml' },
-			{ 'title' : 'Politics', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230620.xml' },
-			{ 'title' : 'Preps', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/245424.xml' },
-			{ 'title' : 'Rockies', 'url' : 'http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230619.xml' }
-		);
-	
-	
-	//alert( xFeedList[0].title );
-	//alert( xFeedList[0].url );
-	
-	propertyTitle = 'The Denver Post';
-	activeSection = 1;		//breaking news
-	propertySplashImage = 'splash.gif';
-	backgroundsplash = '0079c2';				//el paso 'f2f8fe'
-	
-	AppleAppID = "375264133";
-	*/
-	
 	/*
 	//http://feeds.cal-one.net/rss_content/bayarea-ipad-columnists.xml
 	//http://feeds.cal-one.net/rss_content/mercurynews-most-viewed.xml
@@ -665,247 +665,109 @@ function loadPropertyData() {
 //---------------Eventually all code below should be moved to property specific prop.js in each props folder (end)
 
 
-
-
-function prepareIframes(xDiv) {
-	alert('prepareAllIframes' );
-	console.debug('prepareAllIframes' );
-	var xcover = document.getElementById( 'iframeCover' );
-	xcover.ontouchstart = function() {
-		console.debug('ontouchstart');
-		xActiveTouch = 1;
-    };
-	xcover.ontouchmove = function() {
-		console.debug('ontouchmove');
-		xActiveTouch = 0;
-    };
-	xcover.ontouchend = function() {
-		if (xActiveTouch) {
-			console.debug('its a click through!!!');
-			var iframe = document.getElementById( 'iframeX' );
-			var iframeDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
-			
-			//console.debug('its a click through!!! '+ iframeDoc.id);
-			
-			// Find click position (coordinates)
-			var x = event.offsetX;
-			var y = event.offsetY;
-
-			// Trigger click inside iframe
-			var link = iframeDoc.elementFromPoint(x, y);
-			var newEvent = iframeDoc.createEvent('HTMLEvents');
-			newEvent.initEvent('click', true, true);
-			link.dispatchEvent(newEvent);
-		}
-    };
-}
-
-
 function addAdToDiv( xDiv, xWidth, xHeight ) {
 	console.debug( 'addAdToDiv: '+ xDiv);
 	
-	if ( xDiv =='story_ad_top') {
-		googletag.pubads().refresh([ad1]);
-	} else if ( xDiv =='story_ad_bottom') {
-		googletag.pubads().refresh([ad2]);
-	} else {
-		alert('error bad ad div in addAdToDiv: '+ xDiv );
-	}
+	//	---------------------------------------------------------------------
+	//	Ads insert an iframe onto the page most of the time
+	//	iframes do not scroll correctly when in an ajax interface
+	//		because they have their own touch events and do not register as normal touch events
+	//	To deal with this, I build the ads in a _wrapper div that contains both the ad and a _cover div
+	//	The _cover div is the same size as the ad iframe and is in FRONT of it
+	//		this way the touch events are registered
+	//	when the user clicks on the _cover div, it passes the click down past to the iframe
+	//	---------------------------------------------------------------------
 	
-	//prepare coverDiv
-	var xcover = document.getElementById( xDiv + '_cover' );
-	xcover.ontouchstart = function() {
-		console.debug('ontouchstart');
-		xActiveTouch = 1;
-    };
-	xcover.ontouchmove = function() {
-		console.debug('ontouchmove');
-		xActiveTouch = 0;
-    };
-	xcover.ontouchend = function(e) {
-		if (xActiveTouch) {
-			console.debug('its a click through!!!');
-			
-			/*
-			var x = e.offsetX, y = e.offsetY;
-			    var res = [];
-
-			    var ele = document.elementFromPoint(x,y);
-			    while(ele && ele.tagName != "BODY" && ele.tagName != "HTML"){
-			        res.push(ele);
-			        ele.style.display = "none";
-			        ele = document.elementFromPoint(x,y);
-			    }
-				
-			    for(var i = 0; i < res.length; i++){
-					console.debug(res[i].id);
-			        res[i].style.visibility = "hidden";
-			    }
-			
-			return;
-			*/
-			
-			//----------------------build top ad and cover (cover helps control touch issues)
-			//xString += '<div id="story_ad_top_wrapper" style="width:300px;height:50px;overflow:hidden;display:block;margin:auto;">';
-			//xString += '	<div id="story_ad_top_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>';
-			//xString += '	<div id="story_ad_top" ></div>';
-			
-			//--------------
-			if (event == null) { alert('ouch');event = window.event }
-			//this.style['pointer-events'] = "none";
-			// Find click position (coordinates)
-			var rect = document.getElementById( xDiv ).getBoundingClientRect();
-			//console.log(rect.top, rect.right, rect.bottom, rect.left);
-			
-			var x = e.changedTouches[0].pageX - rect.left;
-			var y = e.changedTouches[0].pageY - rect.top;
-			console.debug('its a click through!!! '+ x +', '+ y);
-			
-			//setTimeout(function() { fakeClick(event, document.getElementById('iframeX')) }, 500);
-			
-			var iframes = document.getElementById( xDiv ).getElementsByTagName('iframe');
-			console.debug('iframe count: '+ iframes[0]);
-			
-			var iframe = iframes[0];
-			var iframeDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
-			//console.debug('its a click through!!! '+ event.target.id);
-			
-			// Trigger click inside iframe
-			var link = iframeDoc.elementFromPoint(x, y);
-			console.debug('link: '+ link.id);
-			var newEvent = iframeDoc.createEvent('HTMLEvents');
-			newEvent.initEvent('click', true, true);
-			if ( link !== null ) {
-				link.dispatchEvent(newEvent);
-			} else {
-				alert('error! link is null');
-			}
-			//--------------
-			
-			
-			
-			//var touches = event.changedTouches, first = touches[0];
-			
-			//var iframe = document.getElementById( 'iframeX' );
-			//document.getElementById( 'story_ad_top' ).dispatchEvent(e);
-			return;
-			
-			
-			var iframeDoc = document.getElementById( 'story_ad_top' );
-			//var iframeDoc = iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
-			
+	var UseImageAdsOnly = false;				//backup way to show images, NO JAVASCRIPT images only ads
+	
+	if ( UseImageAdsOnly === false ) {
+		//------------------------------------------------------------regular ads
 		
-			
-			// Find click position (coordinates)
-			var x = e.changedTouches[0].pageX;
-			var y = e.changedTouches[0].pageY;
-			
-			var mouse = getRelativeMousePosition(e);
-				console.debug('its a click through!!! '+ x +', '+ y);
-			// Trigger click inside iframe
-			var link = iframeDoc.elementFromPoint(x, y);
-			var newEvent = iframeDoc.createEvent('HTMLEvents');
-			newEvent.initEvent('click', true, true);
-			link.dispatchEvent(newEvent);
-			
-			//if(!isRelative) {
-			//      x += $(document).scrollLeft();
-			//      y += $(document).scrollTop();
+		//-------------------first put the ad in xDiv
+		if ( xDiv =='story_ad_top') {
+			googletag.pubads().refresh([ad1]);
+		} else if ( xDiv =='story_ad_bottom') {
+			googletag.pubads().refresh([ad2]);
+		} else if ( xDiv =='section_ad_1') {
+			googletag.pubads().refresh([sectionAd1]);
+		} else if ( xDiv =='section_ad_2') {
+			googletag.pubads().refresh([sectionAd2]);
+		} else {
+			alert('error bad ad div in addAdToDiv: '+ xDiv );return;
 		}
-    };
-	
-	/*
-	//----------------------image ads (OLD STYLE)
-	var xRandom = Math.floor((Math.random()*1000000)+1);
-	var xString = '<a href="https://pubads.g.doubleclick.net/gampad/jump?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'" target="_blank">';
-	xString += '<img src="https://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'"></a>';
-	if ( document.getElementById( xDiv ) ) document.getElementById( xDiv ).innerHTML = xString;
-	//'<img src="http://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ Math.floor((Math.random()*1000000)+1) +'" alt="Smiley face" height="'+ xHeight+'" width="'+ xWidth+'"> ';
-	*/
-}
+		//sectionAd1 =	googletag.defineSlot( adunit, [300, 50],  'section_ad_1
+		
+		//-------------------prepare _cover div
+		var xcover = document.getElementById( xDiv + '_cover' );
+		xcover.ontouchstart = function() {
+			//console.debug('ontouchstart');
+			xActiveTouch = 1;
+	    };
+		xcover.ontouchmove = function() {
+			//console.debug('ontouchmove');
+			xActiveTouch = 0;
+	    };
+		xcover.ontouchend = function(e) {
+			if (xActiveTouch) {
+				//console.debug('its a click through!!!');
+				if (e == null) { alert('ouch');e = window.event }	//this.style['pointer-events'] = "none";
 
+				var rect = document.getElementById( xDiv ).getBoundingClientRect();		//console.log(rect.top, rect.right, rect.bottom, rect.left);
+				var x = e.changedTouches[0].pageX - rect.left;
+				var y = e.changedTouches[0].pageY - rect.top;							//console.debug('its a click through!!! '+ x +', '+ y);
 
-function getScreenPosition (doc) {
-    var X = 0,
-    Y = 0,
-    compat = doc.compatMode && doc.compatMode !== "BackCompat" ? true : false;
- 
- 
-    if (doc.pageXOffset !== undefined && doc.pageYOffset !== undefined) {
-        X = doc.pageXOffset;
-        Y = doc.pageXOffset;
-    } else {
-        if (compat) {
-            X = doc.documentElement.scrollLeft;
-            Y = doc.documentElement.scrollTop;
-        } else {
-            X = doc.body.scrollLeft;
-            Y = doc.body.scrollTop;
-        }
-    }
- 
-    return {
-        'X' : X,
-        'Y' : Y
-    };
-}
-function getDocumentFromElement (elm) {
-    var doc;
-    if (elm.nodeType === 9) {
-        doc = elm;
-    } else {
-        doc = elm.ownerDocument;
-    }
-    return doc;
-}
-function getElementFromEvent (e) {
-    var target;
-    if (e.target) {
-        target = e.target;
-    } else if (e.srcElement) {
-        target = e.srcElement;
-    }
-    if (target.nodeType === 3) {
-        /* defeat Safari bug */
-        target = target.parentNode;
-    }
-    return target;
-}
-function getRelativeMousePosition (e) {
-    var doc, win, screen, mouse;
-    if (e.pageX !== undefined && e.pageY !== undefined) {
-        doc = getDocumentFromElement(getElementFromEvent(e));
-        screen = getScreenPosition(doc);
-        mouse = {
-            'X' : e.pageX - screen.X,
-            'Y' : e.pageY - screen.Y
-        };
-    } else {
-        win = API.getWindowFromEvent(e);
-        mouse = {
-            'X' : win.event.clientX,
-            'Y' : win.event.clientY
-        };
-    }
-    return mouse;
-}
+				var iframes = document.getElementById( xDiv ).getElementsByTagName('iframe');
+				if ( iframes.length > 0 ) {
+					//ad uses iframes
+					for (var i=0; i<iframes.length;i++) {
+						// Trigger click inside each iframe, if its not the right one, it will recognize this to avoid double click counts
+						var iframe = iframes[i], iframeDoc = (iframe.contentDocument) ? iframe.contentDocument : iframe.contentWindow.document;
+						var link = iframeDoc.elementFromPoint(x, y);
+						if ( link ) {
+							var newEvent = iframeDoc.createEvent('HTMLEvents');
+							newEvent.initEvent('click', true, true);
+							link.dispatchEvent(newEvent);
+						} else {
+							console.debug('click is null: ');
+						}
+					}
+				} else {
+					//there were no iframes in the ad so possibly its just images or something else, figure it out and add the code!!!
+					alert( 'this ad uses something besides iframes so figure it out chris: '+ xDiv );
+				}
 
-
+			}
+	    };
+		//-------------------prepare _cover div (end)
+		
+	} else {
+		//-----------------------------------------NO JS image ads only
+		//	these ads will only show images from DFP using their backup system for NO JAVASCRIPT browsers
+		//		it is not ideal and might not even show all ads
+		console.debug('NO JS image ads only');
+		//---first get rid of cover div
+		document.getElementById( xDiv + '_cover' ).style.width = '0px';
+		
+		var xRandom = Math.floor((Math.random()*1000000)+1);
+		var xString = '<a href="https://pubads.g.doubleclick.net/gampad/jump?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'" target="_blank">';
+		xString += '<img src="https://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ xRandom +'"></a>';
+		if ( document.getElementById( xDiv ) ) document.getElementById( xDiv ).innerHTML = xString;
+		//'<img src="http://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ Math.floor((Math.random()*1000000)+1) +'" alt="Smiley face" height="'+ xHeight+'" width="'+ xWidth+'"> ';
+	}
+}
 
 function addJivoxAdToDiv( xDiv, xWidth, xHeight ) {
+	//------------this is a test function and not intended to be used for production
 	console.debug( 'addJivoxAdToDiv: '+ xDiv);
-	
 	var jvxRandomNumber = Math.random();
 	var jvxTimeStamp = new Date();
 	//document.write(unescape("%3Cscript src='http://as.jivox.com/player/getMobileBanner.php?t="+jvxTimeStamp.getTime() +"&r=" + jvxRandomNumber + "&campaignId=40885&siteId=44c2b897b3ca9b&adTagType=genJS&" + escape("clickTagURL=http://coloradodriver.com/index.html")+"' type='text/javascript'%3E%3C/script%3E"));
-	
 	/*
 	<img src="http://evs.jivox.com/jivox/serverAPIs/vastSaveImpression.php?siteId=44c2b897b3ca9b&campaignId=40885&eventType=40" border="0" width="0" height="0" style="display:none"/>
 	<a href="http://as.jivox.com/player/mobileUnit.php?campaignId=40885&siteId=44c2b897b3ca9b&clickTagURL=http://coloradodriver.com/index.html" target="_blank">
 		<img src="http://jivoxuploads.s3.amazonaws.com/40885/1/21864-53736-pro-511981135396a.png" border="0" width="180" height="150"/>
 	</a>
 	*/
-	
 	var tempSiteID = '44c2b897b3ca9b';
 	var tempCampID = '40885';
 	var xString = '<img src="http://evs.jivox.com/jivox/serverAPIs/vastSaveImpression.php?siteId='+ tempSiteID +'&campaignId='+ tempCampID +'&eventType=40" border="0" width="0" height="0" style="display:none"/>';
@@ -915,10 +777,9 @@ function addJivoxAdToDiv( xDiv, xWidth, xHeight ) {
 	
 	if ( document.getElementById( xDiv ) ) document.getElementById( xDiv ).innerHTML = xString;
 	//'<img src="http://pubads.g.doubleclick.net/gampad/ad?iu='+ adunit +'&sz='+ xWidth +'x'+ xHeight+'&mob=js&c='+ Math.floor((Math.random()*1000000)+1) +'" alt="Smiley face" height="'+ xHeight+'" width="'+ xWidth+'"> ';
+	//http://as.jivox.com/player/expandedUnit.php?campaignId=40886&siteId=44c2b897b3ca9b&volume=1&adUnitWidth=728&adUnitHeight=90&adUnit=8&clickTagURL=http://coloradodriver.com/index.html
+	//http://cdn.jivox.com/40886/1/21864-53736-pro-51199426e2b97.png
 }
-
-//http://as.jivox.com/player/expandedUnit.php?campaignId=40886&siteId=44c2b897b3ca9b&volume=1&adUnitWidth=728&adUnitHeight=90&adUnit=8&clickTagURL=http://coloradodriver.com/index.html
-//http://cdn.jivox.com/40886/1/21864-53736-pro-51199426e2b97.png
 
 
 //---------------------------Experimenting with loading external js by adding it to header
@@ -936,7 +797,7 @@ function putExternalJsIntoHeader(url) {  //quick and dirty, just meant for quick
 	
 	function headFileHasLoaded() {
 		//console.debug( 'External code has loaded, story count: '+ StoryList.length );
-		if ( StoryList.length == 0 ) {
+		if ( contentData.StoryList.length == 0 ) {
 			console.debug( '----Error loading content' );
 			//error loading content
 			
@@ -985,31 +846,26 @@ function fetchExternalJSON(url, callback){
 }
 
 function hijackHref( xDiv ) {
-    //var links = document.getElementsByTagName('a');
+	//Prepares app for when user clicks a link in a story
+	//	we can analyze the link first and determine what to do with it
+	//	if its the same site, we get the ID for the article and load the data
+	//	if its external link then we open new window for that link
 	var links = document.getElementById( xDiv ).getElementsByTagName('a');
 	console.debug('found links in article: '+ links.length );
 	for (var i = 0; i < links.length; i++) {
 		//console.debug(links[i].href );
 		//links[i].href = "http://google.com";
 		//links[i].onclick = bingdong('hi');
-		
-	    links[i].onclick = function() {
+		links[i].onclick = function() {
 			if ( basedomain != get_base_domain( this.href ) ) {
-				alert( 'not our site');
+				//alert( 'not our site');
 				this.target = "_blank";
 				return true;
 			} else {
 				//alert( 'Link on our site!!!: '+ this.href);
-				
-				
 				loadNgpsStoryContentByID( getStoryIdFromURL( this.href ), true );
-				
-				//bingdong('hiw');
-				//
-		        //this.href = "http://google.com";
 				return false;
 			}
-			
 	    };
 	}
 }
@@ -1031,6 +887,8 @@ function dumpProps(obj, parent) {
       }
    }
 }
+
+
 
 /*
 //--------------OMNITURE CODE SUPPLIED BY JOSHUA D
@@ -1116,15 +974,17 @@ foo.doSomething();
 function DetermineWhatToDoNextFromURL() {
 	//called only once after app has loaded
 	//	anaylzes URL to see if we now load a section front or story
-	
+	//	THIS CODE IS NOT DONE, STILL NEED TO ANALYZE URL
 	var TempSectionFront 	= 0;
-	var TempStoryID			= 23062993;	//23062993;
+	var TempStoryID			= 0;	//23062993;
 	
 	if ( !TempSectionFront && !TempStoryID ) {
+		//if we have no section or article id's then simply load the default section front
 		setTimeout(function() { loadNewSection(); }, 1500);
 	} else if ( TempStoryID ) {
+		//we have an article id so load that id
 		setTimeout(function() { clickStory( TempStoryID ); }, 1500);
 	}
-	
-	//23062993
 }
+
+

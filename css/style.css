@@ -916,3 +916,8 @@ img.dfm-logo {
 .centered_ad img {
 	display:block;margin:auto;
 }
+.loading_container { background:rgba(255,255,255,.85);}
+.loading_text { color:#000;font-weight:bold; }
+.barlittle { background-color:#000;}
+
+
