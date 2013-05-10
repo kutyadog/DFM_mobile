@@ -56,6 +56,7 @@ function Interface (main, options) {
 	this.DoNextArray = new Array();	//an array of strings that will be run
 	this.WindowArray = new Array();	//an array holds history of window objects. Current window is always last in array, oldest first. Delete object when window is closed.
 	
+	this.useScrollerControl = 1;	//turn off iscroll
 	this.scrollerArray = new Array();	//an array that holds all active scrollers
 	
 	//this.KeeperWindowsString = '';		//string of div ids that we will always keep separated by commas (dynamic ones will be deleted)
@@ -80,29 +81,33 @@ function Interface (main, options) {
 	// here we are dynamically loading external iscroll.js file and running it.
 	// this code could be used for other external files and possibly there is a better way to do this such as dynamically adding it to header
 	//<script src="js/iscroll.js" type="text/javascript"></script>
-	var xURL = "js/iscroll.js";
-	//if ( ( xHTML == undefined ) || ( xHTML == '' ) ) {
-		//no html was given, so put LOADING SCREEN over the whole interface
-		//this.showLoadingScreenFull();
-		request(
-			xURL, null,function() {
-				if ( this.readyState == 4) {
-					//alert( 'done');
-					var xdata = this.responseText;
-					if ( xdata == '' ) {
-						//alert( 'Error loading URL!' );
-					} else {
-						//OK now we have the html (data) to put into it, use createNewWindowFromHTML to do the rest
-						//xObject.createNewWindowFromHTML( xID, xdata, options );
-						//xObject.busy = 0;
-						//alert( xdata );
-						window.eval(xdata);
-						xObject.init();
+	if ( this.useScrollerControl ) {
+		var xURL = "js/iscroll.js";
+		//if ( ( xHTML == undefined ) || ( xHTML == '' ) ) {
+			//no html was given, so put LOADING SCREEN over the whole interface
+			//this.showLoadingScreenFull();
+			request(
+				xURL, null,function() {
+					if ( this.readyState == 4) {
+						//alert( 'done');
+						var xdata = this.responseText;
+						if ( xdata == '' ) {
+							//alert( 'Error loading URL!' );
+						} else {
+							//OK now we have the html (data) to put into it, use createNewWindowFromHTML to do the rest
+							//xObject.createNewWindowFromHTML( xID, xdata, options );
+							//xObject.busy = 0;
+							//alert( xdata );
+							window.eval(xdata);
+							xObject.init();
+						}
 					}
-				}
-			}, 'GET'
-		);
-	//}
+				}, 'GET'
+			);
+		//}
+	} else {
+		setTimeout(function() {  xObject.init(); }, 10);
+	}
 	//----------------add external js to dom (end)
 	
 	/*
@@ -230,161 +235,175 @@ function Interface (main, options) {
 	this.initScrollers = function( xElement ) {
 		//so we do this everytime a window is created... could be multiples so i return an array
 		
-		//----------------------------------------------------------------------------------------vertical scrollers
-		var scrollers = xElement.getElementsByClassName("scroller");
-		var xTempArray = new Array();	//temporarily keep track of any scroller objects
-		if ( scrollers.length > 0 ) {
-			for (var i = 0, len = scrollers.length; i < len; i++) {
-				//-------------------------------------FIRST WE wrap scroller div inside of a 'wrapper' div
-				var wrap = document.createElement('div'); wrap.appendChild(scrollers[i].cloneNode(true));
-				var xHTML = '<div class="wrapper">' + wrap.innerHTML +'</div>';
-				var xParent = scrollers[i].parentNode;xParent.removeChild( scrollers[i] );
-				xParent.innerHTML = xHTML + xParent.innerHTML;
-			}
-
-			//-----------------------------------------THEN WE now filter through wrappers and make them scrollable	
-			var wrappers = xElement.getElementsByClassName("wrapper");
-			for (var i = 0, len = wrappers.length; i < len; i++) {
-				//-----lets give them id's if they dont have one
-				console.debug('------dfm_mobile: Scroller created------:' );
-				if ( wrappers[i].id == '' ) {
-					wrappers[i].id = 'wrapper_id_'+ Math.floor((Math.random()*1000000)+1);
-				}
-				var scroller = new iScroll( wrappers[i].id, {
-					snap: false, momentum: true, hScrollbar: false
-				});
-				this.scrollerArray.push( scroller );
-				xTempArray.push( scroller );
-			}
+		if ( this.useScrollerControl == 0 ) {
+			setTimeout(function() {  xObject.runDoNext(); }, 10);
+			return new Array();
 		} else {
-			//there arent any scrollers in here
-		}
-		
-		
-		
-		//----------------------------------------------------------------------------------------carousels
-		var scrollers = xElement.getElementsByClassName("carousel");
-		if ( scrollers.length > 0 ) {
-			for (var i = 0, len = scrollers.length; i < len; i++) {
-				//-------------------------------------FIRST, lets set the size of the carousel width
-				var FrameCount = scrollers[i].getElementsByClassName("Xli").length;
-				var xwidth = window.innerWidth;
-				scrollers[i].style.width = (FrameCount * xwidth) +'px';
-				
-				//-------------------------------------NEXT WE wrap scroller div inside of a 'wrapper' div
-				if ( scrollers[i].id == '' ) {
-					//give the carousel an id. Important because in next filter through wrappers, we will need to reference this to resize
-					scrollers[i].setAttribute("id", 'carousel_id_'+ Math.floor((Math.random()*1000000)+1));
+			//----------------------------------------------------------------------------------------vertical scrollers
+			var scrollers = xElement.getElementsByClassName("scroller");
+			var xTempArray = new Array();	//temporarily keep track of any scroller objects
+			if ( scrollers.length > 0 ) {
+				for (var i = 0, len = scrollers.length; i < len; i++) {
+					//-------------------------------------FIRST WE wrap scroller div inside of a 'wrapper' div
+					var wrap = document.createElement('div'); wrap.appendChild(scrollers[i].cloneNode(true));
+					var xHTML = '<div class="wrapper">' + wrap.innerHTML +'</div>';
+					var xParent = scrollers[i].parentNode;xParent.removeChild( scrollers[i] );
+					xParent.innerHTML = xHTML + xParent.innerHTML;
 				}
-				
-				//-------------------------------------THIRD we wrap scroller div inside of a 'wrapper' div
-				var wrap = document.createElement('div'); wrap.appendChild(scrollers[i].cloneNode(true));
-				var xHTML = '<div class="carousel_wrapper">' + wrap.innerHTML +'</div>';
-				var xParent = scrollers[i].parentNode;xParent.removeChild( scrollers[i] );
-				xParent.innerHTML = xHTML + xParent.innerHTML;
-				/*	
-					<div id="car_wrapper_id_2345872" class="carousel_wrapper ">
-						<div class="carousel "><!-- /scroller width will have to be set by javascript-->
-							<ul class="framelist"><!-- /thelist -->
-								<li>
-				*/
-			}
 
-			//-----------------------------------------LAST we filter through wrappers and make them scrollable	
-			var wrappers = xElement.getElementsByClassName("carousel_wrapper");
-			for (var i = 0, len = wrappers.length; i < len; i++) {
-				console.debug('------dfm_mobile: Carousel created------:' );
-				//-----lets give them id's if they dont have one
-				if ( wrappers[i].id == '' ) {
-					wrappers[i].id = 'car_wrapper_id_'+ Math.floor((Math.random()*1000000)+1);
-				}
-				var scroller = new iScroll( wrappers[i].id, {
-					snap: true,
-					momentum: false,
-					hScrollbar: false,
-					onScrollEnd: function () {
-						//document.querySelector('#indicator > li.active').className = '';
-						//document.querySelector('#indicator > li:nth-child(' + (this.currPageX+1) + ')').className = 'active';
+				//-----------------------------------------THEN WE now filter through wrappers and make them scrollable	
+				var wrappers = xElement.getElementsByClassName("wrapper");
+				for (var i = 0, len = wrappers.length; i < len; i++) {
+					//-----lets give them id's if they dont have one
+					console.debug('------dfm_mobile: Scroller created------:' );
+					if ( wrappers[i].id == '' ) {
+						wrappers[i].id = 'wrapper_id_'+ Math.floor((Math.random()*1000000)+1);
 					}
-				});
-				
-				this.scrollerArray.push( scroller );
-				xTempArray.push( scroller );
+					var scroller = new iScroll( wrappers[i].id, {
+						snap: false, momentum: true, hScrollbar: false
+					});
+					this.scrollerArray.push( scroller );
+					xTempArray.push( scroller );
+				}
+			} else {
+				//there arent any scrollers in here
 			}
-			
-			//alert( this.scrollerArray[0].wrapper.parentNode.parentNode.id );
-		} else {
-			//there arent any carousels in here
+
+
+
+			//----------------------------------------------------------------------------------------carousels
+			var scrollers = xElement.getElementsByClassName("carousel");
+			if ( scrollers.length > 0 ) {
+				for (var i = 0, len = scrollers.length; i < len; i++) {
+					//-------------------------------------FIRST, lets set the size of the carousel width
+					var FrameCount = scrollers[i].getElementsByClassName("Xli").length;
+					var xwidth = window.innerWidth;
+					scrollers[i].style.width = (FrameCount * xwidth) +'px';
+
+					//-------------------------------------NEXT WE wrap scroller div inside of a 'wrapper' div
+					if ( scrollers[i].id == '' ) {
+						//give the carousel an id. Important because in next filter through wrappers, we will need to reference this to resize
+						scrollers[i].setAttribute("id", 'carousel_id_'+ Math.floor((Math.random()*1000000)+1));
+					}
+
+					//-------------------------------------THIRD we wrap scroller div inside of a 'wrapper' div
+					var wrap = document.createElement('div'); wrap.appendChild(scrollers[i].cloneNode(true));
+					var xHTML = '<div class="carousel_wrapper">' + wrap.innerHTML +'</div>';
+					var xParent = scrollers[i].parentNode;xParent.removeChild( scrollers[i] );
+					xParent.innerHTML = xHTML + xParent.innerHTML;
+					/*	
+						<div id="car_wrapper_id_2345872" class="carousel_wrapper ">
+							<div class="carousel "><!-- /scroller width will have to be set by javascript-->
+								<ul class="framelist"><!-- /thelist -->
+									<li>
+					*/
+				}
+
+				//-----------------------------------------LAST we filter through wrappers and make them scrollable	
+				var wrappers = xElement.getElementsByClassName("carousel_wrapper");
+				for (var i = 0, len = wrappers.length; i < len; i++) {
+					console.debug('------dfm_mobile: Carousel created------:' );
+					//-----lets give them id's if they dont have one
+					if ( wrappers[i].id == '' ) {
+						wrappers[i].id = 'car_wrapper_id_'+ Math.floor((Math.random()*1000000)+1);
+					}
+					var scroller = new iScroll( wrappers[i].id, {
+						snap: true,
+						momentum: false,
+						hScrollbar: false,
+						onScrollEnd: function () {
+							//document.querySelector('#indicator > li.active').className = '';
+							//document.querySelector('#indicator > li:nth-child(' + (this.currPageX+1) + ')').className = 'active';
+						}
+					});
+
+					this.scrollerArray.push( scroller );
+					xTempArray.push( scroller );
+				}
+
+				//alert( this.scrollerArray[0].wrapper.parentNode.parentNode.id );
+			} else {
+				//there arent any carousels in here
+			}
+
+			setTimeout(function() {  xObject.runDoNext(); }, 10);
+			return xTempArray;
 		}
 		
-		setTimeout(function() {  xObject.runDoNext(); }, 10);
-		return xTempArray;
+		
 	}
 	
 	this.resizeScrollers = function() {
-		console.debug('------dfm_mobile: resizeScrollers------' );
-		console.debug('------dfm_mobile: DoNextArray.length: '+ this.DoNextArray.length );
-		console.debug('------dfm_mobile: this.currentWindow.object.id: '+ this.currentWindow.object.id );
-		console.debug('------dfm_mobile: this.busy: '+ this.busy );
-		
-		for (var i=0; i<this.scrollerArray.length;i++) {
-			var xScrollerObject = this.scrollerArray[i];
-			//-------so I need to find the carousel scrollers. In function initScrollers i set option.snap = true only for carousels
-			//						for now, that will work, but it is NOT ideal
-			if ( this.scrollerArray[i].options.snap ) {
-				//alert( this.scrollerArray[i].wrapper.firstChild.id );
-				var carDiv = this.scrollerArray[i].wrapper.firstChild;
-				var FrameCount = carDiv.getElementsByClassName("Xli").length;
-				var xwidth = window.innerWidth;
-				carDiv.style.width = (FrameCount * xwidth) +'px';
-				
-				/*
-				setTimeout(function() {
-					console.debug('------dfm_mobile: jump to page------: '+ xScrollerObject.currPageX );
-					xScrollerObject.scrollToPage(xScrollerObject.currPageX, 0);
-				}, 700);
-				*/
-				
-				
-				//only need to jump to another page if its a carousel
-				var x = function() {
-					console.debug('------dfm_mobile: jump to page------: '+ xScrollerObject.currPageX );
-					setTimeout(function() {  
+		if ( this.useScrollerControl == 0 ) {
+			setTimeout(function() {  xObject.runDoNext(); }, 10);
+			//return;
+		} else {
+			console.debug('------dfm_mobile: resizeScrollers------' );
+			console.debug('------dfm_mobile: DoNextArray.length: '+ this.DoNextArray.length );
+			console.debug('------dfm_mobile: this.currentWindow.object.id: '+ this.currentWindow.object.id );
+			console.debug('------dfm_mobile: this.busy: '+ this.busy );
+
+			for (var i=0; i<this.scrollerArray.length;i++) {
+				var xScrollerObject = this.scrollerArray[i];
+				//-------so I need to find the carousel scrollers. In function initScrollers i set option.snap = true only for carousels
+				//						for now, that will work, but it is NOT ideal
+				if ( this.scrollerArray[i].options.snap ) {
+					//alert( this.scrollerArray[i].wrapper.firstChild.id );
+					var carDiv = this.scrollerArray[i].wrapper.firstChild;
+					var FrameCount = carDiv.getElementsByClassName("Xli").length;
+					var xwidth = window.innerWidth;
+					carDiv.style.width = (FrameCount * xwidth) +'px';
+
+					/*
+					setTimeout(function() {
+						console.debug('------dfm_mobile: jump to page------: '+ xScrollerObject.currPageX );
 						xScrollerObject.scrollToPage(xScrollerObject.currPageX, 0);
-						setTimeout(function() {  xObject.runDoNext(); }, 10);
-					}, 300);
-					
-					
-				};
-				this.DoNextArray.push( x );
-				
+					}, 700);
+					*/
+
+
+					//only need to jump to another page if its a carousel
+					var x = function() {
+						console.debug('------dfm_mobile: jump to page------: '+ xScrollerObject.currPageX );
+						setTimeout(function() {  
+							xScrollerObject.scrollToPage(xScrollerObject.currPageX, 0);
+							setTimeout(function() {  xObject.runDoNext(); }, 10);
+						}, 300);
+
+
+					};
+					this.DoNextArray.push( x );
+
+				}
+
+				xScrollerObject._resize();
+
+				//setTimeout("xGallery.myGalleryScroll.scrollToPage(xGallery.myGalleryScroll.currPageX, 0);", 200);
+				//alert( this.DoNextArray.length );
+
+
+
+				//setTimeout(function() {
+
+				//	xScrollerObject.scrollToPage(xScrollerObject.currPageX, 0);
+				//	}, 100);
+
 			}
-			
-			xScrollerObject._resize();
-			
-			//setTimeout("xGallery.myGalleryScroll.scrollToPage(xGallery.myGalleryScroll.currPageX, 0);", 200);
-			//alert( this.DoNextArray.length );
-			
-			
-			
-			//setTimeout(function() {
-				
-			//	xScrollerObject.scrollToPage(xScrollerObject.currPageX, 0);
-			//	}, 100);
-			
+			setTimeout(function() {  xObject.runDoNext(); }, 10);
 		}
-		setTimeout(function() {  xObject.runDoNext(); }, 10);
 	}
 	
 	this.deleteScrollers = function( xArray ) {
-		//alert( 'deletescrollers: '+ xArray.length );
-		//alert( "pooooo:"+ xArray[0].wrapper.parentNode.parentNode.id );
-		for (var i=0; i<xArray.length;i++) {
-			var tempObject = xArray[i];
-			for (var z=0; z<this.scrollerArray.length;z++) {
-				if ( this.scrollerArray[z] == tempObject ) {
-					this.scrollerArray.splice(z,1);
-					console.debug('------dfm_mobile: Scroller deleted------:' );
+		if ( this.useScrollerControl ) {
+			//alert( 'deletescrollers: '+ xArray.length );
+			//alert( "pooooo:"+ xArray[0].wrapper.parentNode.parentNode.id );
+			for (var i=0; i<xArray.length;i++) {
+				var tempObject = xArray[i];
+				for (var z=0; z<this.scrollerArray.length;z++) {
+					if ( this.scrollerArray[z] == tempObject ) {
+						this.scrollerArray.splice(z,1);
+						console.debug('------dfm_mobile: Scroller deleted------:' );
+					}
 				}
 			}
 		}

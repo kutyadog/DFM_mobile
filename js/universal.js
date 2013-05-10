@@ -1,51 +1,171 @@
+/*
+pointer-events: none;
+wmode="transparent" opaque
+visibility:hidden;
+*/
 
 //--------------------------------------------
 //				Section Functions
 //--------------------------------------------
+var xTempTest;
 
-function DrawSectionFromJson( xjson ) {
-	console.debug( 'DrawSectionFromJson: ' );
+function processSectionJson( xjson ) {
+	//---called from header jsonP - is the callback set in function fetchExternalJSON
+	//---standardizes the varying JSON formats into a standard in contentData.StoryList
+	console.debug( xjson );		//prints the object to the console
 	
-	var xString = '';
-	contentData.StoryList = new Array();
+	contentData.StoryList = new Array();	//this is rebuilt below
 	
 	//  -----------------------------------------------------------------------------
 	//			there are two ways JSON Section info can be pulled 
 	//			in determined by var fetchJsonLocally set in index.html
+	//				1 : through our Convergence Publisher
+	//				0 : using yahoo's YQL tools
 	//  -----------------------------------------------------------------------------
 	
 	if ( fetchJsonLocally ) {
 		//--------------------------------------------------------local convergence tool
-		(function() {
-			//----------------------------processing the convergencePublisher response
-			//StoryList.item.length
-			//StoryList.title['#cdata-section']
-			//StoryList.lastBuildDate
-			//------article data
-			//StoryList.item[0].pubDate
-			//StoryList.item[0].title['#cdata-section']
-			//StoryList.item[0].link['#cdata-section']
-			//------media
-			//StoryList.item[1]['media:content']['@url']
-			//StoryList.item[1]['media:content']['@fileSize']
-		});
 		
-		xjson = xjson.rss.channel;
-		for (var i=0; i<xjson.item.length;i++) {
-			contentData.StoryList[i] = new Array();
-			contentData.StoryList[i].id = xjson.item[i].meta[0]['#cdata-section'];
-			contentData.StoryList[i].headline = xjson.item[i].title['#cdata-section'];
-			contentData.StoryList[i].launchDate = xjson.item[i].pubDate;
-			contentData.StoryList[i].image = 0;
-			if ( xjson.item[i].meta.length > 5 ) {
-				//meta data is inconsistent on length, but if an images exists, it is above 5 (verify?)
-				xjson.item[i].meta.filter(function( obj ) {
-					if ( obj['@id'] === "original-image" ) {
-						contentData.StoryList[i].image = getSmallerNgpsImage( obj['url'], 100 );
+		if ( xjson.rss['@xmlns:content'] ) {
+			//----- rss2mrss (new)
+			console.debug( 'rss2mrss (new)' );
+			xjson = xjson.rss.channel;
+			xTempTest = xjson;
+			
+			if ( !xjson.item ) {
+				alert('Section is empty');return;
+			}
+			
+			for (var i=0; i<xjson.item.length;i++) {
+				contentData.StoryList[i] = new Array();
+				
+				contentData.StoryList[i].id = getStoryIdFromURL( xjson.item[i].link['#cdata-section'] );
+				contentData.StoryList[i].url = xjson.item[i].link['#cdata-section'];
+				contentData.StoryList[i].headline = xjson.item[i].title['#cdata-section'];
+				if ( typeof xjson.item[i].pubDate === 'object' ) {
+					contentData.StoryList[i].launchDate = xjson.item[i].pubDate['#text'];
+				} else {
+					contentData.StoryList[i].launchDate = xjson.item[i].pubDate;
+				}
+				
+				contentData.StoryList[i].image = 0;
+				
+				if ( xjson.item[i]['media:group'] ) {
+					console.debug( 'image: '+ i );
+					//if ( typeof yourVariable === 'object' ) {
+					var xTempObject;	//found two ways images are handled, this gets past that
+					
+					if ( xjson.item[i]['media:group']['media:content'] ) {
+						console.debug( "xjson.item[i]['media:group']['media:content']" );
+						
+						if ( xjson.item[i]['media:group']['media:content'][0] ) {
+							//http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2mrss&uri=http://feeds.mercurynews.com/mngi/rss/CustomRssServlet/568/254424.xml&json=true&jsoncallback=processSectionJson
+							xTempObject = xjson.item[i]['media:group']['media:content'][0];
+						} else {
+							xTempObject = xjson.item[i]['media:group']['media:content'];
+						}
+						
+						
+					} else {
+						console.debug( "xjson.item[i]['media:group']['media:content'] ELSE!" );
+						
+						if ( xjson.item[i]['media:group'][0]['media:content'][0] ) {
+							//http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2mrss&uri=http://feeds.mercurynews.com/mngi/rss/CustomRssServlet/568/254424.xml&json=true&jsoncallback=processSectionJson
+							xTempObject = xjson.item[i]['media:group'][0]['media:content'][0];
+						} else {
+							xTempObject = xjson.item[i]['media:group'][0]['media:content'];
+						}
 					}
-				});
+					
+					contentData.StoryList[i].image = getSmallerNgpsImage( xTempObject['@url'], 100 );
+					
+					//if ( typeof contentData === 'object' ) {
+						
+					//} else {
+						
+					//}
+					/*
+					xTempObject.filter(function( obj ) {
+						contentData.StoryList[i].image = getSmallerNgpsImage( obj['@url'], 100 );
+						//console.debug( obj['@url'] );
+					});
+					*/
+				}
+				
+				//console.debug(  contentData.StoryList[i].headline );
+				/*
+				contentData.StoryList[i].id = xjson.item[i].meta[0]['#cdata-section'];
+				contentData.StoryList[i].headline = xjson.item[i].title['#cdata-section'];
+				contentData.StoryList[i].launchDate = xjson.item[i].pubDate;
+				contentData.StoryList[i].image = 0;
+				if ( xjson.item[i].meta.length > 5 ) {
+					//meta data is inconsistent on length, but if an images exists, it is above 5 (verify?)
+					xjson.item[i].meta.filter(function( obj ) {
+						if ( obj['@id'] === "original-image" ) {
+							contentData.StoryList[i].image = getSmallerNgpsImage( obj['url'], 100 );
+						}
+					});
+				}
+				*/
+			}
+			
+		} else if ( xjson.rss.channel.language ) {
+			console.debug( 'xjson.rss.channel.language' );
+			//before I started converting to MRSS, this was the standard way for all genericxml2spreed (and mrss2spreed?)
+			// technically, i shouldnt be using this down the road.
+			xjson = xjson.rss.channel;
+			for (var i=0; i<xjson.item.length;i++) {
+				contentData.StoryList[i] = new Array();
+				contentData.StoryList[i].id = xjson.item[i].meta[0]['#cdata-section'];
+				contentData.StoryList[i].headline = xjson.item[i].title['#cdata-section'];
+				contentData.StoryList[i].launchDate = xjson.item[i].pubDate;
+				contentData.StoryList[i].image = 0;
+				if ( xjson.item[i].meta.length > 5 ) {
+					//meta data is inconsistent on length, but if an images exists, it is above 5 (verify?)
+					xjson.item[i].meta.filter(function( obj ) {
+						if ( obj['@id'] === "original-image" ) {
+							contentData.StoryList[i].image = getSmallerNgpsImage( obj['url'], 100 );
+						}
+					});
+				}
+			}
+
+		} else {
+			//MRSS - new formats trying to use
+			console.debug( 'MRSS' );
+			xjson = xjson.rss.channel;
+			
+			if ( !xjson.item ) {
+				alert('Section is empty');return;
+			}
+			
+			//xTempTest = xjson;
+			for (var i=0; i<xjson.item.length;i++) {
+				contentData.StoryList[i] = new Array();
+				contentData.StoryList[i].id = getStoryIdFromURL( xjson.item[i].link['#cdata-section'] );
+				contentData.StoryList[i].url = xjson.item[i].link['#cdata-section'];
+				contentData.StoryList[i].headline = xjson.item[i].title['#cdata-section'];
+				contentData.StoryList[i].launchDate = xjson.item[i].pubDate;
+				contentData.StoryList[i].image = 0;
+				
+				if ( xjson.item[i]['media:group'] ) {
+					//console.debug( 'images: '+ i );
+					//if ( typeof yourVariable === 'object' ) {
+					var xTempObject;	//found two ways images are handled, this gets past that
+					if ( xjson.item[i]['media:group']['media:content'] ) {
+						xTempObject = xjson.item[i]['media:group']['media:content'];
+					} else {
+						xTempObject = xjson.item[i]['media:group'][0]['media:content'];
+					}
+					
+					xTempObject.filter(function( obj ) {
+						contentData.StoryList[i].image = getSmallerNgpsImage( obj['@url'], 100 );
+						//console.debug( obj['@url'] );
+					});
+				}
 			}
 		}
+		
 		
 	} else {
 		//--------------------------------------------------------yahoo yql
@@ -75,25 +195,99 @@ function DrawSectionFromJson( xjson ) {
 			//StoryList.query.results.feed.articles.article[1].images.image[0].filesize[0].content
 		});
 		
-		xjson = xjson.query.results.feed.articles;
-		//using yahoo YQL to process JSON so getting to content is different
-		for (var i=0; i<xjson.article.length;i++) {
-			contentData.StoryList[i] = new Array();
-			contentData.StoryList[i].id = xjson.article[i].id;
-			contentData.StoryList[i].headline = xjson.article[i].headline;
-			contentData.StoryList[i].launchDate = xjson.article[i].launchDate;
-			contentData.StoryList[i].image = 0;
-			if ( xjson.article[i].images !== null ) {
-				//-----there are two different result structures for images, 
-				//		so I need to find out which one it is and return the appropriate format
-				if ( xjson.article[i].images.image.length === undefined ) {
-					contentData.StoryList[i].image = getSmallerNgpsImage( xjson.article[i].images.image.url[0].content, 100 );
-				} else {
-					contentData.StoryList[i].image = getSmallerNgpsImage( xjson.article[i].images.image[0].url[0].content, 100 );
+		//---------------using yahoo yql, we must deal with the different styles of xml files available for different properties
+		if ( xjson.query.results.feed ) {
+			
+			if ( xjson.query.results.feed.articles ) {
+				console.debug( 'xml style 1' );
+				//----------------------------------xml style 1 (denverpost)
+				xjson = xjson.query.results.feed.articles;
+				if ( xjson === null ) {			//error checking
+					alert("error, articles is null, check feed");
+					contentData.StoryList = new Array(1,2);
+					return;
 				}
+				
+				//using yahoo YQL to process JSON so getting to content is different
+				for (var i=0; i<xjson.article.length;i++) {
+					console.debug( 'xml style 1' );
+					contentData.StoryList[i] = new Array();
+					contentData.StoryList[i].id = xjson.article[i].id;
+					contentData.StoryList[i].url = 'http://www.google.com';
+					contentData.StoryList[i].headline = xjson.article[i].headline;
+					contentData.StoryList[i].launchDate = xjson.article[i].launchDate;
+					contentData.StoryList[i].image = 0;
+					if ( xjson.article[i].images !== null ) {
+						//-----there are two different result structures for images, 
+						//		so I need to find out which one it is and return the appropriate format
+						if ( xjson.article[i].images.image.length === undefined ) {
+							contentData.StoryList[i].image = getSmallerNgpsImage( xjson.article[i].images.image.url[0].content, 100 );
+						} else {
+							contentData.StoryList[i].image = getSmallerNgpsImage( xjson.article[i].images.image[0].url[0].content, 100 );
+						}
+					}
+				}
+				
+			//-----TYPEPAD process started but then stopped, just going to turn these all off for now
+			/*
+			} else if ( xjson.query.results.feed.entry ) {
+				console.debug( 'xml style 4' );
+				//----------------------------------xml style 4 (TYPEPAD el paso 'sports' feed at http://elpasotimes.typepad.com/pressbox/atom.xml )
+				xjson = xjson.query.results.feed.entry;
+				for (var i=0; i<xjson.length;i++) {
+					
+				}
+				*/
 			}
+			
+			
+			
+		} else if ( xjson.query.results.rss ) {
+			//----------------------------------xml style 2 (elpaso)
+			console.debug( 'xml style 2' );
+			xjson = xjson.query.results.rss.channel;
+			//using yahoo YQL to process JSON so getting to content is different
+			for (var i=0; i<xjson.item.length;i++) {
+				contentData.StoryList[i] = new Array();
+				if ( typeof xjson.item[i].guid === 'object' ) {
+					contentData.StoryList[i].id = getStoryIdFromURL( xjson.item[i].guid.content );	//some props has this as an object - style 3
+					contentData.StoryList[i].url = xjson.item[i].guid.content;
+				} else {
+					contentData.StoryList[i].id = getStoryIdFromURL( xjson.item[i].guid );
+					contentData.StoryList[i].url = xjson.item[i].guid;
+				}
+				
+				contentData.StoryList[i].headline = xjson.item[i].title;
+				contentData.StoryList[i].launchDate = xjson.item[i].pubDate;
+				contentData.StoryList[i].image = 0;
+				
+				if ( xjson.item[i].content ) {
+					if ( xjson.item[i].content.url ) {
+						//console.debug( xjson.item[i].content.url );
+						contentData.StoryList[i].image = getSmallerNgpsImage( xjson.item[i].content.url , 100 );
+					}
+				} else if ( xjson.item[i].meta ) {
+					//style 3
+					if ( xjson.item[i].meta.length > 6 ) {
+						//console.debug( xjson.item[i].content.url );
+						contentData.StoryList[i].image = getSmallerNgpsImage( xjson.item[i].meta[6].url , 100 );
+					}
+				}
+				
+			}
+			
+		} else {
+			console.debug( 'JSON Spreed feed error 5' );
 		}
+		
 	}
+	
+	DrawSection();
+}
+
+function DrawSection() {
+	//---data is standardized, so now build the section page
+	var xString = '';
 	
 	/*
 	//one suggested way (from MMC) to render out list items with image on left
@@ -117,7 +311,13 @@ function DrawSectionFromJson( xjson ) {
 
 	xString +=	'<ul class="list Xul">';
 	for (var i=0; i<contentData.StoryList.length;i++) {
-		xString +=	'	<li class="Xli" onclick="clickStory('+ contentData.StoryList[i].id +');" style="overflow:hidden;">';
+		if ( contentData.StoryList[i].id ) {
+			xString +=	'	<li class="Xli" onclick="clickStory('+ contentData.StoryList[i].id +');" style="overflow:hidden;">';
+		} else {
+			//xString +=	'	<li class="Xli" onclick="window.open(\''+ contentData.StoryList[i].url +'\');" style="overflow:hidden;">';
+			xString +=	'	<li class="Xli" onclick="clickExternalStoryFromList(\''+ contentData.StoryList[i].url +'\');" style="overflow:hidden;">';
+		}
+		
 		if ( contentData.StoryList[i].image ) {
 			xString +=	'		<div class="list_story_image" style="background-image:url(\''+ contentData.StoryList[i].image +'\');background-size: cover;" ></div>';
 		}
@@ -164,10 +364,52 @@ function DrawSectionFromJson( xjson ) {
 	setTimeout(function() { xInterface.removeLoaderInWindow('home'); }, 500);
 }
 
-function getSmallerNgpsImage( xURL, xSize ) {
+function clickExternalStoryFromList(xURL){
+	//external link means we must open a new window for the url
+	var a = document.createElement('a');
+	    a.setAttribute("href", xURL);
+	    a.setAttribute("target", "_blank");
+
+	var dispatch = document.createEvent("HTMLEvents")
+	    dispatch.initEvent("click", true, true);
+	    a.dispatchEvent(dispatch);
+	
+	//window.open(xURL,'_blank');
+	//alert(xURL);
+//	window.open( xURL );
+	/*
+		if ( basedomain != get_base_domain( this.href ) ) {
+			//alert( 'not our site');
+			this.target = "_blank";
+			return true;
+			*/
+			
+}
+
+function getSmallerNgpsImage( xURL, xSize, origWidth ) {
+	console.debug( 'getSmallerNgpsImage: '+ xURL +', '+ xSize);
 	//lets user give original NGPS image (without any crop on it) and this will return image at width xSize
 	//		keep in mind that orig image is max width, so if orig width is 480, there will not be a 500
 	//		we could always check the image.width[0].content to see what orig width is
+	
+	//--------obit images
+	//http://mi-cache.legacy.com/legacy/images/Cobrands/DenverPost/Photos/8628065-1_20120516.jpg
+	if ( xURL.indexOf('legacy.com') !== -1 ) {
+		return xURL;
+	}
+	
+	//-------first check to see if it already has a size attached to it
+	if (xURL.match(/_\d00.jpg/)) {
+		//console.debug( 'getSmallerNgpsImage already sized!!!: '+ xURL );
+		var regExp = new RegExp(/_\d00.jpg/);
+		xURL = xURL.replace(regExp, '.jpg');
+	}
+	
+	if ( xSize > origWidth ) {
+		//alert("not a big orig image");
+		return xURL;
+	}
+	//-------now size it the size we want
 	if ( "100,200,300,400,500,VIEWER,GALLERY".indexOf(xSize) !== -1 ) {
 		var toReplace = '.jpg';
 		var replaceWith = '_'+ xSize +'.jpg';
@@ -215,7 +457,7 @@ function clickNewSection( xnum ) {
 
 function loadNewSection() {
 	contentData.StoryList = new Array();	//set here so that later we can confirm data was loaded correctly in putExternalJsIntoHeader()
-	fetchExternalJSON(propData.xFeedList[ propData.activeSection ].url, 'DrawSectionFromJson' );
+	fetchExternalJSON(propData.xFeedList[ propData.activeSection ].url, propData.xFeedList[ propData.activeSection ].type, 'processSectionJson' );
 }
 
 function showSectionsWindow() {
@@ -280,10 +522,15 @@ function clickStory( xID ) {
 }
 
 function prepareArticleWindowForLoader() {
+	console.debug( "prepareArticleWindowForLoader" );
 	//--------this is where we should draw the 'loading' article window
-	if ( xInterface.currentWindow.id != 'gallery_window') document.getElementById( 'story_container' ).innerHTML = '';
+	if ( xInterface.currentWindow.id != 'gallery_window') {
+		//if we are NOT viewing a gallery opened from an article!
+		document.getElementById( 'story_container' ).innerHTML = '';
+		xInterface.putLoaderInWindow( 'story_window' );
+	}
 	//setTimeout(function() { xInterface.putLoaderInWindow( 'testWindow' ); }, 100);
-	xInterface.putLoaderInWindow( 'story_window' );
+	
 }
 
 function loadNgpsStoryContentByID( xID, showLoader ) {
@@ -334,7 +581,8 @@ function drawStory() {
 		xString += '<div class="toolbar lightGray">';
 		xString += '<div class="sm_but_icon close" onclick="closeArticleWindow();">×</div>'
 		// xString += '<h4>Section Here</h4>';
-		xString += '<h4><img src="props/'+ topDomain +'/logo_b.png" width="180" alt="Logo" style="margin-top:12px;margin-left:-2px;"/></h4>'
+		//<h4 class="flag" style="background-position:center;"></h4>
+		xString += '<h4><img class="flag" src="props/'+ topDomain +'/logo-black.svg" width="180" alt="Logo" style="background-position:center;"/></h4>'
 		xString += '<div class="sm_but_icon share right"></div>'
 		xString += '</div>';
 		//http://blog.stevenlevithan.com/archives/faster-than-innerhtml
@@ -393,7 +641,7 @@ function drawStory() {
 		if ( contentData.StoryContent['images'].mediaCount ) {
 			//there are stories with the article
 			console.debug('article images: '+ contentData.StoryContent['images'].mediaCount );
-			xURL = contentData.StoryContent['images'].image[0].url;
+			xURL = getSmallerNgpsImage( contentData.StoryContent['images'].image[0].url, 400, contentData.StoryContent['images'].image[0].width );
 			xString += '<div class="main_image"><img src="'+ xURL +'" /></div><!-- .main-image -->';
 			if ( contentData.StoryContent['images'].mediaCount > 1 ) {
 				//add show additional images link
@@ -463,81 +711,75 @@ function newsToGram() {
 
 function showArticlePhotoGallery() {
 	//render the contents for a gallery and put it in gallery_window div
-	
-	/*
-	//---------testing way
-	var xHeadline = 'Celebrations marking Nowruz the Persian new year';
-	var xDescription = 'Photos of Nowruz festivals celebrating the Persian new year in Turkey, Central Asian republics, Iraq, Iran, Azerbaijan and war-torn Afghanistan coinciding with the astronomical vernal equinox. Nowruz is calculated according to a solar calendar, this year marking 1392.';
-	var photoArray = new Array( 'http://mediacenter.smugmug.com/photos/i-VBJ7cBb/1/480x480/i-VBJ7cBb-480x480.jpg','http://mediacenter.smugmug.com/photos/i-bDnNStp/1/480x480/i-bDnNStp-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-5b7kskC/1/480x480/i-5b7kskC-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-PKHmZkh/1/480x480/i-PKHmZkh-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-3VkCthh/1/480x480/i-3VkCthh-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-mFMJBws/1/480x480/i-mFMJBws-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-s6XKRZk/1/480x480/i-s6XKRZk-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-4dZ8KpS/1/480x480/i-4dZ8KpS-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-wn5BrMx/1/480x480/i-wn5BrMx-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-s2wJXtx/1/480x480/i-s2wJXtx-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-k8DSbVx/1/480x480/i-k8DSbVx-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-rLdWf9G/1/480x480/i-rLdWf9G-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-G68BMQx/1/480x480/i-G68BMQx-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-J2KSmDh/1/480x480/i-J2KSmDh-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-7sHXcfq/1/480x480/i-7sHXcfq-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-c9TK8Tc/1/480x480/i-c9TK8Tc-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-8Lm5bwB/1/480x480/i-8Lm5bwB-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-rNQ9LDv/1/480x480/i-rNQ9LDv-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-PbSB6Wc/1/480x480/i-PbSB6Wc-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-9BRnxWT/1/480x480/i-9BRnxWT-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-Rpxd5BT/1/480x480/i-Rpxd5BT-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-LDhLXKH/1/480x480/i-LDhLXKH-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-Gk3kG9n/1/480x480/i-Gk3kG9n-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-6hmXdDq/1/480x480/i-6hmXdDq-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-VNBxgLs/1/480x480/i-VNBxgLs-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-6PC5JQ2/1/480x480/i-6PC5JQ2-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-BMpqcBC/1/480x480/i-BMpqcBC-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-bbBwb3C/1/480x480/i-bbBwb3C-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-CJJ54kx/1/480x480/i-CJJ54kx-480x480.jpg' );
-	var captionArray = new Array( 'caption_1', 'caption_2', 'caption_3', 'caption_4', 'caption_5', 'caption_6', 'caption_7', 'caption_8' );
-	
-	if ( xInterface.allowUserEvent() ) {
-		//----------------------------------------------build gallery string
-		var xString = '';
-		xString += '<div class="content " style="background-color:#GGG;">';
-		xString += '	<div class="carousel "><!-- /scroller width will have to be set by javascript-->';
-		xString += '		<ul class="list" style=""><!-- /thelist -->';
-		
-		for (var i=0; i<photoArray.length;i++) {
-			xString += '<li class="Xli" id="photoframe_'+ (i+1) +'" style="position:relative;" ontouchstart="xActiveTouch = 1;" ontouchmove="xActiveTouch = 0;" ontouchend="if (xActiveTouch) { xGallery.toggleTopLayer(); }">		<div class="gallery_bigImage" style="background-image:url('+ photoArray[i] +');background-size: contain;"></div>	</li>';
-		}
-		xString += '</ul></div></div>';
-		//----------------------------------------------build gallery string (end)
-		
-		document.getElementById( 'gallery_window' ).innerHTML = xString;
-		
-		if ( xInterface.doesWindowExist( 'gallery_window' ) ) {
-			//console.debug( 'it exists!: ');
-			setTimeout(function() { xInterface.resizeScrollers(); }, 10);
-			//setTimeout(function() { xInterface.refreshWindow('home'); }, 10);
-		} else {
-			//console.debug( 'create new: ');
-			setTimeout(function() { xInterface.showWindow( 'gallery_window', { transition: 'fade', overlay:1 }); }, 100);
-		}
-		
-		
-	}
-	//---------testing way (end)
-	*/
-	
-	
-	
-	
-	/*
-	"images":{
-		"mediaCount":"3",
-		"image":[
-			{
-				"width":"600",
-				"height":"349",
-				"credit":"Provided by The Denver Police Department",
-				"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath-hit-run~p1.jpg",
-				"caption":"An elderly man was killed in a wreck at W. 13th Avenue and Kalamath Street on Wednesday, March 27, 2013.",
-				"filesize":"38405",
-				"id":"30636745"
-			},{
-				"width":"600",
-				"height":"349",
-				"credit":"Provided by The Denver Police Department",
-				"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath~p1.jpg",
-				"caption":"Denver police made an arrest in a fatal crash on W. 13th Avenue and Kalamath Street that occurred Wednesday, March 27, 2013.",
-				"filesize":"30358",
-				"id":"30636637"
-			},{
-				"width":"480",
-				"height":"600",
-				"credit":"Provided by the Denver Police Department",
-				"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__latoya-nelson~p1.jpg",
-				"caption":"Latoya Nelson, 29, was arrested on suspicion of vehicular homicide/reckless driving and leaving the scene of an accident involving death.",
-				"filesize":"26098",
-				"id":"30638054"
+	(function() {
+		/*
+		//---------testing way
+		var xHeadline = 'Celebrations marking Nowruz the Persian new year';
+		var xDescription = 'Photos of Nowruz festivals celebrating the Persian new year in Turkey, Central Asian republics, Iraq, Iran, Azerbaijan and war-torn Afghanistan coinciding with the astronomical vernal equinox. Nowruz is calculated according to a solar calendar, this year marking 1392.';
+		var photoArray = new Array( 'http://mediacenter.smugmug.com/photos/i-VBJ7cBb/1/480x480/i-VBJ7cBb-480x480.jpg','http://mediacenter.smugmug.com/photos/i-bDnNStp/1/480x480/i-bDnNStp-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-5b7kskC/1/480x480/i-5b7kskC-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-PKHmZkh/1/480x480/i-PKHmZkh-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-3VkCthh/1/480x480/i-3VkCthh-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-mFMJBws/1/480x480/i-mFMJBws-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-s6XKRZk/1/480x480/i-s6XKRZk-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-4dZ8KpS/1/480x480/i-4dZ8KpS-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-wn5BrMx/1/480x480/i-wn5BrMx-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-s2wJXtx/1/480x480/i-s2wJXtx-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-k8DSbVx/1/480x480/i-k8DSbVx-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-rLdWf9G/1/480x480/i-rLdWf9G-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-G68BMQx/1/480x480/i-G68BMQx-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-J2KSmDh/1/480x480/i-J2KSmDh-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-7sHXcfq/1/480x480/i-7sHXcfq-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-c9TK8Tc/1/480x480/i-c9TK8Tc-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-8Lm5bwB/1/480x480/i-8Lm5bwB-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-rNQ9LDv/1/480x480/i-rNQ9LDv-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-PbSB6Wc/1/480x480/i-PbSB6Wc-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-9BRnxWT/1/480x480/i-9BRnxWT-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-Rpxd5BT/1/480x480/i-Rpxd5BT-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-LDhLXKH/1/480x480/i-LDhLXKH-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-Gk3kG9n/1/480x480/i-Gk3kG9n-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-6hmXdDq/1/480x480/i-6hmXdDq-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-VNBxgLs/1/480x480/i-VNBxgLs-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-6PC5JQ2/1/480x480/i-6PC5JQ2-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-BMpqcBC/1/480x480/i-BMpqcBC-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-bbBwb3C/1/480x480/i-bbBwb3C-480x480.jpg', 'http://mediacenter.smugmug.com/photos/i-CJJ54kx/1/480x480/i-CJJ54kx-480x480.jpg' );
+		var captionArray = new Array( 'caption_1', 'caption_2', 'caption_3', 'caption_4', 'caption_5', 'caption_6', 'caption_7', 'caption_8' );
+
+		if ( xInterface.allowUserEvent() ) {
+			//----------------------------------------------build gallery string
+			var xString = '';
+			xString += '<div class="content " style="background-color:#GGG;">';
+			xString += '	<div class="carousel "><!-- /scroller width will have to be set by javascript-->';
+			xString += '		<ul class="list" style=""><!-- /thelist -->';
+
+			for (var i=0; i<photoArray.length;i++) {
+				xString += '<li class="Xli" id="photoframe_'+ (i+1) +'" style="position:relative;" ontouchstart="xActiveTouch = 1;" ontouchmove="xActiveTouch = 0;" ontouchend="if (xActiveTouch) { xGallery.toggleTopLayer(); }">		<div class="gallery_bigImage" style="background-image:url('+ photoArray[i] +');background-size: contain;"></div>	</li>';
 			}
-		]
-	},
-	*/
-	
-	contentData.StoryContent['images'].image[0].url
-	//contentData.StoryContent['images'].mediaCount
+			xString += '</ul></div></div>';
+			//----------------------------------------------build gallery string (end)
+
+			document.getElementById( 'gallery_window' ).innerHTML = xString;
+
+			if ( xInterface.doesWindowExist( 'gallery_window' ) ) {
+				//console.debug( 'it exists!: ');
+				setTimeout(function() { xInterface.resizeScrollers(); }, 10);
+				//setTimeout(function() { xInterface.refreshWindow('home'); }, 10);
+			} else {
+				//console.debug( 'create new: ');
+				setTimeout(function() { xInterface.showWindow( 'gallery_window', { transition: 'fade', overlay:1 }); }, 100);
+			}
+
+
+		}
+		//---------testing way (end)
+		
+		/*
+		"images":{
+			"mediaCount":"3",
+			"image":[
+				{
+					"width":"600",
+					"height":"349",
+					"credit":"Provided by The Denver Police Department",
+					"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath-hit-run~p1.jpg",
+					"caption":"An elderly man was killed in a wreck at W. 13th Avenue and Kalamath Street on Wednesday, March 27, 2013.",
+					"filesize":"38405",
+					"id":"30636745"
+				},{
+					"width":"600",
+					"height":"349",
+					"credit":"Provided by The Denver Police Department",
+					"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__kalamath~p1.jpg",
+					"caption":"Denver police made an arrest in a fatal crash on W. 13th Avenue and Kalamath Street that occurred Wednesday, March 27, 2013.",
+					"filesize":"30358",
+					"id":"30636637"
+				},{
+					"width":"480",
+					"height":"600",
+					"credit":"Provided by the Denver Police Department",
+					"url":"http://extras.mnginteractive.com/live/media/site36/2013/0328/20130328__latoya-nelson~p1.jpg",
+					"caption":"Latoya Nelson, 29, was arrested on suspicion of vehicular homicide/reckless driving and leaving the scene of an accident involving death.",
+					"filesize":"26098",
+					"id":"30638054"
+				}
+			]
+		},
+		*/
+	});
 	
 	if ( xInterface.allowUserEvent() ) {
 		//----------------------------------------------build gallery string
@@ -549,32 +791,22 @@ function showArticlePhotoGallery() {
 		for (var i=0; i<contentData.StoryContent['images'].mediaCount;i++) {
 			xString += '<li class="Xli" id="photoframe_'+ (i+1) +'" style="position:relative;" ontouchstart="xActiveTouch = 1;" ontouchmove="xActiveTouch = 0;" ontouchend="if (xActiveTouch) { xGallery.toggleTopLayer(); }">		<div class="gallery_bigImage" style="background-image:url(\''+ contentData.StoryContent['images'].image[i].url +'\');background-size: contain;"></div>	</li>';
 		}
+		
+		//----------------------build bottom ad and cover (cover helps control touch issues)
+		xString += '<li class="Xli" id="photoframe_'+ (i+1) +'" style="position:relative;display: table;background-color:#000;" >';
+		xString += '	<div id="gallery_ad_wrapper" style="width:300px;height:250px;overflow:hidden;display:block;margin:auto;display: table-cell;vertical-align: middle;">';
+		xString += '		<div id="gallery_ad_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>';
+		xString += '		<div id="gallery_ad" ></div>';
+		xString += '	</div></li>';
+		
 		xString += '</ul></div></div>';
 		//----------------------------------------------build gallery string (end)
 		
 		document.getElementById( 'gallery_window' ).innerHTML = xString;
 		
-		/*
-		// eventually here i will add ads to the galleries
-		//---now that the divs are there, we need to dynamically add the ads
 		setTimeout(function() { 
-			addAdToDiv( '300x50', 'story_ad_top' );
-			addAdToDiv( '300x50', 'story_ad_bottom' );
-			newsToGram();
+			addAdToDiv( 'gallery_ad', '300', '250' );
 		}, 1000);
-		*/
-		
-		//setTimeout(function() { xInterface.resizeScrollers(); }, 10);
-		
-		/*
-		xInterface.showWindow( 'gallery_window', {
-			onCloseDone: function () {
-				//alert('onCloseDone function called!');
-				console.debug('------dfm_mobile: onCloseDone for gallery_window from showPhotoGallery' );
-				this.WindowScrollerArray[0].scrollTo(0,0,0);
-			}
-		} );
-		*/
 		
 		if ( xInterface.doesWindowExist( 'gallery_window' ) ) {
 			console.debug( 'it exists!: ');
@@ -595,20 +827,23 @@ function showArticlePhotoGallery() {
 			}
 			 }); }, 100);
 		}
-		
-		
 	}
-	
-	
-	
 }
 
 
 function getStoryIdFromURL( xURL ) {
-	console.debug( "getStoryIdFromURL: "+ xURL );
+	//console.debug( "getStoryIdFromURL: "+ xURL );
 	//xURL = 'http://www.elpasotimes.com/newupdated/ci_22867699/border-agents-seize-3-5-tons-marijuana-southern?source=most_viewed';
 	//http://www.elpasotimes.com/news/ci_22955267?source=rss
 	//sometimes the id is something like this '22955267?source=rss' - need to remove anything after id
+	
+	//--make sure link is on our site!
+	//if (xURL.indexOf(basedomain) === -1) {
+		//this property is not
+	//} else {
+		
+	//}
+	
 	var ID = xURL.split('ci_');
 	if ( ID.length > 1 ) {
 		ID = ID[1];
@@ -616,7 +851,7 @@ function getStoryIdFromURL( xURL ) {
 			ID = ID.split('/');
 			if ( ID.length > 1 ) ID = ID[0];
 		}
-		console.debug( "ID: "+ ID );
+		//console.debug( "ID: "+ ID );
 		if (ID.indexOf("?") !== -1) {
 			ID = ID.split('?');
 			if ( ID.length > 1 ) ID = ID[0];
@@ -624,7 +859,8 @@ function getStoryIdFromURL( xURL ) {
 	} else {
 		ID = 0;
 	}
-	console.debug( "ID: "+ ID );
+	
+	//console.debug( "ID: "+ ID );
 	return ID;
 }
 
@@ -692,6 +928,10 @@ function addAdToDiv( xDiv, xWidth, xHeight ) {
 			googletag.pubads().refresh([sectionAd1]);
 		} else if ( xDiv =='section_ad_2') {
 			googletag.pubads().refresh([sectionAd2]);
+		} else if ( xDiv =='gallery_ad') {
+			googletag.pubads().refresh([galleryAd1]);
+		} else if ( xDiv =='mobile_interstitial') {
+			googletag.pubads().refresh([interstitialAd]);	
 		} else {
 			alert('error bad ad div in addAdToDiv: '+ xDiv );return;
 		}
@@ -803,9 +1043,9 @@ function putExternalJsIntoHeader(url) {  //quick and dirty, just meant for quick
 			
 			if ( fetchJsonLocally ) {
 				console.debug( '----changing source!' );
-				fetchJsonLocally = 0;
+				//fetchJsonLocally = 0;
 			}
-			setTimeout(function() { loadNewSection(); }, 100);
+			//setTimeout(function() { loadNewSection(); }, 100);
 		}
 	}
 	
@@ -816,7 +1056,7 @@ function putExternalJsIntoHeader(url) {  //quick and dirty, just meant for quick
 }
 
 //fetchExternalJSON('http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml');
-function fetchExternalJSON(url, callback){
+function fetchExternalJSON(url, xtype, callback){
 	console.debug( 'fetchExternalJSON: ' );
 	//older way //http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=json&uri=http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml&paramname=site&param=Denver+Post
 	
@@ -829,7 +1069,26 @@ function fetchExternalJSON(url, callback){
 	
 	if ( fetchJsonLocally ) {
 		//get xml using our in-house ConvergencePublisher
-		url = 'http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2spreed&uri='+ url +'&json=true&jsoncallback='+ callback;
+		//url = 'http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2spreed&uri='+ url +'&json=true&jsoncallback='+ callback;
+		
+		//http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2spreed&uri=http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230605.xml&json=true&jsoncallback=processSectionJson
+		
+		//el paso
+		//http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=mrss2spreed&uri='+ url +'&json=true&jsoncallback=+ callback;
+		
+		
+		//genericxml2mrss&uri=http://atollprod:8080/common/rest/article-data-service/collection/1915368&json=true&jsoncallback=processSectionJson
+		if ( xtype == 'genericxml2spreed' ) {
+			url = 'http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2mrss&uri='+ url +'&json=true&jsoncallback='+ callback;
+		} else if ( xtype == 'genericxml2verve' ) {
+			url = 'http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2mrss&uri='+ url +'&json=true&jsoncallback='+ callback;
+		} else {
+			url = 'http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=rss2mrss&uri='+ url +'&json=true&jsoncallback='+ callback;
+		}
+		
+		//http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2spreed&uri=http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230605.xml&json=true&jsoncallback=processSectionJson
+		//http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2mrss&uri=http://delivery.digitalfirstmedia.com/ConvergencePublisher/?format=genericxml2spreed&uri=http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/230605.xml&json=true&jsoncallback=processSectionJson&json=true&jsoncallback=processSectionJson
+		
 	} else {
 		//get xml using yahoo yql
 		url="select * from xml where url='" + url + "'";
