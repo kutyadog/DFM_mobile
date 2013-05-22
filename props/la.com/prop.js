@@ -22,7 +22,7 @@
 				propData.company	= '';
 				
 				//----------css vars
-				propData.backgroundsplash = 'FFFFFF';
+				propData.backgroundsplash = '919191';
 				propData.bodycolor = 'FFFFFF';
 				propData.toolbar1 = '1E93E4';
 				propData.toolbar2 = '11598C';

@@ -300,10 +300,12 @@ function DrawSection() {
 	*/
 	
 	//----------------------build top ad and cover (cover helps control touch issues)
+	/*
 	xString += '<div id="section_ad_1_wrapper" style="width:100%;height:50px;overflow:hidden;display:block;margin:auto;background-color:#333;">';
 	xString += '	<div id="section_ad_1_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>';
 	xString += '	<div id="section_ad_1" ></div>';
 	xString += '</div>';
+	*/
 	
 	//--------------------------------------------------------------------------------------------
 	//now we have a standardized data set for the article lists --- draw them
@@ -338,6 +340,7 @@ function DrawSection() {
 	var d = new Date().getUTCFullYear();
 	xString +=	'		<div style="display: block;margin: 0px auto;width:90%;color:white;font-family:Arial;font-size:10px;color:#FFF;text-align:center;line-height:100%;padding-bottom:20px;">';
 	xString +=	'		All contents © '+ d +' Digital First Media or other copyright holders. All rights reserved. This material may not be published, broadcast, rewritten or redistributed for any commercial purpose.</div>';
+	xString +=	'			<div class="versiontext">v. '+ xVersion +'</div>';
 	xString +=	'		</div>';
 	
 	document.getElementById( 'home_section_list' ).innerHTML = xString;
@@ -351,7 +354,7 @@ function DrawSection() {
 		//setTimeout(function() { xInterface.refreshWindow('home'); }, 10);
 	} else {
 		//console.debug( 'create new: ');
-		setTimeout(function() { xInterface.showWindow( 'home', {transition: 'fade'} ); }, 1000);
+		setTimeout(function() { xInterface.showWindow( 'home', {transition: 'fade'} ); }, 10);
 	}
 	
 	setTimeout(function() { 
@@ -359,10 +362,20 @@ function DrawSection() {
 		addAdToDiv( 'section_ad_2', '300', '250' );
 		//newsToGram();
 		//addJivoxAdToDiv( 'story_ad_bottom', '300', '250' );
+		//setTimeout(function() { googletag.pubads().refresh([interstitialAd]);	 }, 2500);
 	}, 1000);
 	
 	setTimeout(function() { xInterface.removeLoaderInWindow('home'); }, 500);
 }
+
+/*
+<div id="mobile_interstitial" style="width:100%;background-color:#000;height:100%;z-index:99999;">
+		<script type='text/javascript'>
+			//googletag.display('mobile_interstitial');
+			googletag.cmd.push(function() { googletag.display('mobile_interstitial')});
+		</script>
+</div>
+*/
 
 function clickExternalStoryFromList(xURL){
 	//external link means we must open a new window for the url
@@ -571,6 +584,7 @@ function closeArticleWindow() {
 		loadNewSection();
 	} else {
 		xInterface.closeActiveWindow();
+		document.getElementById( 'story_ad_top' ).innerHTML = '';
 	}
 	//document.getElementById( 'story_container' ).innerHTML = '';
 }
@@ -578,21 +592,24 @@ function closeArticleWindow() {
 function drawStory() {
 		//----------------------------------------------build story view div string
 		var xString = '';
-		xString += '<div class="toolbar lightGray">';
+		xString += '<div class="toolbar lightGray ">';
 		xString += '<div class="sm_but_icon close" onclick="closeArticleWindow();">×</div>'
 		// xString += '<h4>Section Here</h4>';
 		//<h4 class="flag" style="background-position:center;"></h4>
-		xString += '<h4><img class="flag" src="props/'+ topDomain +'/logo-black.svg" width="180" alt="Logo" style="background-position:center;"/></h4>'
-		xString += '<div class="sm_but_icon share right"></div>'
+		xString += '<h4 class="flag flag_article" style="background-position:center;"></h4>';
+		//xString += '<h4><img class="flag" src="props/'+ topDomain +'/logo-black.png" width="180" alt="Logo" style="background-position:center;"/></h4>'
+		//xString += '<div class="sm_but_icon share right"></div>'
 		xString += '</div>';
 		//http://blog.stevenlevithan.com/archives/faster-than-innerhtml
 		//http://ejohn.org/blog/javascript-micro-templating/
 		
+		/*
 		//----------------------build top ad and cover (cover helps control touch issues)
 		xString += '<div id="story_ad_top_wrapper" style="width:300px;height:50px;overflow:hidden;display:block;margin:auto;">';
 		xString += '	<div id="story_ad_top_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>';
 		xString += '	<div id="story_ad_top" ></div>';
 		xString += '</div>';
+		*/
 		
 		xString += '<ul class="breadcrumb">';
 		xString += '<li><a href="#" onclick="clickNewSection(1);">Home</a></li><li><a href="#" onclick="clickNewSection(1);">News</a></li><li class="active">Story</li>';
@@ -649,37 +666,79 @@ function drawStory() {
 			}
 		}
 		
-		var xTempTestLink = '<P>Peyton is funny and stuff, <a href="http://www.denverpost.com/broncos/ci_23032711/">See the proof here on denverpost.com</a>';
-		xString += '<div class="story_content">' + contentData.StoryContent['body'] + xTempTestLink+ ' </div><!-- #story_content -->';
+		var xTempTestLink = '';//'<P>Peyton is funny and stuff, <a href="http://www.denverpost.com/broncos/ci_23032711/">See the proof here on denverpost.com</a>';
+		var xTempStory = contentData.StoryContent['body'] + xTempTestLink;
 		
-		xString += '<div id="story_related_content">';
-		xString += '<h3 class="page-header">Related stories</h3>';
-		
-		xString += '</div><!-- #story_related_content -->';
-		xString += '</div> <!-- story_wrapper -->';
 		
 		//----------------------build bottom ad and cover (cover helps control touch issues)
-		xString += '<div id="story_ad_bottom_wrapper" style="width:300px;height:250px;overflow:hidden;display:block;margin:auto;">';
-		xString += '	<div id="story_ad_bottom_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>';
-		xString += '<div id="story_ad_bottom" ></div>';
-		xString += '</div>';
+		var bottomAdString	 = '<div id="story_ad_bottom_wrapper" style="width:300px;height:250px;overflow:hidden;display:block;margin:auto;margin-left:-15px;margin-bottom:20px;">';
+		bottomAdString 		+= '	<div id="story_ad_bottom_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>';
+		bottomAdString		+= '	<div id="story_ad_bottom" ></div>';
+		bottomAdString		+= '</div>';
 		
-		xString += '<div class="ng-recommender" id="ng-recommender" style="height:350px;width:100%;display:block;padding:0px;margin-top:10px;"></div>';
+		//-------insert 300x250 INTO story
+		var xTemp = xTempStory.split("<p>");
+		if ( xTemp.length > 5 ) {
+			//insert ad after 5th paragraph
+			//var output = [a.slice(0, position), b, a.slice(position)].join('');
+
+			var pos = xTempStory.indexOf("<p>");
+			var x = 0;
+			while(pos > -1) {
+			    //document.write(pos + "<br />");
+			    pos = xTempStory.indexOf("<p>", pos+1);
+				x += 1;
+				if (x == 4 ) {
+					xTempStory = [xTempStory.slice(0, pos), bottomAdString, xTempStory.slice(pos)].join('');
+					bottomAdString = '';
+				}
+			}
+		}
+		
+		xString += '<div class="story_content">'+ xTempStory +' </div><!-- #story_content -->';
+		
+		//put ad at bottom of text if it hasnt already been placed - NOTE that bottomAdString will be empty if it HAS placed
+		xString += bottomAdString;
+		
+		//---------------------------------------------------Now add OUTBRAIN:
+		//----------------------build bottom ad and cover (cover helps control touch issues)
+		xString 	+= '<div id="story_related_content">';
+		xString 	+= '	<h3 class="page-header">Recommended For You</h3>';
+		xString	 	+= '	<div id="outbrain_wrapper" style="width:300px;height:250px;overflow:hidden;display:block;margin:auto;margin-left:-15px;margin-bottom:15px;">';
+		xString 	+= '		<div id="outbrain_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>';
+		xString		+= '		<div id="outbrain" ></div>';
+		xString		+= '	</div>';
+		
+		//---------------------------------------------------Now add DAILY DEALS:
+		xString	 	+= '	<div id="daily_deals_wrapper" style="width:300px;height:250px;overflow:hidden;display:block;margin:auto;margin-left:-15px;margin-bottom:15px;">';
+		xString 	+= '		<div id="daily_deals_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>';
+		xString		+= '		<div id="daily_deals" ></div>';
+		xString		+= '	</div>';
+		xString		+= '</div>';
+		
+		//xString += '<div id="story_related_content">';
+		//xString += '<h3 class="page-header">Related stories</h3>';
+		
+		//xString += '</div><!-- #story_related_content -->';
+		//xString += '</div> <!-- story_wrapper -->';
+		
+		//xString += '<div class="ng-recommender" id="ng-recommender" style="height:350px;width:100%;display:block;padding:0px;margin-top:10px;"></div>';
 		
 		document.getElementById( 'story_container' ).innerHTML = xString;
 		
 		//----------------------structure for article NGPS Json output in temp/ngps_article.js file **********
 		//http://www.denverpost.com/mngi/servletDispatch/JsonArticleServlet.dyn?ci=22872574
 		
-		setTimeout(function() { xInterface.resizeScrollers(); }, 100);
+		setTimeout(function() { xInterface.resizeScrollers(); }, 500);
 		
-		setTimeout(function() { hijackHref( 'story_wrapper' );  }, 500 );
+		setTimeout(function() { hijackHref( 'story_wrapper' );  }, 600 );
 		
 		//---now that the divs are there, we need to dynamically add the ads
 		setTimeout(function() { 
 			addAdToDiv( 'story_ad_top', '300', '50' );
 			addAdToDiv( 'story_ad_bottom', '300', '250' );
-			
+			addAdToDiv( 'outbrain' );
+			addAdToDiv( 'daily_deals' );
 			//addJivoxAdToDiv( 'story_ad_bottom', '300', '250' );
 			
 			//addAdToDiv( 'story_ad_bottom' );
@@ -691,6 +750,11 @@ function drawStory() {
 		//if ( xInterface.doesWindowExist('story_window') ) 
 }
 
+function showInterstitial() {
+	xInterface.showWindow( 'interstitial_ad_window', { transition: 'fade', overlay:1 });
+	setTimeout(function() { addAdToDiv( 'tempInter' );  }, 100 );
+	
+}
 
 function newsToGram() {
 	//http://sandbox.dailyme.com/rmv2/docs/recommender-3.html
@@ -865,8 +929,6 @@ function getStoryIdFromURL( xURL ) {
 }
 
 
-
-
 //---------------Eventually all code below should be moved to property specific prop.js in each props folder
 
 function loadPropertyData() {
@@ -931,7 +993,13 @@ function addAdToDiv( xDiv, xWidth, xHeight ) {
 		} else if ( xDiv =='gallery_ad') {
 			googletag.pubads().refresh([galleryAd1]);
 		} else if ( xDiv =='mobile_interstitial') {
-			googletag.pubads().refresh([interstitialAd]);	
+			googletag.pubads().refresh([interstitialAd]);
+		} else if ( xDiv =='daily_deals') {
+			googletag.pubads().refresh([dailyDeals]);	
+		} else if ( xDiv =='outbrain') {
+			document.getElementById( xDiv ).innerHTML = '<iframe src="temp/outbrain.html" style="border:none;padding:0px;margin:0px;"></iframe> ';
+		} else if ( xDiv =='tempInter') {	
+			googletag.pubads().refresh([tempInter]);
 		} else {
 			alert('error bad ad div in addAdToDiv: '+ xDiv );return;
 		}
@@ -1239,10 +1307,12 @@ function DetermineWhatToDoNextFromURL() {
 	
 	if ( !TempSectionFront && !TempStoryID ) {
 		//if we have no section or article id's then simply load the default section front
-		setTimeout(function() { loadNewSection(); }, 1500);
+		setTimeout(function() { loadNewSection(); }, 1);
+		//setTimeout(function() { xInterface.showWindow( 'home', {transition: 'fade'} ); }, 10);
 	} else if ( TempStoryID ) {
 		//we have an article id so load that id
-		setTimeout(function() { clickStory( TempStoryID ); }, 1500);
+		setTimeout(function() { clickStory( TempStoryID ); }, 1);
+		//setTimeout(function() { xInterface.showWindow( 'home', {transition: 'fade'} ); }, 10);
 	}
 }
 

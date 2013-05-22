@@ -1,0 +1,46 @@
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<script type='text/javascript'>
+		(function() {
+			var useSSL = 'https:' == document.location.protocol;
+			var src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt_mobile.js';
+			document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+		})();
+	</script>
+
+<script type='text/javascript'>
+	var interstitialAd;
+	
+	googletag.cmd.push(function() {
+		//----all ads here
+		interstitialAd=	googletag.defineSlot('/8013/digital.first.media.test.site/Mobile', [[300, 250]], 'mobile_interstitial').addService(googletag.pubads());
+		googletag.pubads().enableAsyncRendering();
+		googletag.pubads().disableInitialLoad();		//turns off rendering on initial load
+		googletag.enableServices();
+	});
+	
+	function showInterstitial() {
+		googletag.pubads().refresh([interstitialAd]);
+	}
+	
+</script>
+
+</head>
+
+<body>
+<div style="background-color:yellow;width:100%;height:100%;position:absolute;top:0px;bottom:0px;left:0px;right:0px;">The background<BR>	<button type="button" onclick="showInterstitial();">Show Interstitial</button>
+</div>
+	
+<!-- Inderpreet_Test_Mobile_Ad -->
+<div id='mobile_interstitial' style="z-index:12;position:absolute;top:0px;">
+	<script type='text/javascript'>
+		googletag.cmd.push(function() { googletag.display('mobile_interstitial')});
+	</script>
+</div>
+	
+</body>
+</html>

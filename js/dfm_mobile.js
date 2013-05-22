@@ -64,8 +64,11 @@ function Interface (main, options) {
 	
 	this.busy = 0;							//keeps track of whether or not the interface is busy
 	
-	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-	//document.addEventListener('touchstart', function (e) { e.preventDefault(); }, false);	//NOTE: Uncomment this, but before you do, change out all the onclicks to ontouchends!
+	//-----------for natural ios scrolling, this must be turned off!
+	//document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	
+	//NOTE: Uncomment this, but before you do, change out all the onclicks to ontouchends!
+	//document.addEventListener('touchstart', function (e) { e.preventDefault(); }, false);
 	
 	this.windowHeight = 0;					//keeps track of height of window so we can tell when size has changed
 	this.xInterval = 0;
@@ -116,6 +119,34 @@ function Interface (main, options) {
 		e.preventDefault();
 		}, false);
 	*/
+	
+	//------this is temp solution
+	this.isMobile = {
+	    Android: function() {
+	        return navigator.userAgent.match(/Android/i) ? true : false;
+	    },
+	    BlackBerry: function() {
+	        return navigator.userAgent.match(/BlackBerry/i) ? true : false;
+	    },
+	    iOS: function() {
+	        return navigator.userAgent.match(/iPhone|iPad|iPod/i) ? true : false;
+	    },
+	    Windows: function() {
+	        return navigator.userAgent.match(/IEMobile/i) ? true : false;
+	    },
+	    any: function() {
+	        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Windows());
+	    },
+		iOSVersion : iOSversion()
+	};
+	
+	//alert( this.isMobile.iOSVersion );
+	//if (this.isMobile.iOSVersion[0] >= 5) { alert('This is running iOS 5 or later.'); }
+	
+	//-------scrolling alts
+	//https://gist.github.com/bjrn/1719717
+	
+	
 	
 	//---orientation change support
 	//								function below will need to be redone. It is called at least twice, duplicating the functions in DoNextArray, make it only do this once
@@ -1528,3 +1559,10 @@ document.body.addEventListener('touchmove',function(event){
 
 */
 
+function iOSversion() {
+  if (/iP(hone|od|ad)/.test(navigator.platform)) {
+    // supports iOS 2.0 and later: <http://bit.ly/TJjs1V>
+    var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+    return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
+  }
+}

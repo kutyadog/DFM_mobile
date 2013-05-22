@@ -26,10 +26,15 @@
 			//		googletag.pubads().refresh([ad1]);
 			// you can even delete the div that contains the ad, recreate it and refresh the ad in the newly created div
 			
-			var ad1;
+			var ad1, interstitialAd;
+			
+			
 			
 			googletag.cmd.push(function() {
-				ad1 = googletag.defineSlot('/8013/digital.first.media.test.site/Mobile', [300, 50], 'mobile_ad_1').addService(googletag.pubads());
+				//ad1 = googletag.defineSlot('/8013/digital.first.media.test.site/Mobile', [300, 50], 'story_ad_top').addService(googletag.pubads());
+				//interstitialAd=	googletag.defineSlot('/6076/Inderpreet_Test_Mobile_Ad', [[300, 250]], 'mobile_interstitial').addService(googletag.pubads());
+				ad1 = googletag.defineSlot('/8013/digital.first.media.test.site/Mobile', [300, 250], 'mobile_daily_deals').addService(googletag.pubads());
+				
 				googletag.pubads().enableAsyncRendering();
 				googletag.pubads().disableInitialLoad();		//turns off rendering on initial load
 				
@@ -38,27 +43,26 @@
 			
 			//----------------------------------------------------------------mobile_ad_1
 			//		refresh ad to show it (for the 1st time)
-			setTimeout(function() { googletag.pubads().refresh([ad1]); }, 500);
+			setTimeout(function() { googletag.pubads().refresh([ad1]); }, 2500);
 
 			//		Empty 'ad_container' div (basically deleting the ad div), 
 			//		then insert a new empty 'mobile_ad_1' div
 			setTimeout(function() { 
-				document.getElementById( 'ad_container' ).innerHTML = "<div id='mobile_ad_1'></div>";
+				//document.getElementById( 'ad_container' ).innerHTML = "<div id='story_ad_top'></div>";
 			}, 1500);
 			
 			//		now try refreshing the ad again... it works!
-			setTimeout(function() { googletag.pubads().refresh([ad1]); }, 2500);
+			//setTimeout(function() { googletag.pubads().refresh([ad1]); }, 2500);
 			//----------------------------------------------------------------mobile_ad_1 (end)
 		</script>
 		
-		<a href="https://pubads.g.doubleclick.net/gampad/jump?iu=/8013/digital.first.media.test.site/Mobile&sz=300x50&mob=js&c=1234543">
-		<img src="https://pubads.g.doubleclick.net/gampad/ad?iu=/8013/digital.first.media.test.site/Mobile&sz=300x50&mob=js&c=1234543"></a>
-		
-		<div id='ad_container'>							<!-- a div that contains the ad div -->
-			<div id='mobile_ad_1'>						<!-- The ad div - MUST contain the js on initial load even if you delete and replace div later -->
-				<script type='text/javascript'>
-					googletag.cmd.push(function() { googletag.display('mobile_ad_1')});
-				</script>
+
+		<div id='ad_container' style="">							<!-- a div that contains the ad div -->
+			<!-- digital.first-media.Test.site/Mobile -->
+			<div id='mobile_daily_deals'>
+			<script type='text/javascript'>
+			googletag.cmd.push(function() { googletag.display('mobile_daily_deals')});
+			</script>
 			</div>
 		</div>
 		

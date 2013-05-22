@@ -25,7 +25,7 @@
 			document.addEventListener('DOMContentLoaded', function (e) { pageloaded(); }, false);
 			var xtesting = 0;
 			var xInterface;
-			
+			var xVersion = '0.49';
 			//-------------------------primary data objects
 			var propData = new Array();
 			var contentData = new Array();
@@ -45,17 +45,22 @@
 			
 			//------------these variables will need to be moved to the property.js eventually
 			var adunit = '/8013/digital.first.media.test.site/Mobile';
-			var ad1, ad2, sectionAd1, sectionAd2, galleryAd1, interstitialAd;
+			var ad1, ad2, sectionAd1, sectionAd2, galleryAd1, interstitialAd, dailyDeals, tempInter;
 			
 			//-------on init of page, prepare ad units for later rendering
 			googletag.cmd.push(function() {
 				//----all ads here
-				ad1 =			googletag.defineSlot( adunit, [300, 50],  'story_ad_top').addService(googletag.pubads());
-				ad2 =			googletag.defineSlot( adunit, [300, 250], 'story_ad_bottom').addService(googletag.pubads());
-				sectionAd1 =	googletag.defineSlot( adunit, [[300, 50], [320, 50]],  'section_ad_1').addService(googletag.pubads());
-				sectionAd2 =	googletag.defineSlot( adunit, [300, 250], 'section_ad_2').addService(googletag.pubads());
-				galleryAd1 =	googletag.defineSlot( adunit, [300, 250], 'gallery_ad').addService(googletag.pubads());
-				interstitialAd=	googletag.defineSlot( adunit, [300, 250], 'mobile_interstitial').addService(googletag.pubads());
+				ad1 =			googletag.defineSlot( adunit, [[300, 50], [320, 50]],  'story_ad_top').setTargeting('pos',['mobile_small']).addService(googletag.pubads());
+				ad2 =			googletag.defineSlot( adunit, [300, 250], 'story_ad_bottom').setTargeting('pos',['mobile_cube']).addService(googletag.pubads());
+				sectionAd1 =	googletag.defineSlot( adunit, [[300, 50], [320, 50]],  'section_ad_1').setTargeting('pos',['mobile_small']).addService(googletag.pubads());
+				sectionAd2 =	googletag.defineSlot( adunit, [300, 250], 'section_ad_2').setTargeting('pos',['mobile_cube']).addService(googletag.pubads());
+				galleryAd1 =	googletag.defineSlot( adunit, [300, 250], 'gallery_ad').setTargeting('pos',['mobile_cube']).addService(googletag.pubads());
+				tempInter  =	googletag.defineSlot( adunit, [300, 250], 'tempInter').setTargeting('pos',['mobile_interstitial']).addService(googletag.pubads());
+				dailyDeals  =	googletag.defineSlot( adunit, [300, 250], 'daily_deals').setTargeting('pos',['mobile_daily_deals']).addService(googletag.pubads());
+				
+				//interstitialAd=	googletag.defineSlot( adunit, [300, 250], 'mobile_interstitial').addService(googletag.pubads());
+				
+				interstitialAd=	googletag.defineSlot('/6076/Inderpreet_Test_Mobile_Ad', [[300, 250]], 'mobile_interstitial').addService(googletag.pubads());
 				
 				/*
 				googletag.defineSlot('/8013/digital.first.media.test.site/Mobile', [300, 250], 'mobile_cube').setTargeting('pos',['mobile_cube']).addService(googletag.pubads());
@@ -126,24 +131,62 @@
 					//
 					setTimeout(function() { xInterface.showWindow( 'interstitial_ad_window', {transition: 'fade'} ); }, 100);
 					
-					setTimeout(function() { addAdToDiv( 'mobile_interstitial', '300', '250' ); }, 1500);
+					//setTimeout(function() { addAdToDiv( 'mobile_interstitial', '300', '250' ); }, 1500);
+					setTimeout(function() { googletag.pubads().refresh([interstitialAd]);	 }, 1500);
 					//setTimeout(function() { xInterface.putLoaderInWindow( 'testWindow' ); }, 100);
 					//setTimeout(function() { processTestWindow(); }, 1500);
 					return;
 				}
 				
 				//-----------------------------------------------------launch environment
-				preloadimages([ 'props/'+ topDomain +'/splash.jpg' ]).done(function(images){
+				
+				
+				
+				//----------------set styles
+				// IS THIS REALLY HOW WE SHOULD DO THIS? WE COULD WRITE ALL OF THIS TO THE PROP CSS FILE... PROBABLY SHOULD
+				ChangeStyleSheet('body', 'background-color', "#"+propData.bodycolor, 0);
+				
+				ChangeStyleSheet('.flag', 'background', "url('../props/"+ topDomain +"/logo-white.png') no-repeat", 0);
+				ChangeStyleSheet('.flag.flag_article', 'background', "url('../props/"+ topDomain +"/logo-black.png') no-repeat", 0);
+				
+				ChangeStyleSheet('.toolbar.darkblue', 'background-image', "-webkit-gradient(linear,50% 0,50% 100%,from(#"+ propData.toolbar1 +"),to(#"+ propData.toolbar2 +"))", 0);
+				ChangeStyleSheet('.toolbar.darkblue', 'background', "-moz-linear-gradient(top,#"+ propData.toolbar1 +" 0%,#"+ propData.toolbar2 +" 100%)", 0);
+				
+				/*
+				propData.bodycolor = 'FFFFFF';
+				propData.toolbar1 = '1E93E4';
+				propData.toolbar2 = '11598C';
+				
+				.toolbar.darkblue {
+					background-image:-webkit-gradient(linear,50% 0,50% 100%,from(#1E93E4),to(#11598C));
+					background: -moz-linear-gradient(top,#1E93E4 0%,#11598C 100%);
+				}
+				*/
+				
+				//setTimeout(function() { xInterface.showWindow( 'home', {transition: 'fade'} ); }, 10);
+				
+				var xTempArray = [  'props/'+ topDomain +'/logo-white.png', 'props/'+ topDomain +'/logo-black.png' ];
+				preloadimages( xTempArray ).done(function(images){
+					//when images are done loading:
+					//-----------------load sections
+					DetermineWhatToDoNextFromURL();
+					//alert('done');
+				});
+				
+				/*
+				//-----------------------------------------------------launch environment
+				preloadimages([ 'props/'+ topDomain +'/splash-logo.png' ]).done(function(images){
 					//when images are done loading:
 					//-----------------show splash!
-					var xString = '<div class="content" ><div class="splash" style="background-image:url(props/'+ topDomain +'/splash.jpg);background-color:#'+ propData.backgroundsplash +';"><div class="versiontext">v. 0.45</div></div></div>'
+					var xString = '<div class="content" ><div class="splash" style="background-image:url(props/'+ topDomain +'/splash-logo.png);background-color:#'+ propData.backgroundsplash +';"><div class="versiontext">v. 0.46</div></div></div>'
 					document.getElementById( 'splash' ).innerHTML = xString;
 					setTimeout(function() { xInterface.showWindow( 'splash', {transition: 'fade'} ); }, 100);
 					
 					//-----------------set home logo on section front
 					//document.getElementById( 'home_logo' ).innerHTML = '<img src="props/'+ topDomain +'/dpflag.svg" width="200" alt="Denver Logo" style="margin-top:5px;margin-left:-5px;"/>';
 					
-					ChangeStyleSheet('.flag', 'background', "url('../props/"+ topDomain +"/logo-white.svg') no-repeat", 0);
+					ChangeStyleSheet('.flag', 'background', "url('../props/"+ topDomain +"/logo-white.png') no-repeat", 0);
+					ChangeStyleSheet('.flag.flag_article', 'background', "url('../props/"+ topDomain +"/logo-black.png') no-repeat", 0);
 					
 					//----------------set styles
 					// IS THIS REALLY HOW WE SHOULD DO THIS? WE COULD WRITE ALL OF THIS TO THE PROP CSS FILE... PROBABLY SHOULD
@@ -153,16 +196,7 @@
 					ChangeStyleSheet('.toolbar.darkblue', 'background', "-moz-linear-gradient(top,#"+ propData.toolbar1 +" 0%,#"+ propData.toolbar2 +" 100%)", 0);
 					
 					//ChangeStyleSheet('.flag', 'background', "url('../props/"+ topDomain +"/logo-white.svg') no-repeat", 0);
-					/*
-					propData.bodycolor = 'FFFFFF';
-					propData.toolbar1 = '1E93E4';
-					propData.toolbar2 = '11598C';
 					
-					.toolbar.darkblue {
-						background-image:-webkit-gradient(linear,50% 0,50% 100%,from(#1E93E4),to(#11598C));
-						background: -moz-linear-gradient(top,#1E93E4 0%,#11598C 100%);
-					}
-					*/
 					//background: url('assets/dpflag.svg') no-repeat 50%;
 					var xTempArray = [  'props/'+ topDomain +'/logo-white.png', 'props/'+ topDomain +'/logo-black.png', 
 					 					'props/'+ topDomain +'/logo-white.svg', 'props/'+ topDomain +'/logo-black.svg' ];
@@ -181,6 +215,7 @@
 					//alert(images.length) //alerts 3//alert(images[0].src+" "+images[0].width) //alerts '1.gif 220'
 				});
 				//http://extras.denverpost.com/media/MRSS/Breaking_News_230605.xml
+				*/
 				
 				/*
 				//----------------------add the app checker for iOS (should be moved to dfm_mobile and only run if iOS) 
@@ -372,13 +407,18 @@
 		<!-- 
 		<script src="js/iscroll.js" type="text/javascript"></script>
 		-->
+		
 		<script src="js/universal.js" type="text/javascript"></script>
 	</head>
 <body>
 
+
+
 <div id="dfm_mobile" >
 	
-	<div id="testWindow" >
+	
+	
+	<div id="testWindow2" >
 		<div class="content " style="background-color:#FFF;">
 			<div  class="scroller " style="padding-top:60px;padding:0 1.5em;">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 				<div id="xwrapper" style="width:180px;height:150px;overflow:hidden;">
@@ -397,26 +437,29 @@
 	</div><!-- /splash -->
 	
 	<div id="home" >
-		<div class="toolbar darkblue">
+		<div id="section_ad_1_wrapper" style="position:absolute;top:0px;width:100%;height:50px;overflow:hidden;display:block;margin:auto;">
+			<div id="section_ad_1_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>
+			<div id="section_ad_1" >
+				<script type='text/javascript'>
+					googletag.cmd.push(function() { googletag.display('section_ad_1')});
+				</script>
+			</div>
+		</div>
+		<div class="toolbar darkblue underad">
 			<!-- ALL buttons first -->
 			<div class="sm_but_icon sections" onclick="xInterface.showWindow( 'sections_window', { transition: 'slideRight', overlay:1 });">
 				<span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 			</div>
-			<div class="sm_but_icon settings right" onclick="xInterface.showWindow( 'settings_window', { transition: 'fade', overlay:1 });"></div>
+			<div class="sm_but_icon settings right" onclick="showInterstitial();//xInterface.showWindow( 'settings_window', { transition: 'fade', overlay:1 });"></div>
 			
 			<!-- then add title -->
 			<h4 class="flag" style="background-position:center;"></h4>
 		</div>
-		<div class="content belowtoolbar " style="background-color:#333;">
+		<div class="content belowtoolbar underad" style="background-color:#333;">
 			<div id="home_section_list" class="scroller full custom">
-				<div id="section_ad_1" >
-					<script type='text/javascript'>
-						googletag.cmd.push(function() { googletag.display('section_ad_1')});
-					</script>
-				</div>
-				<div id="section_ad_2" >
+				 <div id="section_ad_2" >
 					<script type='text/javascript'>
 						googletag.cmd.push(function() { googletag.display('section_ad_2')});
 					</script>
@@ -427,20 +470,35 @@
 	
 	
 	<div id="story_window" >
-		<div class="content " style="background-color:#FFF;">
+		<div id="story_ad_top_wrapper" style="position:absolute;top:0px;width:100%;height:50px;overflow:hidden;display:block;margin:auto;background-color:#FFF;">
+			<div id="story_ad_top_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>
+			<div id="story_ad_top" >
+				<script type='text/javascript'>
+					googletag.cmd.push(function() { googletag.display('story_ad_top')});
+				</script>
+			</div>
+		</div>
+		
+		<div class="content underad" style="background-color:#FFF;">
 			<div id="story_container" class="scroller ">
-				<div id="story_ad_top" >
-					<script type='text/javascript'>
-						googletag.cmd.push(function() { googletag.display('story_ad_top')});
-					</script>
-				</div>
 				<div id="story_ad_bottom" >
 					<script type='text/javascript'>
 						googletag.cmd.push(function() { googletag.display('story_ad_bottom')});
 					</script>
 				</div>
+				
+				<div id="daily_deals" >
+					<script type='text/javascript'>
+						googletag.cmd.push(function() { googletag.display('daily_deals')});
+					</script>
+				</div>
+				
 			</div>
+			
 		</div>
+		
+		
+		
 	</div><!-- /story_window -->
 	
 	<div id="gallery_window" >
@@ -465,16 +523,17 @@
 				</div>
 			</div>
 		</div>
+		
 	</div><!-- /share_window -->
 	
 	<div id="sections_window" style="width:300px;">
-			<div class="toolbar invisible" >
+			<div class="toolbar invisible underad" >
 				<!-- ALL buttons first -->
-				<div class="sm_but_icon sections active"  onclick="xInterface.closeActiveWindow();"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
+				<div class="sm_but_icon sections active underad"  onclick="xInterface.closeActiveWindow();"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></div>
 				<!-- then add title -->
 				
 			</div>
-			<div class="content belowtoolbar black overlay" style="">
+			<div class="content belowtoolbar black overlay underad" style="">
 				<div id="sections_container" class="scroller full dark" style="border-right:1px solid #000;"></div>
 			</div>
 
@@ -492,19 +551,31 @@
 	</div><!-- /settings_window -->
 	
 	<div id="interstitial_ad_window" >
-		<div class="content" >
-			<div id="mobile_interstitial_wrapper" style="width:100%;height:250px;overflow:hidden;display:block;margin:auto;background-color:#333;">
-				<div id="mobile_interstitial_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>
-				<div id="mobile_interstitial" >
+		<div class="content overlay" style="" >
+			<div style="position:absolute;top:10px;right:10px;">
+				<img src="temp/close-button.png" alt="close" height="30" width="30" ontouchend="xInterface.closeActiveWindow();"> 
+			</div>
+			<div id="tempInter_wrapper" style="width:300px;height:250px;overflow:hidden;display:block;margin:auto;margin-top:100px;">
+				<div id="tempInter_cover" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;right:0;bottom:0;z-index:2;"></div>
+				<div id="tempInter" >
 					<script type='text/javascript'>
-						googletag.cmd.push(function() { googletag.display('mobile_interstitial')});
+						googletag.cmd.push(function() { googletag.display('tempInter')});
 					</script>
 				</div>
 			</div>
+			
+			<div id="mobile_interstitial" style="background-color:red;">
+					<script type='text/javascript'>
+						//googletag.display('mobile_interstitial');
+						//googletag.cmd.push(function() { googletag.display('mobile_interstitial')});
+					</script>
+			</div>
 		</div>
-	</div><!-- /splash -->
+	</div><!-- /interstitial_ad_window -->
 	
 </div><!-- /dfm_mobile -->
+
+
 
 </body>
 </html>
